@@ -1,0 +1,5 @@
+app.name = "Todo";
+Congratulations = "Félicitations %1$@ ! Vous l'avez fait !";
+Loading = "Chargement…";
+No = "Non";
+Yes = "Oui";

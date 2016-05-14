@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app.name">Todo</string>
+    <string name="Loading">Loading…</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="Congratulations">Congratulations %1$s! You've done it!</string>
+    <plurals name="%d items">
+        <item quantity="zero">No items</item>
+        <item quantity="one">One item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
+</resources>
