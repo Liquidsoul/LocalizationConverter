@@ -21,16 +21,28 @@ class AndroidStringsParserTests: XCTestCase {
 
     func test_parseString_stringItem() {
         let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"localization_key\">localized_value</string>\r\n" +
+            "</resources>"
 
-        let parsedResult = parser.parse(string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<resources>\r\n<string name=\"localization_key\">localized_value</string>\r\n</resources>")
+        let parsedResult = parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: ["localization_key": "localized_value"]), parsedResult)
+        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+            "localization_key": "localized_value"
+            ]), parsedResult)
     }
 
     func test_parseString_stringItemWithSpecialCharacter() {
         let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"all.loading\">Loading…</string>\r\n" +
+            "</resources>"
 
-        let parsedResult = parser.parse(string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<resources>\r\n<string name=\"all.loading\">Loading…</string>\r\n</resources>")
+        let parsedResult = parser.parse(string: xmlString)
 
         XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
             "all.loading": "Loading…"
@@ -39,16 +51,34 @@ class AndroidStringsParserTests: XCTestCase {
 
     func test_parseString_pluralItem() {
         let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<plurals name=\"localization_key\">\r\n" +
+                    "<item quantity=\"zero\">zero_value</item>\r\n" +
+                    "<item quantity=\"other\">other_value</item>\r\n" +
+                "</plurals>\r\n" +
+            "</resources>"
 
-        let parsedResult = parser.parse(string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<resources>\r\n<plurals name=\"localization_key\">\r\n<item quantity=\"zero\">zero_value</item>\r\n<item quantity=\"other\">other_value</item>\r\n</plurals>\r\n</resources>")
+        let parsedResult = parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, localizationsDictionary: ["localization_key": .plurals(values: [.zero: "zero_value", .other: "other_value"])]), parsedResult)
+        XCTAssertEqual(LocalizationMap(type: .android, localizationsDictionary: [
+            "localization_key": .plurals(values: [.zero: "zero_value", .other: "other_value"])
+            ]), parsedResult)
     }
 
     func test_parseString_pluralItemWithSpecialCharacter() {
         let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<plurals name=\"all.loading\">\r\n" +
+                    "<item quantity=\"zero\">Loading none…</item>\r\n" +
+                    "<item quantity=\"other\">Loading %d…</item>\r\n" +
+                "</plurals>\r\n" +
+            "</resources>"
 
-        let parsedResult = parser.parse(string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<resources>\r\n<plurals name=\"all.loading\">\r\n<item quantity=\"zero\">Loading none…</item>\r\n<item quantity=\"other\">Loading %d…</item>\r\n</plurals>\r\n</resources>")
+        let parsedResult = parser.parse(string: xmlString)
 
         XCTAssertEqual(LocalizationMap(type: .android, localizationsDictionary: [
             "all.loading": .plurals(values: [
@@ -60,8 +90,14 @@ class AndroidStringsParserTests: XCTestCase {
 
     func test_parseString_twoStringItem() {
         let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"localization_key0\">localized_value0</string>\r\n" +
+                "<string name=\"localization_key1\">localized_value1</string>\r\n" +
+            "</resources>"
 
-        let parsedResult = parser.parse(string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<resources>\r\n<string name=\"localization_key0\">localized_value0</string>\r\n<string name=\"localization_key1\">localized_value1</string>\r\n</resources>")
+        let parsedResult = parser.parse(string: xmlString)
 
         XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
             "localization_key0": "localized_value0",
