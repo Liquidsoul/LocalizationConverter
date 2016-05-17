@@ -1,8 +1,8 @@
 
 ARCHIVE_NAME=release.xcarchive
 ARCHIVE_FULLNAME=$(ARCHIVE_NAME).xcarchive
-PROJECT=LocalizationFileConverter.xcodeproj
-SCHEME=LocalizationFileConverter
+PROJECT=MobileLocalizationConverter.xcodeproj
+SCHEME=MobileLocalizationConverter
 
 .PHONY: release clean
 

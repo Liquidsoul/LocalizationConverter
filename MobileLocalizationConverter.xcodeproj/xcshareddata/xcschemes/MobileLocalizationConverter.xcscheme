@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FE7F35061CE705CA00BE606D"
-               BuildableName = "LocalizationFileConverter"
-               BlueprintName = "LocalizationFileConverter"
-               ReferencedContainer = "container:LocalizationFileConverter.xcodeproj">
+               BuildableName = "MobileLocalizationConverter"
+               BlueprintName = "MobileLocalizationConverter"
+               ReferencedContainer = "container:MobileLocalizationConverter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FE7F35141CE709EC00BE606D"
-               BuildableName = "LocalizationFileConverterTests.xctest"
-               BlueprintName = "LocalizationFileConverterTests"
-               ReferencedContainer = "container:LocalizationFileConverter.xcodeproj">
+               BuildableName = "MobileLocalizationConverterTests.xctest"
+               BlueprintName = "MobileLocalizationConverterTests"
+               ReferencedContainer = "container:MobileLocalizationConverter.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -44,9 +44,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE7F35061CE705CA00BE606D"
-            BuildableName = "LocalizationFileConverter"
-            BlueprintName = "LocalizationFileConverter"
-            ReferencedContainer = "container:LocalizationFileConverter.xcodeproj">
+            BuildableName = "MobileLocalizationConverter"
+            BlueprintName = "MobileLocalizationConverter"
+            ReferencedContainer = "container:MobileLocalizationConverter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -67,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE7F35061CE705CA00BE606D"
-            BuildableName = "LocalizationFileConverter"
-            BlueprintName = "LocalizationFileConverter"
-            ReferencedContainer = "container:LocalizationFileConverter.xcodeproj">
+            BuildableName = "MobileLocalizationConverter"
+            BlueprintName = "MobileLocalizationConverter"
+            ReferencedContainer = "container:MobileLocalizationConverter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FE7F35061CE705CA00BE606D"
-            BuildableName = "LocalizationFileConverter"
-            BlueprintName = "LocalizationFileConverter"
-            ReferencedContainer = "container:LocalizationFileConverter.xcodeproj">
+            BuildableName = "MobileLocalizationConverter"
+            BlueprintName = "MobileLocalizationConverter"
+            ReferencedContainer = "container:MobileLocalizationConverter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
