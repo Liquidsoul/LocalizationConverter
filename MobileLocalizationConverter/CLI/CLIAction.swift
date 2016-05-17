@@ -16,7 +16,7 @@ enum CLIAction {
 
 extension CLIAction: Equatable {}
 
-func ==(lhs: CLIAction, rhs: CLIAction) -> Bool {
+func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
     switch(lhs, rhs) {
     case (.help, .help):
         return true

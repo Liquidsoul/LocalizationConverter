@@ -38,7 +38,7 @@ class CLIArgumentTests: XCTestCase {
 
 extension CLIArgumentTests {
     func test_decompose() {
-        let arguments : [CLIArgument] = [
+        let arguments: [CLIArgument] = [
             .AnonymousValue(value: "anonymousValue"),
             .NamedValue(name: "name", value: "value")
         ]

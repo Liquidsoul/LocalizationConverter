@@ -16,7 +16,7 @@ enum CLIArgument {
 
 extension CLIArgument: Equatable {}
 
-func ==(lhs: CLIArgument, rhs: CLIArgument) -> Bool {
+func == (lhs: CLIArgument, rhs: CLIArgument) -> Bool {
     switch (lhs, rhs) {
     case (let .AnonymousValue(value: lhsValue), let .AnonymousValue(value: rhsValue)):
         return lhsValue == rhsValue
@@ -31,8 +31,8 @@ extension CLIArgument {
     init(argument: String) throws {
         let trimCharacterSet = NSCharacterSet(charactersInString: " \"-")
         let components = argument.characters
-            .split{ $0 == "=" }
-            .map{ String.init($0).stringByTrimmingCharactersInSet(trimCharacterSet) }
+            .split { $0 == "=" }
+            .map { String.init($0).stringByTrimmingCharactersInSet(trimCharacterSet) }
         switch components.count {
         case 1:
             self = .AnonymousValue(value: components[0])
@@ -50,7 +50,7 @@ extension CLIArgument {
 
 extension CLIArgument {
     static func decompose(argumentsArray argumentsArray: [CLIArgument]) -> ([String], [String:String]) {
-        return argumentsArray.reduce(([],[:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
+        return argumentsArray.reduce(([], [:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
             var decomposition = decomposition
             switch arg {
             case let .NamedValue(name: name, value: value):
