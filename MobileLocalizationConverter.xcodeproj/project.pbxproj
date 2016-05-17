@@ -231,6 +231,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "MobileLocalizationConverter" */;
 			buildPhases = (
+				FE3CAD071CEB01E80058C6B4 /* Swiftlint */,
 				FE7F35031CE705CA00BE606D /* Sources */,
 				FE7F35041CE705CA00BE606D /* Frameworks */,
 				FE7F35051CE705CA00BE606D /* CopyFiles */,
@@ -309,6 +310,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FE3CAD071CEB01E80058C6B4 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FE7F35031CE705CA00BE606D /* Sources */ = {
