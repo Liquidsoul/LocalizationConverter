@@ -1,4 +1,4 @@
-# LocalizationFileConverter
+# MobileLocalizationConverter
 
 A simple command-line tool to convert Android `strings.xml` files into iOS `Localizable.strings` and `Localizable.stringsdict` files.
 
