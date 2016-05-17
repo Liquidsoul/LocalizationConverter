@@ -13,7 +13,9 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_format_noLocalizationKeys() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [String:LocalizationItem]())
+        let localization = LocalizationMap(
+            type: .android,
+            localizationsDictionary: [:])
 
         let throwExpectaction = self.expectationWithDescription("Throw expectation")
         do {
@@ -29,7 +31,9 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_format_noPluralsLocalizedValue() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")])
+        let localization = LocalizationMap(
+            type: .android,
+            localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")])
 
         let throwExpectaction = self.expectationWithDescription("Throw expectation")
         do {
@@ -48,7 +52,10 @@ class StringsDictFormatterTests: XCTestCase {
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
-            "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value", .other: "other_value"]),
+            "pluralKey": LocalizationItem.plurals(values: [
+                .zero: "zero_value",
+                .other: "other_value"
+                ]),
             "key1": LocalizationItem.string(value: "localized_value1"),
             ])
         let expectedStringsDict = ["pluralKey":
@@ -77,11 +84,19 @@ class StringsDictFormatterTests: XCTestCase {
         let localizableFormatter = StringsDictFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
-            "key0": LocalizationItem.string(value: "localized_value0"),
-            "pluralKey0": LocalizationItem.plurals(values: [.zero: "zero_value0", .other: "other_value0"]),
+            "pluralKey0": LocalizationItem.plurals(values: [
+                .zero: "zero_value0",
+                .other: "other_value0"
+                ]),
             "key1": LocalizationItem.string(value: "localized_value1"),
-            "pluralKey2": LocalizationItem.plurals(values: [.one: "one_value2", .other: "other_value2"]),
-            "pluralKey1": LocalizationItem.plurals(values: [.few: "few_value1", .other: "other_value1"]),
+            "pluralKey2": LocalizationItem.plurals(values: [
+                .one: "one_value2",
+                .other: "other_value2"
+                ]),
+            "pluralKey1": LocalizationItem.plurals(values: [
+                .few: "few_value1",
+                .other: "other_value1"
+                ]),
             ])
         let expectedStringsDict = [
             "pluralKey0": [
@@ -143,7 +158,10 @@ class StringsDictFormatterTests: XCTestCase {
     func test_stringsDict_onePluralLocalizedValue_WithFormatParameter() {
         let localizableFormatter = StringsDictFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
-            "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value", .other: "%1$s values"]),
+            "pluralKey": LocalizationItem.plurals(values: [
+                .zero: "zero_value",
+                .other: "%1$s values"
+                ]),
             ])
         let expectedStringsDict = ["pluralKey":
             [

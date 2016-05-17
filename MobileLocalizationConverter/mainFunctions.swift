@@ -44,7 +44,8 @@ func printUsage(processName processName: String) {
     print(" - help:")
     print("        print this help")
     print(" - convertLocalization:")
-    print("        Read a given Android strings.xml file and generate the corresponding Localizable.strings and Localizable.stringsdict files for iOS.")
+    print("        Read a given Android strings.xml file" +
+          " and generate the corresponding Localizable.strings and Localizable.stringsdict files for iOS.")
     print("        Options:")
     print("          <strings_xml_filename> : [mandatory] the source strings.xml file.")
     print("          --output=<filepath> : output folder where to write the result iOS files.")

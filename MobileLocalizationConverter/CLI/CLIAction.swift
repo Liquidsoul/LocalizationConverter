@@ -20,7 +20,10 @@ func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
     switch(lhs, rhs) {
     case (.help, .help):
         return true
-    case let (.convertLocalization(androidFileName: leftAndroidFileName, outputPath: leftOutputPath), .convertLocalization(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)):
+    case let (
+        .convertLocalization(androidFileName: leftAndroidFileName, outputPath: leftOutputPath),
+        .convertLocalization(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)
+        ):
         return leftAndroidFileName == rightAndroidFileName
             && leftOutputPath == rightOutputPath
     default:

@@ -20,7 +20,11 @@ struct RegexReplacer {
     }
 
     func stringByReplacingMatchesInString(string: String) -> String {
-        return regex.stringByReplacingMatchesInString(string, options: NSMatchingOptions(rawValue: 0), range: NSRange(location: 0, length: string.characters.count), withTemplate: replaceTemplate)
+        return regex.stringByReplacingMatchesInString(
+            string,
+            options: NSMatchingOptions(rawValue: 0),
+            range: NSRange(location: 0, length: string.characters.count),
+            withTemplate: replaceTemplate)
     }
 
     private let regex: NSRegularExpression

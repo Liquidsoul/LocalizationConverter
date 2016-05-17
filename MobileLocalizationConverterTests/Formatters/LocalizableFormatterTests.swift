@@ -22,7 +22,10 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_oneStringLocalizedValue() {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")])
+        let localization = LocalizationMap(
+            type: .android,
+            localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")]
+        )
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
@@ -39,7 +42,11 @@ class LocalizableFormatterTests: XCTestCase {
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("key0 = \"localized_value0\";\nkey1 = \"localized_value1\";\nkey2 = \"localized_value2\";", resultLocalizableString)
+        XCTAssertEqual(
+            "key0 = \"localized_value0\";\n" +
+            "key1 = \"localized_value1\";\n" +
+            "key2 = \"localized_value2\";",
+            resultLocalizableString)
     }
 
     func test_format_ignorePluralsLocalizedValues() {
@@ -47,13 +54,19 @@ class LocalizableFormatterTests: XCTestCase {
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
-            "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value", .other: "other_value"]),
+            "pluralKey": LocalizationItem.plurals(values: [
+                .zero: "zero_value",
+                .other: "other_value"]),
             "key1": LocalizationItem.string(value: "localized_value1"),
             ])
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("key0 = \"localized_value0\";\nkey1 = \"localized_value1\";\nkey2 = \"localized_value2\";", resultLocalizableString)
+        XCTAssertEqual(
+            "key0 = \"localized_value0\";\n" +
+            "key1 = \"localized_value1\";\n" +
+            "key2 = \"localized_value2\";",
+            resultLocalizableString)
     }
 
     func test_format_convertStringParameters() {

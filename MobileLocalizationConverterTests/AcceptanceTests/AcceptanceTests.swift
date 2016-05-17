@@ -28,7 +28,11 @@ class AcceptanceTests: XCTestCase {
     func createTempDirectory() -> String {
         let fileManager = NSFileManager()
         do {
-            let documentsDirectory = try fileManager.URLForDirectory(.CachesDirectory, inDomain: .AllDomainsMask, appropriateForURL: nil, create: true)
+            let documentsDirectory = try fileManager.URLForDirectory(
+                .CachesDirectory,
+                inDomain: .AllDomainsMask,
+                appropriateForURL: nil,
+                create: true)
             let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
             try fileManager.createDirectoryAtURL(tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             guard let path = tempDirectoryURL.path else {
@@ -52,8 +56,9 @@ class AcceptanceTests: XCTestCase {
         // GIVEN: a strings.xml android file
         let sourceAndroidFilePath = bundleFilePath("android/values/strings.xml")
         // GIVEN: output Localizable iOS files
-        let outputStringsFilePath = (tempDirectoryPath as NSString).stringByAppendingPathComponent("Localizable.strings")
-        let outputStringsDictFilePath = (tempDirectoryPath as NSString).stringByAppendingPathComponent("Localizable.stringsdict")
+        let nsTempDirectoryPath = (tempDirectoryPath as NSString)
+        let outputStringsFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.strings")
+        let outputStringsDictFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.stringsdict")
         // GIVEN: exepected Localizable iOS files
         let expectedOutputStringsFilePath = bundleFilePath("ios/Base.lproj/Localizable.strings")
         let expectedOutputStringsDictFilePath = bundleFilePath("ios/Base.lproj/Localizable.stringsdict")

@@ -24,7 +24,11 @@ class AndroidStringsParser: StringParser {
             localizations = [String:LocalizationItem]()
         }
 
-        func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
+        func parser(parser: NSXMLParser,
+                    didStartElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?,
+                    attributes attributeDict: [String : String]) {
 
             elementStack.append(elementName)
 
@@ -60,7 +64,10 @@ class AndroidStringsParser: StringParser {
             parseStack.append(string)
         }
 
-        func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        func parser(parser: NSXMLParser,
+                    didEndElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?) {
             elementStack.removeLast()
 
             if elementName == "resources" {

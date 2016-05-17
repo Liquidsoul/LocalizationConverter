@@ -25,7 +25,11 @@ class LocalizableParserTests: XCTestCase {
 
         let parsedResult = parser.parse(string: testString)
 
-        XCTAssertEqual(LocalizationMap(type: .ios, dictionary: ["localization_key": "localized_value"]), parsedResult)
+        XCTAssertEqual(
+            LocalizationMap(type: .ios, dictionary: [
+                "localization_key": "localized_value"
+            ]),
+            parsedResult)
     }
 
     func test_parseString_oneItem_unquotedKey() {
@@ -34,34 +38,58 @@ class LocalizableParserTests: XCTestCase {
 
         let parsedResult = parser.parse(string: testString)
 
-        XCTAssertEqual(LocalizationMap(type: .ios, dictionary: ["localization_key": "localized_value"]), parsedResult)
+        XCTAssertEqual(
+            LocalizationMap(type: .ios, dictionary: [
+                "localization_key": "localized_value"
+            ]),
+            parsedResult)
     }
 
     func test_parseString_twoItems() {
-        let testString = "localization_key0 = \"localized_value0\";\nlocalization_key1 = \"localized_value1\";"
+        let testString =
+            "localization_key0 = \"localized_value0\";\n" +
+            "localization_key1 = \"localized_value1\";"
         let parser = LocalizableParser()
 
         let parsedResult = parser.parse(string: testString)
 
-        XCTAssertEqual(LocalizationMap(type: .ios, dictionary: ["localization_key0": "localized_value0", "localization_key1": "localized_value1"]), parsedResult)
+        XCTAssertEqual(
+            LocalizationMap(type: .ios, dictionary: [
+                "localization_key0": "localized_value0",
+                "localization_key1": "localized_value1"]),
+            parsedResult)
     }
 
     func test_parseString_ignoreComments() {
-        let testString = "localization_key0 = \"localized_value0\";\n/* this is a comment */\nlocalization_key1 = \"localized_value1\";"
+        let testString =
+            "localization_key0 = \"localized_value0\";\n" +
+            "/* this is a comment */\n" +
+            "localization_key1 = \"localized_value1\";"
         let parser = LocalizableParser()
 
         let parsedResult = parser.parse(string: testString)
 
-        XCTAssertEqual(LocalizationMap(type: .ios, dictionary: ["localization_key0": "localized_value0", "localization_key1": "localized_value1"]), parsedResult)
+        XCTAssertEqual(
+            LocalizationMap(type: .ios, dictionary: [
+                "localization_key0": "localized_value0",
+                "localization_key1": "localized_value1"]),
+            parsedResult)
     }
 
     func test_parseString_ignoreBlankLine() {
-        let testString = "localization_key0 = \"localized_value0\";\n\nlocalization_key1 = \"localized_value1\";"
+        let testString =
+            "localization_key0 = \"localized_value0\";" +
+            "\n" +
+            "\nlocalization_key1 = \"localized_value1\";"
         let parser = LocalizableParser()
 
         let parsedResult = parser.parse(string: testString)
 
-        XCTAssertEqual(LocalizationMap(type: .ios, dictionary: ["localization_key0": "localized_value0", "localization_key1": "localized_value1"]), parsedResult)
+        XCTAssertEqual(
+            LocalizationMap(type: .ios, dictionary: [
+                "localization_key0": "localized_value0",
+                "localization_key1": "localized_value1"]),
+            parsedResult)
     }
 
 }

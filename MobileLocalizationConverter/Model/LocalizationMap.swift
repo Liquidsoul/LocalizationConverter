@@ -78,11 +78,14 @@ extension LocalizationMap {
                 fatalError("Could not initialize replacer!")
             }
 
-            return LocalizationMap(type: .ios, localizationsDictionary: convertLocalizations(localizations, replacer: stringParameterReplacer))
+            return LocalizationMap(
+                type: .ios,
+                localizationsDictionary: convertLocalizations(localizations, replacer: stringParameterReplacer))
         }
     }
 
-    private func convertLocalizations(localizations: [String:LocalizationItem], replacer: RegexReplacer) -> [String:LocalizationItem] {
+    private func convertLocalizations(localizations: [String:LocalizationItem],
+                                      replacer: RegexReplacer) -> [String:LocalizationItem] {
         var iOSLocalizations = [String:LocalizationItem]()
         localizations.forEach { (key, item) in
             let convertedItem: LocalizationItem
