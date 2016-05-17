@@ -10,17 +10,17 @@
 import Foundation
 
 enum CLIAction {
-    case Help
-    case ConvertLocalization(androidFileName: String, outputPath: String?)
+    case help
+    case convertLocalization(androidFileName: String, outputPath: String?)
 }
 
 extension CLIAction: Equatable {}
 
 func ==(lhs: CLIAction, rhs: CLIAction) -> Bool {
     switch(lhs, rhs) {
-    case (.Help, .Help):
+    case (.help, .help):
         return true
-    case let (.ConvertLocalization(androidFileName: leftAndroidFileName, outputPath: leftOutputPath), .ConvertLocalization(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)):
+    case let (.convertLocalization(androidFileName: leftAndroidFileName, outputPath: leftOutputPath), .convertLocalization(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)):
         return leftAndroidFileName == rightAndroidFileName
             && leftOutputPath == rightOutputPath
     default:
@@ -32,12 +32,12 @@ extension CLIAction {
     init(actionName name: String, anonymousArguments: [String], namedArguments: [String:String]) throws {
         switch name {
         case "help":
-            self = .Help
+            self = .help
         case "convertLocalization":
             guard let androidFileName = anonymousArguments.first else {
                 throw Error.MissingArgument(actionName: name, missingArgument: "source android filename")
             }
-            self = .ConvertLocalization(androidFileName: androidFileName, outputPath: namedArguments["output"])
+            self = .convertLocalization(androidFileName: androidFileName, outputPath: namedArguments["output"])
         default:
             throw Error.UnknownAction(actionName: name)
         }

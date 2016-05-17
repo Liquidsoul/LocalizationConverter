@@ -28,7 +28,7 @@ class CLIActionTests: XCTestCase {
     func test_helpAction() {
         guard let action = try? CLIAction(actionName: "help", anonymousArguments: [], namedArguments: [:]) else { XCTFail(); return }
 
-        XCTAssertEqual(CLIAction.Help, action)
+        XCTAssertEqual(CLIAction.help, action)
     }
 
 }

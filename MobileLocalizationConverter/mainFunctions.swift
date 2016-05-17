@@ -19,10 +19,10 @@ func runConverter(withArguments arguments: [String]) -> Int32 {
     do {
         let action = try parser.parseAction(arguments: scriptArguments)
         switch action {
-        case .Help:
+        case .help:
             printUsage(processName: processName)
             return 0
-        case let .ConvertLocalization(androidFileName: androidFileName, outputPath: outputPath):
+        case let .convertLocalization(androidFileName: androidFileName, outputPath: outputPath):
             return convertLocalization(androidFileName, outputPath: outputPath)
         }
     } catch let CLIAction.Error.MissingArgument(actionName: actionName, missingArgument: argumentName) {

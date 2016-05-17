@@ -36,7 +36,7 @@ class CLIArgumentsParserTests: XCTestCase {
         let action = try? parser.parseAction(arguments: ["help"])
 
         // THEN: we got the expected help action
-        XCTAssertEqual(CLIAction.Help, action)
+        XCTAssertEqual(CLIAction.help, action)
     }
 
 }
