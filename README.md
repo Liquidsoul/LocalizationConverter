@@ -1,5 +1,7 @@
 # MobileLocalizationConverter
 
+![Build Status](https://travis-ci.org/Liquidsoul/MobileLocalizationConverter.svg?branch=master)
+
 A simple command-line tool to convert Android `strings.xml` files into iOS `Localizable.strings` and `Localizable.stringsdict` files.
 
 ## ⚠️ Limitations ⚠️
