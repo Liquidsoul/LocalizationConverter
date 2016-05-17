@@ -1,0 +1,12 @@
+fastlane_version "1.89.0"
+
+default_platform :mac
+
+platform :mac do
+
+  desc "Runs all the tests"
+  lane :test do
+    scan
+  end
+
+end
