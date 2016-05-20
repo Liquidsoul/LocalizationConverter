@@ -66,7 +66,7 @@ func == (left: LocalizationMap, right: LocalizationMap) -> Bool {
 }
 
 extension LocalizationMap {
-    func convertedLocalization(type: LocalizationType) -> LocalizationMap {
+    func convertedLocalization(to type: LocalizationType) -> LocalizationMap {
         if type == self.type {
             return self
         }
@@ -80,20 +80,20 @@ extension LocalizationMap {
 
             return LocalizationMap(
                 type: .ios,
-                localizationsDictionary: convertLocalizations(localizations, replacer: stringParameterReplacer))
+                localizationsDictionary: convert(localizations, using: stringParameterReplacer))
         }
     }
 
-    private func convertLocalizations(localizations: [String:LocalizationItem],
-                                      replacer: RegexReplacer) -> [String:LocalizationItem] {
+    private func convert(localizations: [String:LocalizationItem],
+                         using replacer: RegexReplacer) -> [String:LocalizationItem] {
         var iOSLocalizations = [String:LocalizationItem]()
         localizations.forEach { (key, item) in
             let convertedItem: LocalizationItem
             switch item {
             case .string(let value):
                 convertedItem = .string(value: replacer.replacingMatches(in: value))
-            case .plurals(let values):
-                let convertedPlurals = convertPlurals(values, replacer: replacer)
+            case .plurals(let plurals):
+                let convertedPlurals = convert(plurals, using: replacer)
                 convertedItem = .plurals(values: convertedPlurals)
             }
             iOSLocalizations[key] = convertedItem
@@ -101,7 +101,7 @@ extension LocalizationMap {
         return iOSLocalizations
     }
 
-    private func convertPlurals(plurals: [PluralType:String], replacer: RegexReplacer) -> [PluralType:String] {
+    private func convert(plurals: [PluralType:String], using replacer: RegexReplacer) -> [PluralType:String] {
         var convertedPlurals = [PluralType:String]()
         plurals.forEach { (type, value) in
             convertedPlurals[type] = replacer.replacingMatches(in: value)

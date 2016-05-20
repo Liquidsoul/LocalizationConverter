@@ -17,7 +17,7 @@ struct StringsDictFormatter {
     }
 
     func stringsDict(from localization: LocalizationMap) throws -> NSDictionary {
-        let localizations = localization.convertedLocalization(.ios).localizations
+        let localizations = localization.convertedLocalization(to: .ios).localizations
         let pluralLocalizations = plurals(from: localizations)
         if pluralLocalizations.count == 0 {
             throw Error.noPlurals

@@ -9,7 +9,7 @@
 
 struct LocalizableFormatter {
     func format(localization: LocalizationMap) -> String {
-        return format(localization.convertedLocalization(.ios).localizations)
+        return format(localization.convertedLocalization(to: .ios).localizations)
     }
 
     private func format(localizations: [String:LocalizationItem]) -> String {
