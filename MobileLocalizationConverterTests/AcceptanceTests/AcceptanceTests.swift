@@ -64,7 +64,7 @@ class AcceptanceTests: XCTestCase {
         let expectedOutputStringsDictFilePath = bundleFilePath("ios/Base.lproj/Localizable.stringsdict")
 
         // WHEN: we execute the converter
-        let returnedValue = runConverter(withArguments: [
+        let returnedValue = runConverter(with: [
             "\(self)",
             "convertLocalization",
             sourceAndroidFilePath,

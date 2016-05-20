@@ -9,7 +9,7 @@
 
 import Foundation
 
-func runConverter(withArguments arguments: [String]) -> Int32 {
+func runConverter(with arguments: [String]) -> Int32 {
     let parser = CLIArgumentsParser()
 
     let processAndArguments = arguments
