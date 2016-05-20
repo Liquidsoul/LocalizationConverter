@@ -38,16 +38,16 @@ extension CLIAction {
             self = .help
         case "convertLocalization":
             guard let androidFileName = anonymousArguments.first else {
-                throw Error.MissingArgument(actionName: name, missingArgument: "source android filename")
+                throw Error.missingArgument(actionName: name, missingArgument: "source android filename")
             }
             self = .convertLocalization(androidFileName: androidFileName, outputPath: namedArguments["output"])
         default:
-            throw Error.UnknownAction(actionName: name)
+            throw Error.unknownAction(actionName: name)
         }
     }
 
     enum Error: ErrorType {
-        case UnknownAction(actionName: String)
-        case MissingArgument(actionName: String, missingArgument: String)
+        case unknownAction(actionName: String)
+        case missingArgument(actionName: String, missingArgument: String)
     }
 }

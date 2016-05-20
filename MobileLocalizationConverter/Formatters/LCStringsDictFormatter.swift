@@ -20,13 +20,13 @@ struct StringsDictFormatter {
         let localizations = localization.convertedLocalization(.ios).localizations
         let pluralLocalizations = filterOnlyPluralLocalizations(localizations)
         if pluralLocalizations.count == 0 {
-            throw Error.NoPlurals
+            throw Error.noPlurals
         }
 
         let stringsDict = NSMutableDictionary()
         try pluralLocalizations.forEach { (key, values) in
             guard let _ = values[.other] else {
-                throw Error.MissingOtherKey
+                throw Error.missingOtherKey
             }
             stringsDict[key] = stringsDictValue(withValues: values)
         }
@@ -67,7 +67,7 @@ struct StringsDictFormatter {
     }
 
     enum Error: ErrorType {
-        case NoPlurals
-        case MissingOtherKey
+        case noPlurals
+        case missingOtherKey
     }
 }

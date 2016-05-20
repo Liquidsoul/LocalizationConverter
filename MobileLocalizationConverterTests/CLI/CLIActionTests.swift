@@ -16,7 +16,7 @@ class CLIActionTests: XCTestCase {
 
         do {
             _ = try CLIAction(actionName: "toto", anonymousArguments: [], namedArguments: [:])
-        } catch CLIAction.Error.UnknownAction(actionName: "toto") {
+        } catch CLIAction.Error.unknownAction(actionName: "toto") {
             expectThrownError.fulfill()
         } catch {
             XCTFail("Unexpected error")

@@ -25,10 +25,10 @@ func runConverter(withArguments arguments: [String]) -> Int32 {
         case let .convertLocalization(androidFileName: androidFileName, outputPath: outputPath):
             return convertLocalization(androidFileName, outputPath: outputPath)
         }
-    } catch let CLIAction.Error.MissingArgument(actionName: actionName, missingArgument: argumentName) {
+    } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {
         print("Missing argument '\(argumentName)' for action '\(actionName)'")
         return 1
-    } catch CLIArgumentsParser.Error.NoAction {
+    } catch CLIArgumentsParser.Error.noAction {
         print("You must specify an action. Run 'help' action to print usage.")
         return 1
     } catch {
@@ -71,7 +71,7 @@ func convertLocalization(androidFileName: String, outputPath: String?) -> Int32 
             print("Failed to write stringsdict file at path \(outputStringsDictPath)")
             return 1
         }
-    } catch StringsDictFormatter.Error.NoPlurals {
+    } catch StringsDictFormatter.Error.noPlurals {
         print("No plural found, skipping stringsdict file.")
     } catch {
         print("Error when formatting stringsdict data \(error)")

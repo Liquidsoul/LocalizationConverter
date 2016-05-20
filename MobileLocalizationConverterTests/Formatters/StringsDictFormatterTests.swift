@@ -20,7 +20,7 @@ class StringsDictFormatterTests: XCTestCase {
         let throwExpectaction = self.expectationWithDescription("Throw expectation")
         do {
             try localizableFormatter.format(localization)
-        } catch StringsDictFormatter.Error.NoPlurals {
+        } catch StringsDictFormatter.Error.noPlurals {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")
@@ -38,7 +38,7 @@ class StringsDictFormatterTests: XCTestCase {
         let throwExpectaction = self.expectationWithDescription("Throw expectation")
         do {
             try localizableFormatter.format(localization)
-        } catch StringsDictFormatter.Error.NoPlurals {
+        } catch StringsDictFormatter.Error.noPlurals {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")
@@ -146,7 +146,7 @@ class StringsDictFormatterTests: XCTestCase {
         let throwExpectaction = self.expectationWithDescription("Throw expectation")
         do {
             try localizableFormatter.format(localization)
-        } catch StringsDictFormatter.Error.MissingOtherKey {
+        } catch StringsDictFormatter.Error.missingOtherKey {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")

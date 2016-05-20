@@ -20,7 +20,7 @@ class CLIArgumentsParserTests: XCTestCase {
         // WHEN: we try to parse an empty array of arguments
         do {
             _ = try parser.parseAction(arguments: [])
-        } catch CLIArgumentsParser.Error.NoAction {
+        } catch CLIArgumentsParser.Error.noAction {
             expectThrownError.fulfill()
         }
 

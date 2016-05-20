@@ -39,12 +39,12 @@ extension CLIArgument {
         case 2:
             self = .namedValue(name: components[0], value: components[1])
         default:
-            throw Error.UnparseableArgument(argument: argument)
+            throw Error.unparseableArgument(argument: argument)
         }
     }
 
     enum Error: ErrorType {
-        case UnparseableArgument(argument: String)
+        case unparseableArgument(argument: String)
     }
 }
 

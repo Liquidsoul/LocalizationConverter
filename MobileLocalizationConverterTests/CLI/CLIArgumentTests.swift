@@ -15,7 +15,7 @@ class CLIArgumentTests: XCTestCase {
         let expectation = self.expectationWithDescription("Thrown error")
         do {
             _ = try CLIArgument(argument: "")
-        } catch CLIArgument.Error.UnparseableArgument(argument: let arg) {
+        } catch CLIArgument.Error.unparseableArgument(argument: let arg) {
             XCTAssertEqual("", arg)
             expectation.fulfill()
         }

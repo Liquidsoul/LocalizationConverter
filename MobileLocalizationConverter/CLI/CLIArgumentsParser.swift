@@ -12,7 +12,7 @@ import Foundation
 class CLIArgumentsParser {
     func parseAction(arguments arguments: [String]) throws -> CLIAction {
         if arguments.count == 0 {
-            throw Error.NoAction
+            throw Error.noAction
         }
         let actionName = arguments[0]
 
@@ -22,6 +22,6 @@ class CLIArgumentsParser {
     }
 
     enum Error: ErrorType {
-        case NoAction
+        case noAction
     }
 }
