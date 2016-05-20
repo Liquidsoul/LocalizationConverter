@@ -19,7 +19,7 @@ class CLIArgumentsParserTests: XCTestCase {
 
         // WHEN: we try to parse an empty array of arguments
         do {
-            _ = try parser.parseAction(arguments: [])
+            _ = try parser.parseAction(from: [])
         } catch CLIArgumentsParser.Error.noAction {
             expectThrownError.fulfill()
         }
@@ -33,7 +33,7 @@ class CLIArgumentsParserTests: XCTestCase {
         let parser = CLIArgumentsParser()
 
         // WHEN: we pass help as the action
-        let action = try? parser.parseAction(arguments: ["help"])
+        let action = try? parser.parseAction(from: ["help"])
 
         // THEN: we got the expected help action
         XCTAssertEqual(CLIAction.help, action)

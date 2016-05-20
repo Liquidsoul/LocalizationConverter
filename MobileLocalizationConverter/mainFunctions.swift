@@ -17,7 +17,7 @@ func runConverter(withArguments arguments: [String]) -> Int32 {
     let scriptArguments = Array(processAndArguments[1..<processAndArguments.count])
 
     do {
-        let action = try parser.parseAction(arguments: scriptArguments)
+        let action = try parser.parseAction(from: scriptArguments)
         switch action {
         case .help:
             printUsage(processName: processName)

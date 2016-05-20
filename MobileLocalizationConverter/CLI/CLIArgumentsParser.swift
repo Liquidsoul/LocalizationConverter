@@ -10,7 +10,7 @@
 import Foundation
 
 class CLIArgumentsParser {
-    func parseAction(arguments arguments: [String]) throws -> CLIAction {
+    func parseAction(from arguments: [String]) throws -> CLIAction {
         if arguments.count == 0 {
             throw Error.noAction
         }
