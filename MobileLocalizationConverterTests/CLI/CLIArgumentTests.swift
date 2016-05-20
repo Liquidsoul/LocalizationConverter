@@ -26,21 +26,21 @@ class CLIArgumentTests: XCTestCase {
     func test_namedValue() {
         guard let namedArgument = try? CLIArgument(argument: "--name=value") else { XCTFail(); return }
 
-        XCTAssertEqual(CLIArgument.NamedValue(name: "name", value: "value"), namedArgument)
+        XCTAssertEqual(CLIArgument.namedValue(name: "name", value: "value"), namedArgument)
     }
 
     func test_anonymousValue() {
         guard let anonymousArgument = try? CLIArgument(argument: "file.name") else { XCTFail(); return }
 
-        XCTAssertEqual(CLIArgument.AnonymousValue(value: "file.name"), anonymousArgument)
+        XCTAssertEqual(CLIArgument.anonymousValue(value: "file.name"), anonymousArgument)
     }
 }
 
 extension CLIArgumentTests {
     func test_decompose() {
         let arguments: [CLIArgument] = [
-            .AnonymousValue(value: "anonymousValue"),
-            .NamedValue(name: "name", value: "value")
+            .anonymousValue(value: "anonymousValue"),
+            .namedValue(name: "name", value: "value")
         ]
 
         let (anonymousValues, namedValues) = CLIArgument.decompose(argumentsArray: arguments)

@@ -10,17 +10,17 @@
 import Foundation
 
 enum CLIArgument {
-    case AnonymousValue(value: String)
-    case NamedValue(name: String, value: String)
+    case anonymousValue(value: String)
+    case namedValue(name: String, value: String)
 }
 
 extension CLIArgument: Equatable {}
 
 func == (lhs: CLIArgument, rhs: CLIArgument) -> Bool {
     switch (lhs, rhs) {
-    case (let .AnonymousValue(value: lhsValue), let .AnonymousValue(value: rhsValue)):
+    case (let .anonymousValue(value: lhsValue), let .anonymousValue(value: rhsValue)):
         return lhsValue == rhsValue
-    case (let .NamedValue(name: lhsName, value: lhsValue), let .NamedValue(name: rhsName, value: rhsValue)):
+    case (let .namedValue(name: lhsName, value: lhsValue), let .namedValue(name: rhsName, value: rhsValue)):
         return lhsValue == rhsValue && lhsName == rhsName
     default:
         return false
@@ -35,9 +35,9 @@ extension CLIArgument {
             .map { String.init($0).stringByTrimmingCharactersInSet(trimCharacterSet) }
         switch components.count {
         case 1:
-            self = .AnonymousValue(value: components[0])
+            self = .anonymousValue(value: components[0])
         case 2:
-            self = .NamedValue(name: components[0], value: components[1])
+            self = .namedValue(name: components[0], value: components[1])
         default:
             throw Error.UnparseableArgument(argument: argument)
         }
@@ -53,9 +53,9 @@ extension CLIArgument {
         return argumentsArray.reduce(([], [:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
             var decomposition = decomposition
             switch arg {
-            case let .NamedValue(name: name, value: value):
+            case let .namedValue(name: name, value: value):
                 decomposition.1[name] = value
-            case let .AnonymousValue(value: value):
+            case let .anonymousValue(value: value):
                 decomposition.0.append(value)
             }
             return decomposition
