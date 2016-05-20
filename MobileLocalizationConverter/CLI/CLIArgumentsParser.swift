@@ -17,7 +17,7 @@ class CLIArgumentsParser {
         let actionName = arguments[0]
 
         let parsedArguments = try Array(arguments[1..<arguments.count]).map(CLIArgument.init)
-        let (anonymousArguments, namedArguments) = CLIArgument.decompose(argumentsArray: parsedArguments)
+        let (anonymousArguments, namedArguments) = CLIArgument.decompose(arguments: parsedArguments)
         return try CLIAction(actionName: actionName, anonymousArguments: anonymousArguments, namedArguments: namedArguments)
     }
 

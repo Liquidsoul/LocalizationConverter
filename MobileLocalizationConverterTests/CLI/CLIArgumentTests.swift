@@ -43,7 +43,7 @@ extension CLIArgumentTests {
             .namedValue(name: "name", value: "value")
         ]
 
-        let (anonymousValues, namedValues) = CLIArgument.decompose(argumentsArray: arguments)
+        let (anonymousValues, namedValues) = CLIArgument.decompose(arguments: arguments)
 
         XCTAssertEqual((["anonymousValue"]), anonymousValues)
         XCTAssertEqual(["name":"value"], namedValues)

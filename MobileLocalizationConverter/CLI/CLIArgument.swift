@@ -49,8 +49,8 @@ extension CLIArgument {
 }
 
 extension CLIArgument {
-    static func decompose(argumentsArray argumentsArray: [CLIArgument]) -> ([String], [String:String]) {
-        return argumentsArray.reduce(([], [:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
+    static func decompose(arguments arguments: [CLIArgument]) -> ([String], [String:String]) {
+        return arguments.reduce(([], [:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
             var decomposition = decomposition
             switch arg {
             case let .namedValue(name: name, value: value):
