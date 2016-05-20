@@ -11,14 +11,14 @@ import Foundation
 
 struct StringsDictFormatter {
     func format(localization: LocalizationMap) throws -> NSData {
-        let stringsDict = try self.stringsDict(fromLocalization: localization)
+        let stringsDict = try self.stringsDict(from: localization)
 
         return try NSPropertyListSerialization.dataWithPropertyList(stringsDict, format: .XMLFormat_v1_0, options: 0)
     }
 
-    func stringsDict(fromLocalization localization: LocalizationMap) throws -> NSDictionary {
+    func stringsDict(from localization: LocalizationMap) throws -> NSDictionary {
         let localizations = localization.convertedLocalization(.ios).localizations
-        let pluralLocalizations = filterOnlyPluralLocalizations(localizations)
+        let pluralLocalizations = plurals(from: localizations)
         if pluralLocalizations.count == 0 {
             throw Error.noPlurals
         }
@@ -28,19 +28,19 @@ struct StringsDictFormatter {
             guard let _ = values[.other] else {
                 throw Error.missingOtherKey
             }
-            stringsDict[key] = stringsDictValue(withValues: values)
+            stringsDict[key] = stringsDictItem(with: values)
         }
 
         return stringsDict
     }
 
-    private func filterOnlyPluralLocalizations(localization: [String:LocalizationItem]) -> [String:[PluralType: String]] {
-        if localization.count == 0 {
+    private func plurals(from localizations: [String:LocalizationItem]) -> [String:[PluralType: String]] {
+        if localizations.count == 0 {
             return [:]
         }
 
         var pluralLocalizations = [String:[PluralType: String]]()
-        localization.forEach { (key, value) in
+        localizations.forEach { (key, value) in
             switch value {
             case .string:
                 break
@@ -51,7 +51,7 @@ struct StringsDictFormatter {
         return pluralLocalizations
     }
 
-    private func stringsDictValue(withValues values: [PluralType: String]) -> [String:AnyObject] {
+    private func stringsDictItem(with values: [PluralType: String]) -> [String:AnyObject] {
         let initialValues = [
             "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
             "NSStringFormatValueTypeKey": "d"

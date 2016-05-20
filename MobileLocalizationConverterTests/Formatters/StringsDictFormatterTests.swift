@@ -71,7 +71,7 @@ class StringsDictFormatterTests: XCTestCase {
         ]
 
         do {
-            let stringsDict = try localizableFormatter.stringsDict(fromLocalization: localization)
+            let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
             // THEN:
             XCTAssertEqual(expectedStringsDict, stringsDict)
@@ -129,7 +129,7 @@ class StringsDictFormatterTests: XCTestCase {
         ]
 
         do {
-            let stringsDict = try localizableFormatter.stringsDict(fromLocalization: localization)
+            let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
             XCTAssertEqual(expectedStringsDict, stringsDict)
         } catch {
@@ -176,7 +176,7 @@ class StringsDictFormatterTests: XCTestCase {
         ]
 
         do {
-            let stringsDict = try localizableFormatter.stringsDict(fromLocalization: localization)
+            let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
             XCTAssertEqual(expectedStringsDict, stringsDict)
         } catch {
