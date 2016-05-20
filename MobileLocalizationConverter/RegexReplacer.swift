@@ -19,7 +19,7 @@ struct RegexReplacer {
         self.replaceTemplate = replaceTemplate
     }
 
-    func stringByReplacingMatchesInString(string: String) -> String {
+    func replacingMatches(in string: String) -> String {
         return regex.stringByReplacingMatchesInString(
             string,
             options: NSMatchingOptions(rawValue: 0),

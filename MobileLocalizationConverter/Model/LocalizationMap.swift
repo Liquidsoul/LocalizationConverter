@@ -91,7 +91,7 @@ extension LocalizationMap {
             let convertedItem: LocalizationItem
             switch item {
             case .string(let value):
-                convertedItem = .string(value: replacer.stringByReplacingMatchesInString(value))
+                convertedItem = .string(value: replacer.replacingMatches(in: value))
             case .plurals(let values):
                 let convertedPlurals = convertPlurals(values, replacer: replacer)
                 convertedItem = .plurals(values: convertedPlurals)
@@ -104,7 +104,7 @@ extension LocalizationMap {
     private func convertPlurals(plurals: [PluralType:String], replacer: RegexReplacer) -> [PluralType:String] {
         var convertedPlurals = [PluralType:String]()
         plurals.forEach { (type, value) in
-            convertedPlurals[type] = replacer.stringByReplacingMatchesInString(value)
+            convertedPlurals[type] = replacer.replacingMatches(in: value)
         }
         return convertedPlurals
     }
