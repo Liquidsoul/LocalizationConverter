@@ -10,7 +10,7 @@
 import Foundation
 
 class StringParserFactory {
-    static func stringParserFromFileName(filename: String) -> StringParser {
+    static func stringParser(from filename: String) -> StringParser {
         let nsFilename = filename as NSString
         switch nsFilename.pathExtension {
         case "xml":
