@@ -25,33 +25,6 @@ class AcceptanceTests: XCTestCase {
         super.tearDown()
     }
 
-    func createTempDirectory() -> String {
-        let fileManager = NSFileManager()
-        do {
-            let documentsDirectory = try fileManager.URLForDirectory(
-                .CachesDirectory,
-                inDomain: .AllDomainsMask,
-                appropriateForURL: nil,
-                create: true)
-            let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
-            try fileManager.createDirectoryAtURL(tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-            guard let path = tempDirectoryURL.path else {
-                fatalError("Could not get path from URL of temp directory \(tempDirectoryURL)")
-            }
-            return path
-        } catch {
-            fatalError("Could not create temp directory for tests")
-        }
-    }
-
-    func deleteTempDirectory() {
-        do {
-            try NSFileManager().removeItemAtPath(tempDirectoryPath)
-        } catch {
-            fatalError("Could not remove temp directory used in tests")
-        }
-    }
-
     func test_AndroidToiOSFileSuccessfulConversion() {
         // GIVEN: a strings.xml android file
         let sourceAndroidFilePath = bundleFilePath("android/values/strings.xml")
@@ -78,6 +51,12 @@ class AcceptanceTests: XCTestCase {
         XCTAssertTrue(compareFiles(expectedOutputStringsDictFilePath, testedFilePath: outputStringsDictFilePath))
     }
 
+}
+
+// MARK: - Test helper methods
+
+extension AcceptanceTests {
+
     func bundleFilePath(partialPath: String) -> String {
         let testBundle = NSBundle(forClass: self.dynamicType)
         let testStubsFolderName = "testFiles"
@@ -102,6 +81,39 @@ class AcceptanceTests: XCTestCase {
         }
 
         return referenceData == testedData
+    }
+
+}
+
+// MARK: - Environment setup and tear down functions
+
+extension AcceptanceTests {
+
+    func createTempDirectory() -> String {
+        let fileManager = NSFileManager()
+        do {
+            let documentsDirectory = try fileManager.URLForDirectory(
+                .CachesDirectory,
+                inDomain: .AllDomainsMask,
+                appropriateForURL: nil,
+                create: true)
+            let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
+            try fileManager.createDirectoryAtURL(tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            guard let path = tempDirectoryURL.path else {
+                fatalError("Could not get path from URL of temp directory \(tempDirectoryURL)")
+            }
+            return path
+        } catch {
+            fatalError("Could not create temp directory for tests")
+        }
+    }
+
+    func deleteTempDirectory() {
+        do {
+            try NSFileManager().removeItemAtPath(tempDirectoryPath)
+        } catch {
+            fatalError("Could not remove temp directory used in tests")
+        }
     }
 
 }
