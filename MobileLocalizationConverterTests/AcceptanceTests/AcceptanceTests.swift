@@ -32,7 +32,7 @@ class AcceptanceTests: XCTestCase {
         let nsTempDirectoryPath = (tempDirectoryPath as NSString)
         let outputStringsFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.strings")
         let outputStringsDictFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.stringsdict")
-        // GIVEN: exepected Localizable iOS files
+        // GIVEN: expected Localizable iOS files
         let expectedOutputStringsFilePath = bundleFilePath("ios/Base.lproj/Localizable.strings")
         let expectedOutputStringsDictFilePath = bundleFilePath("ios/Base.lproj/Localizable.stringsdict")
 
