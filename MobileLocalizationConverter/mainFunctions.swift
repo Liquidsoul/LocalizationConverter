@@ -22,8 +22,8 @@ func runConverter(with arguments: [String]) -> Int32 {
         case .help:
             printUsage(processName: processName)
             return 0
-        case let .convertLocalization(androidFileName: androidFileName, outputPath: outputPath):
-            return convertLocalization(androidFileName, outputPath: outputPath)
+        case let .convertAndroidFile(androidFileName: fileName, outputPath: outputPath):
+            return convert(androidFileName: fileName, outputPath: outputPath)
         }
     } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {
         print("Missing argument '\(argumentName)' for action '\(actionName)'")
@@ -43,16 +43,16 @@ func printUsage(processName processName: String) {
     print("Actions:")
     print(" - help:")
     print("        print this help")
-    print(" - convertLocalization:")
+    print(" - convertAndroidFile:")
     print("        Read a given Android strings.xml file" +
           " and generate the corresponding Localizable.strings and Localizable.stringsdict files for iOS.")
     print("        Options:")
-    print("          <strings_xml_filename> : [mandatory] the source strings.xml file.")
+    print("          <strings_xml_file> : [mandatory] the source strings.xml file.")
     print("          --output=<filepath> : output folder where to write the result iOS files.")
 }
 
-func convertLocalization(androidFileName: String, outputPath: String?) -> Int32 {
-    guard let localization = parseAndroidFile(withName: androidFileName) else {
+func convert(androidFileName fileName: String, outputPath: String?) -> Int32 {
+    guard let localization = parseAndroidFile(withName: fileName) else {
         return 1
     }
 

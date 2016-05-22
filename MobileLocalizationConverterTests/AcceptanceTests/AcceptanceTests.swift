@@ -39,7 +39,7 @@ class AcceptanceTests: XCTestCase {
         // WHEN: we execute the converter
         let returnedValue = runConverter(with: [
             "\(self)",
-            "convertLocalization",
+            "convertAndroidFile",
             sourceAndroidFilePath,
             "--output=\(tempDirectoryPath)"
             ])
@@ -50,7 +50,6 @@ class AcceptanceTests: XCTestCase {
         XCTAssertTrue(compareFiles(expectedOutputStringsFilePath, testedFilePath: outputStringsFilePath))
         XCTAssertTrue(compareFiles(expectedOutputStringsDictFilePath, testedFilePath: outputStringsDictFilePath))
     }
-
 }
 
 // MARK: - Test helper methods
