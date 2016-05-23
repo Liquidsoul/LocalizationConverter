@@ -23,7 +23,7 @@ func runConverter(with arguments: [String]) -> Int32 {
             printUsage(processName: processName)
             return 0
         case let .convertAndroidFile(androidFileName: fileName, outputPath: outputPath):
-            return convert(androidFileName: fileName, outputPath: outputPath)
+            return convert(androidFileName: fileName, outputPath: outputPath) ? 0 : 1
         }
     } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {
         print("Missing argument '\(argumentName)' for action '\(actionName)'")
@@ -51,9 +51,9 @@ func printUsage(processName processName: String) {
     print("          --output=<filepath> : output folder where to write the result iOS files.")
 }
 
-func convert(androidFileName fileName: String, outputPath: String?) -> Int32 {
+func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
     guard let localization = parseAndroidFile(withName: fileName) else {
-        return 1
+        return false
     }
 
     let outputFolder = outputPath ?? NSFileManager().currentDirectoryPath
@@ -63,22 +63,22 @@ func convert(androidFileName fileName: String, outputPath: String?) -> Int32 {
     let localizableString = LocalizableFormatter().format(localization)
     if !write(stringData: localizableString, toFilePath: outputLocalizableStringsPath) {
         print("Failed to write Localizable.strings file at path \(outputLocalizableStringsPath)")
-        return 1
+        return false
     }
     do {
         let stringsDictContent = try StringsDictFormatter().format(localization)
         if !NSFileManager().createFileAtPath(outputStringsDictPath, contents: stringsDictContent, attributes: nil) {
             print("Failed to write stringsdict file at path \(outputStringsDictPath)")
-            return 1
+            return false
         }
     } catch StringsDictFormatter.Error.noPlurals {
         print("No plural found, skipping stringsdict file.")
     } catch {
         print("Error when formatting stringsdict data \(error)")
-        return 1
+        return false
     }
 
-    return 0
+    return true
 }
 
 func parseAndroidFile(withName name: String) -> LocalizationMap? {
