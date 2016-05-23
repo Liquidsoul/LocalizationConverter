@@ -12,6 +12,7 @@ import Foundation
 enum CLIAction {
     case help
     case convertAndroidFile(androidFileName: String, outputPath: String?)
+    case convertAndroidFolder(androidResourceFolder: String, outputPath: String?)
 }
 
 extension CLIAction: Equatable {}
@@ -25,6 +26,12 @@ func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
         .convertAndroidFile(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)
         ):
         return leftAndroidFileName == rightAndroidFileName
+            && leftOutputPath == rightOutputPath
+    case let (
+        .convertAndroidFolder(androidResourceFolder: leftFolder, outputPath: leftOutputPath),
+        .convertAndroidFolder(androidResourceFolder: rightFolder, outputPath: rightOutputPath)
+        ):
+        return leftFolder == rightFolder
             && leftOutputPath == rightOutputPath
     default:
         return false
@@ -41,6 +48,11 @@ extension CLIAction {
                 throw Error.missingArgument(actionName: name, missingArgument: "source android filename")
             }
             self = .convertAndroidFile(androidFileName: androidFileName, outputPath: namedArguments["output"])
+        case "convertAndroidFolder":
+            guard let androidResourceFolder = anonymousArguments.first else {
+                throw Error.missingArgument(actionName: name, missingArgument: "source android folder")
+            }
+            self = .convertAndroidFolder(androidResourceFolder: androidResourceFolder, outputPath: namedArguments["output"])
         default:
             throw Error.unknownAction(actionName: name)
         }

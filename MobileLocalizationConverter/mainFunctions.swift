@@ -24,6 +24,8 @@ func runConverter(with arguments: [String]) -> Int32 {
             return 0
         case let .convertAndroidFile(androidFileName: fileName, outputPath: outputPath):
             return convert(androidFileName: fileName, outputPath: outputPath) ? 0 : 1
+        case let .convertAndroidFolder(androidResourceFolder: resourceFolder, outputPath: outputPath):
+            return convert(androidFolder: resourceFolder, outputPath: outputPath) ? 0 : 1
         }
     } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {
         print("Missing argument '\(argumentName)' for action '\(actionName)'")
@@ -49,6 +51,11 @@ func printUsage(processName processName: String) {
     print("        Options:")
     print("          <strings_xml_file> : [mandatory] the source strings.xml file.")
     print("          --output=<filepath> : output folder where to write the result iOS files.")
+    print(" - convertAndroidFolder:")
+    print("        Convert an Android strings resource folder into an iOS Localization folder.")
+    print("        Options:")
+    print("          <resource_folder> : [mandatory] the android string resource folder to process.")
+    print("          --output=<folderpath> : output folder where to write the result iOS files.")
 }
 
 func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
@@ -113,4 +120,43 @@ func write(stringData string: String, toFilePath filePath: String) -> Bool {
         return false
     }
     return true
+}
+
+func convert(androidFolder resourceFolder: String, outputPath: String?) -> Bool {
+    let fileManager = NSFileManager()
+
+    let outputFolder = outputPath ?? fileManager.currentDirectoryPath
+
+    do {
+        let folders = try fileManager.contentsOfDirectoryAtPath(resourceFolder)
+        let valuesFolders = folders.filter { (folderName) -> Bool in
+            return folderName.hasPrefix("values")
+        }
+
+        let results = try valuesFolders.map { (valuesFolderName) -> Bool in
+            guard let outputFolderName = iOSFolderName(from: valuesFolderName) else {
+                print("Could not convert values folder name '\(valuesFolderName)' to its iOS counterpart")
+                return false
+            }
+            let outputFolderPath = outputFolder.appending(pathComponent: outputFolderName)
+            try fileManager.createDirectoryAtPath(outputFolderPath, withIntermediateDirectories: true, attributes: nil)
+            let inputFilePath = resourceFolder
+                .appending(pathComponent: valuesFolderName)
+                .appending(pathComponent: "strings.xml")
+            return convert(androidFileName: inputFilePath, outputPath: outputFolderPath)
+        }
+        return results.reduce(true, combine: { (accumulator, result) -> Bool in
+            return accumulator && result
+        })
+    } catch {
+        print("Error: \(error)")
+        return false
+    }
+}
+
+func iOSFolderName(from valuesName: String) -> String? {
+    if valuesName == "values" { return "Base.lproj" }
+
+    let replacer = RegexReplacer(pattern: "values-(.*)", replaceTemplate: "$1.lproj")
+    return replacer?.replacingMatches(in: valuesName)
 }

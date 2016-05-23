@@ -49,6 +49,28 @@ class AcceptanceTests: XCTestCase {
         XCTAssertTrue(compareFiles(expectedOutputStringsFilePath, testedFilePath: outputStringsFilePath))
         XCTAssertTrue(compareFiles(expectedOutputStringsDictFilePath, testedFilePath: outputStringsDictFilePath))
     }
+
+    func test_AndroidToiOS_FolderConversion() {
+        // GIVEN: a android resource folder
+        let sourceAndroidFolderPath = bundleFilePath("android/")
+        // GIVEN: output iOS folder
+        let outputFolderPath = tempDirectoryPath
+        // GIVEN: expected iOS folder content
+        let expectedOutputFolderContent = bundleFilePath("ios/")
+
+        // WHEN: we execute the converter
+        let returnedValue = runConverter(with: [
+            "\(self)",
+            "convertAndroidFolder",
+            sourceAndroidFolderPath,
+            "--output=\(outputFolderPath)"
+            ])
+
+        // THEN: the execution was successful
+        XCTAssertEqual(0, returnedValue)
+        // THEN: contents of the output folder match the expected one
+        XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
+    }
 }
 
 // MARK: - Test helper methods
@@ -71,16 +93,34 @@ extension AcceptanceTests {
     func compareFiles(referenceFilePath: String, testedFilePath: String) -> Bool {
         let fileManager = NSFileManager()
 
-        guard let
-            referenceData = fileManager.contentsAtPath(referenceFilePath),
-            testedData = fileManager.contentsAtPath(testedFilePath)
-            else {
-                return false
-        }
+        let referenceData = fileManager.contentsAtPath(referenceFilePath)
+        let testedData = fileManager.contentsAtPath(testedFilePath)
 
         return referenceData == testedData
     }
 
+    func compareFolders(referenceFolderPath: String, testedFolderPath: String) -> Bool {
+        let fileManager = NSFileManager()
+
+        do {
+            let referenceSubPaths = try fileManager.subpathsOfDirectoryAtPath(referenceFolderPath).sort()
+            let testedSubPaths = try fileManager.subpathsOfDirectoryAtPath(testedFolderPath).sort()
+            guard referenceSubPaths == testedSubPaths else {
+                print("Expected paths: \(referenceSubPaths), Got: \(testedSubPaths)")
+                return false
+            }
+            return referenceSubPaths.reduce(true, combine: { (result, subpath) -> Bool in
+                if !result { return result }
+                return result && compareFiles(
+                    referenceFolderPath.appending(pathComponent: subpath),
+                    testedFilePath: testedFolderPath.appending(pathComponent: subpath))
+            })
+        } catch {
+            print("Failed to list subpaths with error: \(error)")
+        }
+
+        return false
+    }
 }
 
 // MARK: - Environment setup and tear down functions
