@@ -57,8 +57,8 @@ func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
     }
 
     let outputFolder = outputPath ?? NSFileManager().currentDirectoryPath
-    let outputLocalizableStringsPath = (outputFolder as NSString).stringByAppendingPathComponent("Localizable.strings")
-    let outputStringsDictPath = (outputFolder as NSString).stringByAppendingPathComponent("Localizable.stringsdict")
+    let outputLocalizableStringsPath = outputFolder.appending(pathComponent: "Localizable.strings")
+    let outputStringsDictPath = outputFolder.appending(pathComponent: "Localizable.stringsdict")
 
     let localizableString = LocalizableFormatter().format(localization)
     if !write(stringData: localizableString, toFilePath: outputLocalizableStringsPath) {

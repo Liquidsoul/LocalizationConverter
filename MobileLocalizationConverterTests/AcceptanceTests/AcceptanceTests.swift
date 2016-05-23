@@ -29,9 +29,8 @@ class AcceptanceTests: XCTestCase {
         // GIVEN: a strings.xml android file
         let sourceAndroidFilePath = bundleFilePath("android/values/strings.xml")
         // GIVEN: output Localizable iOS files
-        let nsTempDirectoryPath = (tempDirectoryPath as NSString)
-        let outputStringsFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.strings")
-        let outputStringsDictFilePath = nsTempDirectoryPath.stringByAppendingPathComponent("Localizable.stringsdict")
+        let outputStringsFilePath = tempDirectoryPath.appending(pathComponent: "Localizable.strings")
+        let outputStringsDictFilePath = tempDirectoryPath.appending(pathComponent: "Localizable.stringsdict")
         // GIVEN: expected Localizable iOS files
         let expectedOutputStringsFilePath = bundleFilePath("ios/Base.lproj/Localizable.strings")
         let expectedOutputStringsDictFilePath = bundleFilePath("ios/Base.lproj/Localizable.stringsdict")
@@ -63,7 +62,7 @@ extension AcceptanceTests {
         guard let folderPath = path else {
             fatalError("Could not locate bundle folder '\(testStubsFolderName)'")
         }
-        let filePath = (folderPath as NSString).stringByAppendingPathComponent(partialPath)
+        let filePath = folderPath.appending(pathComponent: partialPath)
         let fileManager = NSFileManager()
         XCTAssertTrue(fileManager.fileExistsAtPath(filePath))
         return filePath

@@ -43,6 +43,8 @@
 		FE7F35F01CE72CC100BE606D /* AcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7F35E21CE72CC100BE606D /* AcceptanceTests.swift */; };
 		FE7F35F71CE747E200BE606D /* mainFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE7F35DA1CE70D6C00BE606D /* mainFunctions.swift */; };
 		FE7F35F91CE755CC00BE606D /* testFiles in Resources */ = {isa = PBXBuildFile; fileRef = FE7F35F81CE755CC00BE606D /* testFiles */; };
+		FEAF898D1CF36BCA0046F654 /* String+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAF898C1CF36BCA0046F654 /* String+Path.swift */; };
+		FEAF898E1CF36BF70046F654 /* String+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEAF898C1CF36BCA0046F654 /* String+Path.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -84,6 +86,7 @@
 		FE7F35DA1CE70D6C00BE606D /* mainFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainFunctions.swift; sourceTree = "<group>"; };
 		FE7F35E21CE72CC100BE606D /* AcceptanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptanceTests.swift; sourceTree = "<group>"; };
 		FE7F35F81CE755CC00BE606D /* testFiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = testFiles; sourceTree = "<group>"; };
+		FEAF898C1CF36BCA0046F654 /* String+Path.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Path.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +135,7 @@
 				FE7F35B01CE70A9800BE606D /* RegexReplacer.swift */,
 				FE7F350A1CE705CA00BE606D /* main.swift */,
 				FE7F35DA1CE70D6C00BE606D /* mainFunctions.swift */,
+				FEAF898C1CF36BCA0046F654 /* String+Path.swift */,
 			);
 			path = MobileLocalizationConverter;
 			sourceTree = "<group>";
@@ -348,6 +352,7 @@
 				FE7F35C11CE70A9800BE606D /* CLIAction.swift in Sources */,
 				FE7F35BB1CE70A9800BE606D /* StringParserFactory.swift in Sources */,
 				FE7F35B11CE70A9800BE606D /* LocalizationItem.swift in Sources */,
+				FEAF898D1CF36BCA0046F654 /* String+Path.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE7F35D71CE70AA600BE606D /* LocalizableParserTests.swift in Sources */,
+				FEAF898E1CF36BF70046F654 /* String+Path.swift in Sources */,
 				FE7F35BE1CE70A9800BE606D /* CLIArgument.swift in Sources */,
 				FE7F35D81CE70AA600BE606D /* LocalizableFormatterTests.swift in Sources */,
 				FE7F35D51CE70AA600BE606D /* CLIActionTests.swift in Sources */,
