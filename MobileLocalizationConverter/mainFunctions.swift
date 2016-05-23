@@ -49,13 +49,15 @@ func printUsage(processName processName: String) {
     print("        Read a given Android strings.xml file" +
           " and generate the corresponding Localizable.strings and Localizable.stringsdict files for iOS.")
     print("        Options:")
-    print("          <strings_xml_file> : [mandatory] the source strings.xml file.")
+    print("          <strings_xml_file>  : [mandatory] the source strings.xml file.")
     print("          --output=<filepath> : output folder where to write the result iOS files.")
+    print("                                If none is provided, it will write in the tool's working directory.")
     print(" - convertAndroidFolder:")
     print("        Convert an Android strings resource folder into an iOS Localization folder.")
     print("        Options:")
-    print("          <resource_folder> : [mandatory] the android string resource folder to process.")
+    print("          <resource_folder>     : [mandatory] the android string resource folder to process.")
     print("          --output=<folderpath> : output folder where to write the result iOS files.")
+    print("                                  If none is provided, it will write in the tool's working directory.")
 }
 
 func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
