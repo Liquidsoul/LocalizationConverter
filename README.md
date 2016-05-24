@@ -9,11 +9,11 @@ A simple command-line tool to convert Android `strings.xml` files into iOS `Loca
 
 You need to pass the action to the tool to execute the conversion or get the usage help:
 
-    mobloconv help
+    l10nconverter help
 
 You can convert a android strings directory with this command:
 
-    moblocconv convertAndroidFolder android/ --output=ios/
+    l10nconverter convertAndroidFolder android/ --output=ios/
 
 The tool expects the folder to have the following layout:
 ```
