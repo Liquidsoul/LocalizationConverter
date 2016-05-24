@@ -1,9 +1,9 @@
 //
 //  String+Path.swift
-//  MobileLocalizationConverter
 //
 //  Created by Sébastien Duperron on 23/05/2016.
-//  Copyright © 2016 Sébastien Duperron. All rights reserved.
+//  Copyright © 2016 Sébastien Duperron
+//  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
 import Foundation
