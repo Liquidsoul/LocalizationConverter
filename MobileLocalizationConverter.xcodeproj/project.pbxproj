@@ -60,7 +60,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FE7F35071CE705CA00BE606D /* moblocconv */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = moblocconv; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE7F35071CE705CA00BE606D /* l10nconverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = l10nconverter; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7F350A1CE705CA00BE606D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		FE7F35151CE709EC00BE606D /* MobileLocalizationConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileLocalizationConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7F35191CE709EC00BE606D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 		FE7F35081CE705CA00BE606D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE7F35071CE705CA00BE606D /* moblocconv */,
+				FE7F35071CE705CA00BE606D /* l10nconverter */,
 				FE7F35151CE709EC00BE606D /* MobileLocalizationConverterTests.xctest */,
 			);
 			name = Products;
@@ -246,7 +246,7 @@
 			);
 			name = MobileLocalizationConverter;
 			productName = LocalizationFileConverter;
-			productReference = FE7F35071CE705CA00BE606D /* moblocconv */;
+			productReference = FE7F35071CE705CA00BE606D /* l10nconverter */;
 			productType = "com.apple.product-type.tool";
 		};
 		FE7F35141CE709EC00BE606D /* MobileLocalizationConverterTests */ = {
@@ -473,14 +473,14 @@
 		FE7F350F1CE705CA00BE606D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = moblocconv;
+				PRODUCT_NAME = l10nconverter;
 			};
 			name = Debug;
 		};
 		FE7F35101CE705CA00BE606D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = moblocconv;
+				PRODUCT_NAME = l10nconverter;
 			};
 			name = Release;
 		};
