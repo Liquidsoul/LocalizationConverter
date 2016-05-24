@@ -62,7 +62,7 @@
 /* Begin PBXFileReference section */
 		FE7F35071CE705CA00BE606D /* l10nconverter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = l10nconverter; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7F350A1CE705CA00BE606D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		FE7F35151CE709EC00BE606D /* MobileLocalizationConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileLocalizationConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE7F35151CE709EC00BE606D /* LocalizationConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalizationConverterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7F35191CE709EC00BE606D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE7F35A21CE70A9800BE606D /* LocalizationItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationItem.swift; sourceTree = "<group>"; };
 		FE7F35A31CE70A9800BE606D /* LocalizationMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationMap.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		FE7F34FE1CE705CA00BE606D = {
 			isa = PBXGroup;
 			children = (
-				FE7F35091CE705CA00BE606D /* MobileLocalizationConverter */,
+				FE7F35091CE705CA00BE606D /* LocalizationConverter */,
 				FE7F35161CE709EC00BE606D /* MobileLocalizationConverterTests */,
 				FE7F35081CE705CA00BE606D /* Products */,
 			);
@@ -120,12 +120,12 @@
 			isa = PBXGroup;
 			children = (
 				FE7F35071CE705CA00BE606D /* l10nconverter */,
-				FE7F35151CE709EC00BE606D /* MobileLocalizationConverterTests.xctest */,
+				FE7F35151CE709EC00BE606D /* LocalizationConverterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FE7F35091CE705CA00BE606D /* MobileLocalizationConverter */ = {
+		FE7F35091CE705CA00BE606D /* LocalizationConverter */ = {
 			isa = PBXGroup;
 			children = (
 				FE7F35A11CE70A9800BE606D /* Model */,
@@ -137,7 +137,7 @@
 				FE7F35DA1CE70D6C00BE606D /* mainFunctions.swift */,
 				FEAF898C1CF36BCA0046F654 /* String+Path.swift */,
 			);
-			path = MobileLocalizationConverter;
+			path = LocalizationConverter;
 			sourceTree = "<group>";
 		};
 		FE7F35161CE709EC00BE606D /* MobileLocalizationConverterTests */ = {
@@ -149,7 +149,8 @@
 				FE7F35D01CE70AA600BE606D /* Formatters */,
 				FE7F35191CE709EC00BE606D /* Info.plist */,
 			);
-			path = MobileLocalizationConverterTests;
+			name = MobileLocalizationConverterTests;
+			path = LocalizationConverterTests;
 			sourceTree = "<group>";
 		};
 		FE7F35A11CE70A9800BE606D /* Model */ = {
@@ -231,9 +232,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FE7F35061CE705CA00BE606D /* MobileLocalizationConverter */ = {
+		FE7F35061CE705CA00BE606D /* LocalizationConverter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "MobileLocalizationConverter" */;
+			buildConfigurationList = FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "LocalizationConverter" */;
 			buildPhases = (
 				FE3CAD071CEB01E80058C6B4 /* Swiftlint */,
 				FE7F35031CE705CA00BE606D /* Sources */,
@@ -244,14 +245,14 @@
 			);
 			dependencies = (
 			);
-			name = MobileLocalizationConverter;
+			name = LocalizationConverter;
 			productName = LocalizationFileConverter;
 			productReference = FE7F35071CE705CA00BE606D /* l10nconverter */;
 			productType = "com.apple.product-type.tool";
 		};
-		FE7F35141CE709EC00BE606D /* MobileLocalizationConverterTests */ = {
+		FE7F35141CE709EC00BE606D /* LocalizationConverterTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FE7F351A1CE709EC00BE606D /* Build configuration list for PBXNativeTarget "MobileLocalizationConverterTests" */;
+			buildConfigurationList = FE7F351A1CE709EC00BE606D /* Build configuration list for PBXNativeTarget "LocalizationConverterTests" */;
 			buildPhases = (
 				FE7F35111CE709EC00BE606D /* Sources */,
 				FE7F35121CE709EC00BE606D /* Frameworks */,
@@ -261,9 +262,9 @@
 			);
 			dependencies = (
 			);
-			name = MobileLocalizationConverterTests;
+			name = LocalizationConverterTests;
 			productName = LocalizationFileConverterTests;
-			productReference = FE7F35151CE709EC00BE606D /* MobileLocalizationConverterTests.xctest */;
+			productReference = FE7F35151CE709EC00BE606D /* LocalizationConverterTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -284,7 +285,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FE7F35021CE705CA00BE606D /* Build configuration list for PBXProject "MobileLocalizationConverter" */;
+			buildConfigurationList = FE7F35021CE705CA00BE606D /* Build configuration list for PBXProject "LocalizationConverter" */;
 			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -298,8 +299,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FE7F35061CE705CA00BE606D /* MobileLocalizationConverter */,
-				FE7F35141CE709EC00BE606D /* MobileLocalizationConverterTests */,
+				FE7F35061CE705CA00BE606D /* LocalizationConverter */,
+				FE7F35141CE709EC00BE606D /* LocalizationConverterTests */,
 			);
 		};
 /* End PBXProject section */
@@ -489,10 +490,10 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = MobileLocalizationConverterTests/Info.plist;
+				INFOPLIST_FILE = LocalizationConverterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.mobile-localization-converter.LocalizationFileConverterTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LocalizationConverterTests;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -502,17 +503,17 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = MobileLocalizationConverterTests/Info.plist;
+				INFOPLIST_FILE = LocalizationConverterTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fr.mobile-localization-converter.LocalizationFileConverterTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LocalizationConverterTests;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FE7F35021CE705CA00BE606D /* Build configuration list for PBXProject "MobileLocalizationConverter" */ = {
+		FE7F35021CE705CA00BE606D /* Build configuration list for PBXProject "LocalizationConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FE7F350C1CE705CA00BE606D /* Debug */,
@@ -521,7 +522,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "MobileLocalizationConverter" */ = {
+		FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "LocalizationConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FE7F350F1CE705CA00BE606D /* Debug */,
@@ -530,7 +531,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FE7F351A1CE709EC00BE606D /* Build configuration list for PBXNativeTarget "MobileLocalizationConverterTests" */ = {
+		FE7F351A1CE709EC00BE606D /* Build configuration list for PBXNativeTarget "LocalizationConverterTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FE7F351B1CE709EC00BE606D /* Debug */,

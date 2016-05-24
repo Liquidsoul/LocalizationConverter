@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MobileLocalizationConverter.xcodeproj">
+      location = "self:LocalizationConverter.xcodeproj">
    </FileRef>
 </Workspace>
