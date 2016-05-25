@@ -4,6 +4,13 @@
 
 A simple command-line tool to convert Android `strings.xml` files into iOS `Localizable.strings` and `Localizable.stringsdict` files.
 
+## Installation
+
+The tool can be installed using [`brew`](http://brew.sh).
+All you have to do is run the following command:
+
+    brew install liquidsoul/formulae/l10nconverter
+
 ## Usage
 
 You need to pass the action to the tool to execute the conversion or get the usage help:
