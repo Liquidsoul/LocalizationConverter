@@ -10,154 +10,165 @@ import Foundation
 
 class AndroidStringsParser: StringParser {
 
-    class XMLDelegate: NSObject, NSXMLParserDelegate {
+    private class ParseStack {
+        private var stack: [String] = []
+        private let keyName: String
+        private let formatElements: [String] = ["b", "u", "i"]
 
-        var inResourcesElement: Bool = false
-        var localizations = [String:LocalizationItem]()
-        var parseStack = [String]()
-        var elementStack = [String]()
-
-        let itemTerminator = "itemTerminator"
-
-        func parserDidStartDocument(parser: NSXMLParser) {
-            localizations = [String:LocalizationItem]()
+        init(keyName: String) {
+            self.keyName = keyName
         }
 
-        func parser(parser: NSXMLParser,
-                    didStartElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?,
-                    attributes attributeDict: [String : String]) {
-            elementStack.append(elementName)
+        func append(characters string: String) {
+            stack.append(string)
+        }
 
-            switch elementName {
-            case "b": fallthrough
-            case "u": fallthrough
-            case "i":
-                parseStack.append("<\(elementName)>")
-                return
-            case "resources":
-                if inResourcesElement {
-                    fatalError("Nested '\(elementName)' elements. There should only be one as the root element.")
+        func start(element element: String, attributes attributeDict: [String : String]) {
+            if formatElements.contains(element) {
+                stack.append("<\(element)>")
+            }
+        }
+
+        func end(element element: String) {
+            if formatElements.contains(element) {
+                stack.append("</\(element)>")
+            } else if element == "br" {
+                stack.append("<br />")
+            }
+        }
+
+        func result() -> (String, LocalizationItem) {
+            fatalError("Must be implemented by subclasses")
+        }
+    }
+
+    private class StringParseStack: ParseStack {
+        override func result() -> (String, LocalizationItem) {
+            guard !stack.isEmpty else {
+                fatalError("Stack should not be empty when parsing 'string' element.")
+            }
+            let value = stack.reduce("", combine: { $0 + $1 })
+            return (keyName, .string(value: value))
+        }
+    }
+
+    private class PluralsParseStack: ParseStack {
+        private let itemTerminator = "itemTerminator"
+        private var inItem: Bool = false
+
+        override func start(element element: String, attributes attributeDict: [String : String]) {
+            if element == "item" {
+                inItem = true
+                guard let quantityName = attributeDict["quantity"] else {
+                    fatalError("Missing quantity attribute in item element.")
                 }
-                inResourcesElement = true
-                return
-            default:
-                break
-            }
-
-            if !inResourcesElement {
-                return
-            }
-
-            if let nameAttribute = attributeDict["name"] {
-                parseStack.append(nameAttribute)
-            } else if let quantityAttribute = attributeDict["quantity"] {
-                parseStack.append(quantityAttribute)
+                stack.append(quantityName)
+            } else {
+                super.start(element: element, attributes: attributeDict)
             }
         }
 
-        func parser(parser: NSXMLParser, foundCharacters string: String) {
-            if !inResourcesElement {
+        override func append(characters string: String) {
+            if !inItem {
                 return
             }
-
-            let waitingForValue = elementStack.last.map({ ["string", "item", "b", "u", "i"].contains($0) }) ?? false
-            if !waitingForValue {
-                // ignore characters found when not searching for a value
-                return
-            }
-
-            parseStack.append(string)
+            super.append(characters: string)
         }
 
-        func parser(parser: NSXMLParser,
-                    didEndElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?) {
-            elementStack.removeLast()
-
-            if elementName == "resources" {
-                assert(inResourcesElement, "End of element \(elementName) which did not start!")
-                inResourcesElement = false
-                parseStack.removeAll()
-                return
-            }
-
-            switch elementName {
-            case "string":
-                extractAndStoreStringFromParseStack()
-            case "item":
-                parseStack.append(itemTerminator)
-                break
-            case "plurals":
-                extractAndStorePluralsFromParseStack()
-                break
-            case "b": fallthrough
-            case "i": fallthrough
-            case "u":
-                parseStack.append("</\(elementName)>")
-            case "br":
-                parseStack.append("<br />")
-            default:
-                print("Warning: unexpected end of element \(elementName). Flushing the parse stack...")
-                parseStack.removeAll()
-                break
+        override func end(element element: String) {
+            if element == "item" {
+                stack.append(itemTerminator)
+                inItem = false
+            } else {
+                super.end(element: element)
             }
         }
 
-        func extractAndStoreStringFromParseStack() {
-            let (key, value) = extractStringPairFromParseStack()
-            localizations[key] = value
-            parseStack.removeAll()
-        }
-
-        func extractStringPairFromParseStack() -> (String, LocalizationItem) {
-            guard parseStack.count >= 2 else {
-                fatalError("Invalid number of elements in stack \(parseStack) for 'string' element.")
-            }
-            let key = parseStack.removeFirst()
-            let value = parseStack.reduce("", combine: { $0 + $1 })
-            return (key, .string(value: value))
-        }
-
-        func extractAndStorePluralsFromParseStack() {
-            let (key, value) = extractPluralsPairFromParseStack()
-            localizations[key] = value
-            parseStack.removeAll()
-        }
-
-        func extractPluralsPairFromParseStack() -> (String, LocalizationItem) {
-            guard !parseStack.isEmpty else {
-                fatalError("Parse stack was found empty once done parsing 'plurals' element.!")
-            }
-            let key = parseStack.removeFirst()
-
+        override func result() -> (String, LocalizationItem) {
             var pluralLocalizations = [PluralType:String]()
-            while !parseStack.isEmpty {
-                let pluralTypeString = parseStack.removeFirst()
+            while !stack.isEmpty {
+                let pluralTypeString = stack.removeFirst()
                 guard let pluralType = PluralType(rawValue: pluralTypeString) else {
                     fatalError("Unknown pluralType \(pluralTypeString)")
                 }
 
-                var localizationValue = parseStack.removeFirst()
+                var localizationValue = stack.removeFirst()
                 guard localizationValue != itemTerminator else {
-                    fatalError("Empty item content for key \(key)")
+                    fatalError("Empty item content for key \(keyName)")
                 }
-                var localizationValueComponent = parseStack.removeFirst()
+                var localizationValueComponent = stack.removeFirst()
                 while localizationValueComponent != itemTerminator {
                     localizationValue += localizationValueComponent
-                    localizationValueComponent = parseStack.removeFirst()
+                    localizationValueComponent = stack.removeFirst()
                 }
 
                 pluralLocalizations[pluralType] = localizationValue
             }
 
-            return (key, .plurals(values: pluralLocalizations))
+            return (keyName, .plurals(values: pluralLocalizations))
         }
     }
 
-    let parserDelegate = XMLDelegate()
+    private class XMLDelegate: NSObject, NSXMLParserDelegate {
+
+        var localizations = [String:LocalizationItem]()
+
+        var parseStackItem: ParseStack?
+
+        @objc
+        func parserDidStartDocument(parser: NSXMLParser) {
+            localizations = [String:LocalizationItem]()
+        }
+
+        @objc
+        func parser(parser: NSXMLParser,
+                    didStartElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?,
+                    attributes attributeDict: [String : String]) {
+            parseStackItem?.start(element: elementName, attributes: attributeDict)
+
+            switch elementName {
+            case "string":
+                if let nameAttribute = attributeDict["name"] {
+                    parseStackItem = StringParseStack(keyName: nameAttribute)
+                }
+            case "plurals":
+                if let nameAttribute = attributeDict["name"] {
+                    parseStackItem = PluralsParseStack(keyName: nameAttribute)
+                }
+            default:
+                break
+            }
+        }
+
+        @objc
+        func parser(parser: NSXMLParser, foundCharacters string: String) {
+            parseStackItem?.append(characters: string)
+        }
+
+        @objc
+        func parser(parser: NSXMLParser,
+                    didEndElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?) {
+            switch elementName {
+            case "string": fallthrough
+            case "plurals":
+                if let (key, value) = parseStackItem?.result() {
+                    localizations[key] = value
+                }
+                parseStackItem = nil
+                break
+            default:
+                print("Warning: unexpected end of element \(elementName)")
+                break
+            }
+            parseStackItem?.end(element: elementName)
+        }
+    }
+
+    private let parserDelegate = XMLDelegate()
 
     func parse(string string: String) -> LocalizationMap {
         let parser = NSXMLParser(data: string.dataUsingEncoding(NSUTF8StringEncoding)!)
