@@ -28,16 +28,24 @@ class AndroidStringsParser: StringParser {
                     namespaceURI: String?,
                     qualifiedName qName: String?,
                     attributes attributeDict: [String : String]) {
-
             elementStack.append(elementName)
 
-            if elementName == "resources" {
+            switch elementName {
+            case "b": fallthrough
+            case "u": fallthrough
+            case "i":
+                parseStack.append("<\(elementName)>")
+                return
+            case "resources":
                 if inResourcesElement {
                     fatalError("Nested '\(elementName)' elements. There should only be one as the root element.")
                 }
                 inResourcesElement = true
                 return
+            default:
+                break
             }
+
             if !inResourcesElement {
                 return
             }
@@ -54,7 +62,7 @@ class AndroidStringsParser: StringParser {
                 return
             }
 
-            let waitingForValue = elementStack.last.map({ ["string", "item"].contains($0) }) ?? false
+            let waitingForValue = elementStack.last.map({ ["string", "item", "b", "u", "i"].contains($0) }) ?? false
             if !waitingForValue {
                 // ignore characters found when not searching for a value
                 return
@@ -78,49 +86,74 @@ class AndroidStringsParser: StringParser {
 
             switch elementName {
             case "string":
-                guard parseStack.count >= 2 else {
-                    fatalError("Invalid number of elements in stack \(parseStack)")
-                }
-                let key = parseStack.removeFirst()
-                let value = parseStack.reduce("", combine: { $0 + $1 })
-                localizations[key] = .string(value: value)
-                parseStack.removeAll()
+                extractAndStoreStringFromParseStack()
             case "item":
                 parseStack.append(itemTerminator)
                 break
             case "plurals":
-                assert(!parseStack.isEmpty, "Parse stack was found empty once done parsing element \(elementName)!")
-                let key = parseStack.removeFirst()
-
-                var pluralLocalizations = [PluralType:String]()
-                while !parseStack.isEmpty {
-                    let pluralTypeString = parseStack.removeFirst()
-                    guard let pluralType = PluralType(rawValue: pluralTypeString) else {
-                        fatalError("Unknown pluralType \(pluralTypeString)")
-                    }
-
-                    var localizationValue = parseStack.removeFirst()
-                    guard localizationValue != itemTerminator else {
-                        fatalError("Empty item content for key \(key)")
-                    }
-                    var localizationValueComponent = parseStack.removeFirst()
-                    while localizationValueComponent != itemTerminator {
-                        localizationValue += localizationValueComponent
-                        localizationValueComponent = parseStack.removeFirst()
-                    }
-
-                    pluralLocalizations[pluralType] = localizationValue
-                }
-
-                localizations[key] = .plurals(values: pluralLocalizations)
-
-                parseStack.removeAll()
+                extractAndStorePluralsFromParseStack()
                 break
+            case "b": fallthrough
+            case "i": fallthrough
+            case "u":
+                parseStack.append("</\(elementName)>")
+            case "br":
+                parseStack.append("<br />")
             default:
                 print("Warning: unexpected end of element \(elementName). Flushing the parse stack...")
                 parseStack.removeAll()
                 break
             }
+        }
+
+        func extractAndStoreStringFromParseStack() {
+            let (key, value) = extractStringPairFromParseStack()
+            localizations[key] = value
+            parseStack.removeAll()
+        }
+
+        func extractStringPairFromParseStack() -> (String, LocalizationItem) {
+            guard parseStack.count >= 2 else {
+                fatalError("Invalid number of elements in stack \(parseStack) for 'string' element.")
+            }
+            let key = parseStack.removeFirst()
+            let value = parseStack.reduce("", combine: { $0 + $1 })
+            return (key, .string(value: value))
+        }
+
+        func extractAndStorePluralsFromParseStack() {
+            let (key, value) = extractPluralsPairFromParseStack()
+            localizations[key] = value
+            parseStack.removeAll()
+        }
+
+        func extractPluralsPairFromParseStack() -> (String, LocalizationItem) {
+            guard !parseStack.isEmpty else {
+                fatalError("Parse stack was found empty once done parsing 'plurals' element.!")
+            }
+            let key = parseStack.removeFirst()
+
+            var pluralLocalizations = [PluralType:String]()
+            while !parseStack.isEmpty {
+                let pluralTypeString = parseStack.removeFirst()
+                guard let pluralType = PluralType(rawValue: pluralTypeString) else {
+                    fatalError("Unknown pluralType \(pluralTypeString)")
+                }
+
+                var localizationValue = parseStack.removeFirst()
+                guard localizationValue != itemTerminator else {
+                    fatalError("Empty item content for key \(key)")
+                }
+                var localizationValueComponent = parseStack.removeFirst()
+                while localizationValueComponent != itemTerminator {
+                    localizationValue += localizationValueComponent
+                    localizationValueComponent = parseStack.removeFirst()
+                }
+
+                pluralLocalizations[pluralType] = localizationValue
+            }
+
+            return (key, .plurals(values: pluralLocalizations))
         }
     }
 
