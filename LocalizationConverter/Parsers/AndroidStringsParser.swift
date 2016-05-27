@@ -10,6 +10,79 @@ import Foundation
 
 class AndroidStringsParser: StringParser {
 
+    func parse(string string: String) -> LocalizationMap {
+        let parser = NSXMLParser(data: string.dataUsingEncoding(NSUTF8StringEncoding)!)
+        parser.delegate = parserDelegate
+
+        _ = parser.parse()
+
+        return LocalizationMap(type: .android, localizationsDictionary: parserDelegate.localizations)
+    }
+
+    private let parserDelegate = XMLDelegate()
+}
+
+extension AndroidStringsParser {
+
+    private class XMLDelegate: NSObject, NSXMLParserDelegate {
+
+        var localizations = [String:LocalizationItem]()
+
+        var parseStackItem: ParseStack?
+
+        @objc
+        func parserDidStartDocument(parser: NSXMLParser) {
+            localizations = [String:LocalizationItem]()
+        }
+
+        @objc
+        func parser(parser: NSXMLParser,
+                    didStartElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?,
+                    attributes attributeDict: [String : String]) {
+            parseStackItem?.start(element: elementName, attributes: attributeDict)
+
+            switch elementName {
+            case "string":
+                if let nameAttribute = attributeDict["name"] {
+                    parseStackItem = StringParseStack(keyName: nameAttribute)
+                }
+            case "plurals":
+                if let nameAttribute = attributeDict["name"] {
+                    parseStackItem = PluralsParseStack(keyName: nameAttribute)
+                }
+            default:
+                break
+            }
+        }
+
+        @objc
+        func parser(parser: NSXMLParser, foundCharacters string: String) {
+            parseStackItem?.append(characters: string)
+        }
+
+        @objc
+        func parser(parser: NSXMLParser,
+                    didEndElement elementName: String,
+                    namespaceURI: String?,
+                    qualifiedName qName: String?) {
+            switch elementName {
+            case "string": fallthrough
+            case "plurals":
+                if let (key, value) = parseStackItem?.result() {
+                    localizations[key] = value
+                }
+                parseStackItem = nil
+                break
+            default:
+                print("Warning: unexpected end of element \(elementName)")
+                break
+            }
+            parseStackItem?.end(element: elementName)
+        }
+    }
+
     private class ParseStack {
         private var stack: [String] = []
         private let keyName: String
@@ -108,74 +181,4 @@ class AndroidStringsParser: StringParser {
             return (keyName, .plurals(values: pluralLocalizations))
         }
     }
-
-    private class XMLDelegate: NSObject, NSXMLParserDelegate {
-
-        var localizations = [String:LocalizationItem]()
-
-        var parseStackItem: ParseStack?
-
-        @objc
-        func parserDidStartDocument(parser: NSXMLParser) {
-            localizations = [String:LocalizationItem]()
-        }
-
-        @objc
-        func parser(parser: NSXMLParser,
-                    didStartElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?,
-                    attributes attributeDict: [String : String]) {
-            parseStackItem?.start(element: elementName, attributes: attributeDict)
-
-            switch elementName {
-            case "string":
-                if let nameAttribute = attributeDict["name"] {
-                    parseStackItem = StringParseStack(keyName: nameAttribute)
-                }
-            case "plurals":
-                if let nameAttribute = attributeDict["name"] {
-                    parseStackItem = PluralsParseStack(keyName: nameAttribute)
-                }
-            default:
-                break
-            }
-        }
-
-        @objc
-        func parser(parser: NSXMLParser, foundCharacters string: String) {
-            parseStackItem?.append(characters: string)
-        }
-
-        @objc
-        func parser(parser: NSXMLParser,
-                    didEndElement elementName: String,
-                    namespaceURI: String?,
-                    qualifiedName qName: String?) {
-            switch elementName {
-            case "string": fallthrough
-            case "plurals":
-                if let (key, value) = parseStackItem?.result() {
-                    localizations[key] = value
-                }
-                parseStackItem = nil
-                break
-            default:
-                print("Warning: unexpected end of element \(elementName)")
-                break
-            }
-            parseStackItem?.end(element: elementName)
-        }
     }
-
-    private let parserDelegate = XMLDelegate()
-
-    func parse(string string: String) -> LocalizationMap {
-        let parser = NSXMLParser(data: string.dataUsingEncoding(NSUTF8StringEncoding)!)
-        parser.delegate = parserDelegate
-
-        _ = parser.parse()
-
-        return LocalizationMap(type: .android, localizationsDictionary: parserDelegate.localizations)
-    }
-}
