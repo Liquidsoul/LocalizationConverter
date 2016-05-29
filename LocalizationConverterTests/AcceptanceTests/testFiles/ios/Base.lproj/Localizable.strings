@@ -1,5 +1,5 @@
 app.name = "Todo";
-Congratulations = "Congratulations <b>%1$@</b>! You've done it!";
+Congratulations = "Congratulations \"<b>%1$@</b>\"! You've done it!";
 Loading = "Loading…";
 No = "No";
 Yes = "Yes";
