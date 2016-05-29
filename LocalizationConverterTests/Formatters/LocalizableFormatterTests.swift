@@ -89,4 +89,15 @@ class LocalizableFormatterTests: XCTestCase {
 
         XCTAssertEqual("positionalParams = \"Hello %1$@ %2$@!\";", resultLocalizableString)
     }
+
+    func test_format_escapeDoubleQuotes() {
+        let localizableFormatter = LocalizableFormatter()
+        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+            "quotedString": LocalizationItem.string(value: "Hello \"Guest\"!"),
+            ])
+
+        let resultLocalizableString = localizableFormatter.format(localization)
+
+        XCTAssertEqual("quotedString = \"Hello \\\"Guest\\\"!\";", resultLocalizableString)
+    }
 }
