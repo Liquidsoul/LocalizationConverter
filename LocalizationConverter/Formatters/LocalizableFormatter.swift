@@ -17,11 +17,15 @@ struct LocalizableFormatter {
         localizations.forEach { (key, localizationItem) in
             switch localizationItem {
             case .string(let value):
-                localizableEntries.append("\(key) = \"\(value)\";")
+                localizableEntries.append("\(key) = \"\(escapeDoubleQuotes(in: value))\";")
             case .plurals:
                 break
             }
         }
         return localizableEntries.sort { $0.lowercaseString < $1.lowercaseString }.joinWithSeparator("\n")
+    }
+
+    private func escapeDoubleQuotes(in string: String) -> String {
+        return string.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
     }
 }
