@@ -4,7 +4,7 @@
     <string name="Loading">Loading…</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
-    <string name="Congratulations">Congratulations %1$s! You've done it!</string>
+    <string name="Congratulations">Congratulations <b>%1$s</b>! You've done it!</string>
     <plurals name="%d items">
         <item quantity="zero">No items</item>
         <item quantity="one">One item</item>

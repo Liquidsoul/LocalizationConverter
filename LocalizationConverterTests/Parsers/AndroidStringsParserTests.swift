@@ -104,4 +104,55 @@ class AndroidStringsParserTests: XCTestCase {
             ]), parsedResult)
     }
 
+    func test_parseString_stringWithDoubleQuotes() {
+        let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"localization_key\">localized \"value\"</string>\r\n" +
+            "</resources>"
+
+        let parsedResult = parser.parse(string: xmlString)
+
+        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+            "localization_key": "localized \"value\""
+            ]), parsedResult)
+    }
+
+    func test_parseString_stringWithFormattingTags() {
+        let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"bold_key\">localized <b>bold</b></string>\r\n" +
+                "<string name=\"italic_key\">localized <i>italic</i></string>\r\n" +
+                "<string name=\"underlined_key\">localized <u>underlined</u></string>\r\n" +
+                "<string name=\"multi_format_key\"><u><b>underlined_bold</b></u></string>\r\n" +
+            "</resources>"
+
+        let parsedResult = parser.parse(string: xmlString)
+
+        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+            "bold_key": "localized <b>bold</b>",
+            "italic_key": "localized <i>italic</i>",
+            "underlined_key": "localized <u>underlined</u>",
+            "multi_format_key": "<u><b>underlined_bold</b></u>"
+            ]), parsedResult)
+    }
+
+    func test_parseString_stringWithLineBreakTag() {
+        let parser = AndroidStringsParser()
+        let xmlString =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<resources>\r\n" +
+                "<string name=\"mutli_line\">first line<br />second line</string>\r\n"
+            "</resources>"
+
+        let parsedResult = parser.parse(string: xmlString)
+
+        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+            "mutli_line": "first line<br />second line"
+            ]), parsedResult)
+    }
+
 }
