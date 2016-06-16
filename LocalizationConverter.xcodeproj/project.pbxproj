@@ -236,9 +236,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE7F350E1CE705CA00BE606D /* Build configuration list for PBXNativeTarget "LocalizationConverter" */;
 			buildPhases = (
-				FE3CAD071CEB01E80058C6B4 /* Swiftlint */,
 				FE7F35031CE705CA00BE606D /* Sources */,
 				FE7F35041CE705CA00BE606D /* Frameworks */,
+				FE3CAD071CEB01E80058C6B4 /* Swiftlint */,
 				FE7F35051CE705CA00BE606D /* CopyFiles */,
 			);
 			buildRules = (
