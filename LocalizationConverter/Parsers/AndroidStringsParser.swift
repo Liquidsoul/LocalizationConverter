@@ -76,7 +76,6 @@ extension AndroidStringsParser {
                 parseStackItem = nil
                 break
             default:
-                print("Warning: unexpected end of element \(elementName)")
                 break
             }
             parseStackItem?.end(element: elementName)
