@@ -93,7 +93,7 @@ func parseAndroidFile(withName name: String) -> LocalizationMap? {
     guard let fileContent = readFile(withName: name, encoding: NSUTF8StringEncoding) else {
         return nil
     }
-    return AndroidStringsParser().parse(string: fileContent)
+    return try? AndroidStringsParser().parse(string: fileContent)
 }
 
 func readFile(withName fileName: String, encoding: UInt = NSUTF16StringEncoding) -> String? {

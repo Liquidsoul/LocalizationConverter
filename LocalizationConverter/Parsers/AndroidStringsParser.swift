@@ -10,16 +10,29 @@ import Foundation
 
 class AndroidStringsParser: StringParser {
 
-    func parse(string string: String) -> LocalizationMap {
+    func parse(string string: String) throws -> LocalizationMap {
         let parser = NSXMLParser(data: string.dataUsingEncoding(NSUTF8StringEncoding)!)
         parser.delegate = parserDelegate
 
-        _ = parser.parse()
+        let success = parser.parse()
+
+        if !success {
+            throw delegateError()
+        }
 
         return LocalizationMap(type: .android, localizationsDictionary: parserDelegate.localizations)
     }
 
     private let parserDelegate = XMLDelegate()
+}
+
+extension AndroidStringsParser {
+    func delegateError() -> ErrorType {
+        return parserDelegate.lastError ?? NSError(domain: "\(self.dynamicType)",
+                                                   code: 404,
+                                                   userInfo: [NSLocalizedFailureReasonErrorKey:"No error found"])
+
+    }
 }
 
 extension AndroidStringsParser {
@@ -29,6 +42,8 @@ extension AndroidStringsParser {
         var localizations = [String:LocalizationItem]()
 
         var parseStackItem: ParseStack?
+
+        var lastError: NSError?
 
         @objc
         func parserDidStartDocument(parser: NSXMLParser) {
@@ -79,6 +94,16 @@ extension AndroidStringsParser {
                 break
             }
             parseStackItem?.end(element: elementName)
+        }
+
+        @objc
+        private func parser(parser: NSXMLParser, validationErrorOccurred validationError: NSError) {
+            lastError = validationError
+        }
+
+        @objc
+        private func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
+            lastError = parseError
         }
     }
 
