@@ -153,7 +153,7 @@ class AndroidStringsParserTests: XCTestCase {
         let xmlString =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
             "<resources>\r\n" +
-                "<string name=\"mutli_line\">first line<br />second line</string>\r\n"
+                "<string name=\"mutli_line\">first line<br />second line</string>\r\n" +
             "</resources>"
 
         let parsedResult = try? parser.parse(string: xmlString)
