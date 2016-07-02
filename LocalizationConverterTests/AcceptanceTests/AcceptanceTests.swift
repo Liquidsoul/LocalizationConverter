@@ -10,7 +10,7 @@ import XCTest
 
 class AcceptanceTests: XCTestCase {
 
-    var tempDirectoryPath: String!
+    var tempDirectoryPath: String = "Not initialized!"
 
     override func setUp() {
         super.setUp()
