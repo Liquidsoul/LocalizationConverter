@@ -17,7 +17,7 @@ struct LocalizableFormatter {
         localizations.forEach { (key, localizationItem) in
             switch localizationItem {
             case .string(let value):
-                localizableEntries.append("\(key) = \"\(escapeDoubleQuotes(in: value))\";")
+                localizableEntries.append("\"\(key)\" = \"\(escapeDoubleQuotes(in: value))\";")
             case .plurals:
                 break
             }

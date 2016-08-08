@@ -28,7 +28,7 @@ class LocalizableFormatterTests: XCTestCase {
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("key = \"localized_value\";", resultLocalizableString)
+        XCTAssertEqual("\"key\" = \"localized_value\";", resultLocalizableString)
     }
 
     func test_format_multipleStringsLocalizedValue() {
@@ -42,9 +42,9 @@ class LocalizableFormatterTests: XCTestCase {
         let resultLocalizableString = localizableFormatter.format(localization)
 
         XCTAssertEqual(
-            "key0 = \"localized_value0\";\n" +
-            "key1 = \"localized_value1\";\n" +
-            "key2 = \"localized_value2\";",
+            "\"key0\" = \"localized_value0\";\n" +
+            "\"key1\" = \"localized_value1\";\n" +
+            "\"key2\" = \"localized_value2\";",
             resultLocalizableString)
     }
 
@@ -62,9 +62,9 @@ class LocalizableFormatterTests: XCTestCase {
         let resultLocalizableString = localizableFormatter.format(localization)
 
         XCTAssertEqual(
-            "key0 = \"localized_value0\";\n" +
-            "key1 = \"localized_value1\";\n" +
-            "key2 = \"localized_value2\";",
+            "\"key0\" = \"localized_value0\";\n" +
+            "\"key1\" = \"localized_value1\";\n" +
+            "\"key2\" = \"localized_value2\";",
             resultLocalizableString)
     }
 
@@ -76,7 +76,7 @@ class LocalizableFormatterTests: XCTestCase {
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("stringParams = \"Hello %@ %@!\";", resultLocalizableString)
+        XCTAssertEqual("\"stringParams\" = \"Hello %@ %@!\";", resultLocalizableString)
     }
 
     func test_format_convertPositionalStringParameters() {
@@ -87,7 +87,7 @@ class LocalizableFormatterTests: XCTestCase {
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("positionalParams = \"Hello %1$@ %2$@!\";", resultLocalizableString)
+        XCTAssertEqual("\"positionalParams\" = \"Hello %1$@ %2$@!\";", resultLocalizableString)
     }
 
     func test_format_escapeDoubleQuotes() {
@@ -98,6 +98,6 @@ class LocalizableFormatterTests: XCTestCase {
 
         let resultLocalizableString = localizableFormatter.format(localization)
 
-        XCTAssertEqual("quotedString = \"Hello \\\"Guest\\\"!\";", resultLocalizableString)
+        XCTAssertEqual("\"quotedString\" = \"Hello \\\"Guest\\\"!\";", resultLocalizableString)
     }
 }
