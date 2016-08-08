@@ -22,7 +22,10 @@ struct LocalizableFormatter {
                 break
             }
         }
-        return localizableEntries.sort { $0.lowercaseString < $1.lowercaseString }.joinWithSeparator("\n")
+
+        if localizableEntries.count == 0 { return "" }
+
+        return localizableEntries.sort { $0.lowercaseString < $1.lowercaseString }.joinWithSeparator("\n") + "\n"
     }
 
     private func escapeDoubleQuotes(in string: String) -> String {
