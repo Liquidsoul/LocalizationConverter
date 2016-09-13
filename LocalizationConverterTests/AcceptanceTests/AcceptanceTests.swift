@@ -129,12 +129,7 @@ extension AcceptanceTests {
     func createTempDirectory() -> String {
         let fileManager = NSFileManager()
         do {
-            let documentsDirectory = try fileManager.URLForDirectory(
-                .CachesDirectory,
-                inDomain: .AllDomainsMask,
-                appropriateForURL: nil,
-                create: true)
-            let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
+            let tempDirectoryURL = try self.tempDirectoryURL(using: fileManager)
             try fileManager.createDirectoryAtURL(tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             guard let path = tempDirectoryURL.path else {
                 fatalError("Could not get path from URL of temp directory \(tempDirectoryURL)")
@@ -143,6 +138,20 @@ extension AcceptanceTests {
         } catch {
             fatalError("Could not create temp directory for tests")
         }
+    }
+
+    func tempDirectoryURL(using fileManager: NSFileManager) throws -> NSURL {
+        let documentsDirectory = try fileManager.URLForDirectory(
+            .CachesDirectory,
+            inDomain: .AllDomainsMask,
+            appropriateForURL: nil,
+            create: true)
+        let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
+        #if swift(>=2.3)
+        return tempDirectoryURL!
+        #else
+        return tempDirectoryURL
+        #endif
     }
 
     func deleteTempDirectory() {
