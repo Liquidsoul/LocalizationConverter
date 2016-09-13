@@ -48,8 +48,8 @@ class LocalizableFormatterTests: XCTestCase {
             resultLocalizableString)
     }
 
-    func test_format_ignorePluralsLocalizedValuesIfOptionIsEnabled() {
-        let localizableFormatter = LocalizableFormatter(ignorePlurals: true)
+    func test_format_doesNotIncludePluralLocalizedValuesIfOptionIsDisabled() {
+        let localizableFormatter = LocalizableFormatter(includePlurals: false)
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
@@ -68,8 +68,8 @@ class LocalizableFormatterTests: XCTestCase {
             resultLocalizableString)
     }
 
-    func test_format_doNotIgnorePluralsLocalizedValueIfOptionIsDisabled() {
-        let localizableFormatter = LocalizableFormatter(ignorePlurals: false)
+    func test_format_includePluralLocalizedValuesIfOptionIsEnabled() {
+        let localizableFormatter = LocalizableFormatter(includePlurals: true)
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),

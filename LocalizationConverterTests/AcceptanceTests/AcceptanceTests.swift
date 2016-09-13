@@ -70,6 +70,29 @@ class AcceptanceTests: XCTestCase {
         // THEN: contents of the output folder match the expected one
         XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
     }
+
+    func test_AndroidToiOS_FolderConversion_includingPlurals() {
+        // GIVEN: a android resource folder
+        let sourceAndroidFolderPath = bundleFilePath("android/")
+        // GIVEN: output iOS folder
+        let outputFolderPath = tempDirectoryPath
+        // GIVEN: expected iOS folder content
+        let expectedOutputFolderContent = bundleFilePath("ios-plurals/")
+
+        // WHEN: we execute the converter
+        let returnedValue = runConverter(with: [
+            "\(self)",
+            "convertAndroidFolder",
+            sourceAndroidFolderPath,
+            "--output=\(outputFolderPath)",
+            "--include-plurals"
+            ])
+
+        // THEN: the execution was successful
+        XCTAssertEqual(0, returnedValue)
+        // THEN: contents of the output folder match the expected one
+        XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
+    }
 }
 
 // MARK: - Test helper methods

@@ -7,10 +7,10 @@
 //
 
 struct LocalizableFormatter {
-    let ignorePlurals: Bool
+    let includePlurals: Bool
 
-    init(ignorePlurals: Bool = true) {
-        self.ignorePlurals = ignorePlurals
+    init(includePlurals: Bool = true) {
+        self.includePlurals = includePlurals
     }
 
     func format(localization: LocalizationMap) -> String {
@@ -25,7 +25,7 @@ struct LocalizableFormatter {
             case .string(let value):
                 localizableEntries.append("\"\(key)\" = \"\(escapeDoubleQuotes(in: value))\";")
             case .plurals(let values):
-                if !ignorePlurals, let value = pluralValue(from: values) {
+                if includePlurals, let value = pluralValue(from: values) {
                     localizableEntries.append("\"\(key)\" = \"\(escapeDoubleQuotes(in: value))\";")
                 }
             }

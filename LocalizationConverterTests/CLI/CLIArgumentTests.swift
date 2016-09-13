@@ -33,6 +33,12 @@ class CLIArgumentTests: XCTestCase {
 
         XCTAssertEqual(CLIArgument.anonymousValue(value: "file.name"), anonymousArgument)
     }
+
+    func test_toggleValue() {
+        guard let toggleArgument = try? CLIArgument(argument: "--toggle-name") else { XCTFail(); return }
+
+        XCTAssertEqual(CLIArgument.anonymousValue(value: "toggle-name"), toggleArgument)
+    }
 }
 
 extension CLIArgumentTests {

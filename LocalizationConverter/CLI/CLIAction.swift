@@ -10,8 +10,8 @@ import Foundation
 
 enum CLIAction {
     case help
-    case convertAndroidFile(androidFileName: String, outputPath: String?)
-    case convertAndroidFolder(androidResourceFolder: String, outputPath: String?)
+    case convertAndroidFile(androidFileName: String, outputPath: String?, includePlurals: Bool)
+    case convertAndroidFolder(androidResourceFolder: String, outputPath: String?, includePlurals: Bool)
 }
 
 extension CLIAction: Equatable {}
@@ -21,17 +21,19 @@ func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
     case (.help, .help):
         return true
     case let (
-        .convertAndroidFile(androidFileName: leftAndroidFileName, outputPath: leftOutputPath),
-        .convertAndroidFile(androidFileName: rightAndroidFileName, outputPath: rightOutputPath)
+        .convertAndroidFile(androidFileName: leftAndroidFileName, outputPath: leftOutputPath, includePlurals: leftIncludePlurals),
+        .convertAndroidFile(androidFileName: rightAndroidFileName, outputPath: rightOutputPath, includePlurals: rightIncludePlurals)
         ):
         return leftAndroidFileName == rightAndroidFileName
             && leftOutputPath == rightOutputPath
+            && leftIncludePlurals == rightIncludePlurals
     case let (
-        .convertAndroidFolder(androidResourceFolder: leftFolder, outputPath: leftOutputPath),
-        .convertAndroidFolder(androidResourceFolder: rightFolder, outputPath: rightOutputPath)
+        .convertAndroidFolder(androidResourceFolder: leftFolder, outputPath: leftOutputPath, includePlurals: leftIncludePlurals),
+        .convertAndroidFolder(androidResourceFolder: rightFolder, outputPath: rightOutputPath, includePlurals: rightIncludePlurals)
         ):
         return leftFolder == rightFolder
             && leftOutputPath == rightOutputPath
+            && leftIncludePlurals == rightIncludePlurals
     default:
         return false
     }
@@ -39,6 +41,7 @@ func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
 
 extension CLIAction {
     init(actionName name: String, anonymousArguments: [String], namedArguments: [String:String]) throws {
+        let includePlurals = anonymousArguments.contains("include-plurals")
         switch name {
         case "help":
             self = .help
@@ -46,12 +49,12 @@ extension CLIAction {
             guard let androidFileName = anonymousArguments.first else {
                 throw Error.missingArgument(actionName: name, missingArgument: "source android filename")
             }
-            self = .convertAndroidFile(androidFileName: androidFileName, outputPath: namedArguments["output"])
+            self = .convertAndroidFile(androidFileName: androidFileName, outputPath: namedArguments["output"], includePlurals: includePlurals)
         case "convertAndroidFolder":
             guard let androidResourceFolder = anonymousArguments.first else {
                 throw Error.missingArgument(actionName: name, missingArgument: "source android folder")
             }
-            self = .convertAndroidFolder(androidResourceFolder: androidResourceFolder, outputPath: namedArguments["output"])
+            self = .convertAndroidFolder(androidResourceFolder: androidResourceFolder, outputPath: namedArguments["output"], includePlurals: includePlurals)
         default:
             throw Error.unknownAction(actionName: name)
         }
