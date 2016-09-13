@@ -7,6 +7,12 @@
 //
 
 struct LocalizableFormatter {
+    let ignorePlurals: Bool
+
+    init(ignorePlurals: Bool = true) {
+        self.ignorePlurals = ignorePlurals
+    }
+
     func format(localization: LocalizationMap) -> String {
         return format(localization.convertedLocalization(to: .ios).localizations)
     }
@@ -18,14 +24,26 @@ struct LocalizableFormatter {
             switch localizationItem {
             case .string(let value):
                 localizableEntries.append("\"\(key)\" = \"\(escapeDoubleQuotes(in: value))\";")
-            case .plurals:
-                break
+            case .plurals(let values):
+                if !ignorePlurals, let value = pluralValue(from: values) {
+                    localizableEntries.append("\"\(key)\" = \"\(escapeDoubleQuotes(in: value))\";")
+                }
             }
         }
 
         if localizableEntries.count == 0 { return "" }
 
         return localizableEntries.sort { $0.lowercaseString < $1.lowercaseString }.joinWithSeparator("\n") + "\n"
+    }
+
+    private func pluralValue(from values: [PluralType: String]) -> String? {
+        let priorities: [PluralType] = [.other, .many, .few, .two, .one, .zero]
+        return priorities.reduce(nil) { (value: String?, type) -> String? in
+            if value != nil {
+                return value
+            }
+            return values[type]
+        }
     }
 
     private func escapeDoubleQuotes(in string: String) -> String {

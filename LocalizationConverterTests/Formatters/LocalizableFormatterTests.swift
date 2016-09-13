@@ -48,8 +48,8 @@ class LocalizableFormatterTests: XCTestCase {
             resultLocalizableString)
     }
 
-    func test_format_ignorePluralsLocalizedValues() {
-        let localizableFormatter = LocalizableFormatter()
+    func test_format_ignorePluralsLocalizedValuesIfOptionIsEnabled() {
+        let localizableFormatter = LocalizableFormatter(ignorePlurals: true)
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
@@ -65,6 +65,27 @@ class LocalizableFormatterTests: XCTestCase {
             "\"key0\" = \"localized_value0\";\n" +
             "\"key1\" = \"localized_value1\";\n" +
             "\"key2\" = \"localized_value2\";\n",
+            resultLocalizableString)
+    }
+
+    func test_format_doNotIgnorePluralsLocalizedValueIfOptionIsDisabled() {
+        let localizableFormatter = LocalizableFormatter(ignorePlurals: false)
+        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+            "key2": LocalizationItem.string(value: "localized_value2"),
+            "key0": LocalizationItem.string(value: "localized_value0"),
+            "pluralKey": LocalizationItem.plurals(values: [
+                .zero: "zero_value",
+                .other: "other_value"]),
+            "key1": LocalizationItem.string(value: "localized_value1"),
+            ])
+
+        let resultLocalizableString = localizableFormatter.format(localization)
+
+        XCTAssertEqual(
+            "\"key0\" = \"localized_value0\";\n" +
+            "\"key1\" = \"localized_value1\";\n" +
+            "\"key2\" = \"localized_value2\";\n" +
+            "\"pluralKey\" = \"other_value\";\n",
             resultLocalizableString)
     }
 
