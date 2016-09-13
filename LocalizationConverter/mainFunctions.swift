@@ -22,9 +22,11 @@ func runConverter(with arguments: [String]) -> Int32 {
             printUsage(processName: processName)
             return 0
         case let .convertAndroidFile(androidFileName: fileName, outputPath: outputPath):
-            return convert(androidFileName: fileName, outputPath: outputPath) ? 0 : 1
+            let ignorePlurals = true
+            return convert(androidFileName: fileName, outputPath: outputPath, ignorePlurals: ignorePlurals) ? 0 : 1
         case let .convertAndroidFolder(androidResourceFolder: resourceFolder, outputPath: outputPath):
-            return convert(androidFolder: resourceFolder, outputPath: outputPath) ? 0 : 1
+            let ignorePlurals = true
+            return convert(androidFolder: resourceFolder, outputPath: outputPath, ignorePlurals: ignorePlurals) ? 0 : 1
         }
     } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {
         print("Missing argument '\(argumentName)' for action '\(actionName)'")
@@ -59,7 +61,7 @@ func printUsage(processName processName: String) {
     print("                                  If none is provided, it will write in the tool's working directory.")
 }
 
-func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
+func convert(androidFileName fileName: String, outputPath: String?, ignorePlurals: Bool) -> Bool {
     guard let localization = parseAndroidFile(withName: fileName) else {
         return false
     }
@@ -68,7 +70,7 @@ func convert(androidFileName fileName: String, outputPath: String?) -> Bool {
     let outputLocalizableStringsPath = outputFolder.appending(pathComponent: "Localizable.strings")
     let outputStringsDictPath = outputFolder.appending(pathComponent: "Localizable.stringsdict")
 
-    let localizableString = LocalizableFormatter().format(localization)
+    let localizableString = LocalizableFormatter(ignorePlurals: ignorePlurals).format(localization)
     if !write(stringData: localizableString, toFilePath: outputLocalizableStringsPath) {
         print("Failed to write Localizable.strings file at path \(outputLocalizableStringsPath)")
         return false
@@ -123,7 +125,7 @@ func write(stringData string: String, toFilePath filePath: String) -> Bool {
     return true
 }
 
-func convert(androidFolder resourceFolder: String, outputPath: String?) -> Bool {
+func convert(androidFolder resourceFolder: String, outputPath: String?, ignorePlurals: Bool) -> Bool {
     let fileManager = NSFileManager()
 
     let outputFolder = outputPath ?? fileManager.currentDirectoryPath
@@ -144,7 +146,7 @@ func convert(androidFolder resourceFolder: String, outputPath: String?) -> Bool 
             let inputFilePath = resourceFolder
                 .appending(pathComponent: valuesFolderName)
                 .appending(pathComponent: "strings.xml")
-            return convert(androidFileName: inputFilePath, outputPath: outputFolderPath)
+            return convert(androidFileName: inputFilePath, outputPath: outputFolderPath, ignorePlurals: ignorePlurals)
         }
         return results.reduce(true, combine: { (accumulator, result) -> Bool in
             return accumulator && result
