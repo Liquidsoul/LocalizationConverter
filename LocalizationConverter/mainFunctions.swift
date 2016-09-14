@@ -21,9 +21,9 @@ func runConverter(with arguments: [String]) -> Int32 {
         case .help:
             printUsage(processName: processName)
             return 0
-        case let .convertAndroidFile(androidFileName: fileName, outputPath: outputPath, includePlurals: includePlurals):
+        case let .convertAndroidFile(fileName, outputPath, includePlurals):
             return convert(androidFileName: fileName, outputPath: outputPath, includePlurals: includePlurals) ? 0 : 1
-        case let .convertAndroidFolder(androidResourceFolder: resourceFolder, outputPath: outputPath, includePlurals: includePlurals):
+        case let .convertAndroidFolder(resourceFolder, outputPath, includePlurals):
             return convert(androidFolder: resourceFolder, outputPath: outputPath, includePlurals: includePlurals) ? 0 : 1
         }
     } catch let CLIAction.Error.missingArgument(actionName: actionName, missingArgument: argumentName) {

@@ -21,15 +21,15 @@ func == (lhs: CLIAction, rhs: CLIAction) -> Bool {
     case (.help, .help):
         return true
     case let (
-        .convertAndroidFile(androidFileName: leftAndroidFileName, outputPath: leftOutputPath, includePlurals: leftIncludePlurals),
-        .convertAndroidFile(androidFileName: rightAndroidFileName, outputPath: rightOutputPath, includePlurals: rightIncludePlurals)
+        .convertAndroidFile(leftAndroidFileName, leftOutputPath, leftIncludePlurals),
+        .convertAndroidFile(rightAndroidFileName, rightOutputPath, rightIncludePlurals)
         ):
         return leftAndroidFileName == rightAndroidFileName
             && leftOutputPath == rightOutputPath
             && leftIncludePlurals == rightIncludePlurals
     case let (
-        .convertAndroidFolder(androidResourceFolder: leftFolder, outputPath: leftOutputPath, includePlurals: leftIncludePlurals),
-        .convertAndroidFolder(androidResourceFolder: rightFolder, outputPath: rightOutputPath, includePlurals: rightIncludePlurals)
+        .convertAndroidFolder(leftFolder, leftOutputPath, leftIncludePlurals),
+        .convertAndroidFolder(rightFolder, rightOutputPath, rightIncludePlurals)
         ):
         return leftFolder == rightFolder
             && leftOutputPath == rightOutputPath
@@ -49,12 +49,16 @@ extension CLIAction {
             guard let androidFileName = anonymousArguments.first else {
                 throw Error.missingArgument(actionName: name, missingArgument: "source android filename")
             }
-            self = .convertAndroidFile(androidFileName: androidFileName, outputPath: namedArguments["output"], includePlurals: includePlurals)
+            self = .convertAndroidFile(androidFileName: androidFileName,
+                                       outputPath: namedArguments["output"],
+                                       includePlurals: includePlurals)
         case "convertAndroidFolder":
             guard let androidResourceFolder = anonymousArguments.first else {
                 throw Error.missingArgument(actionName: name, missingArgument: "source android folder")
             }
-            self = .convertAndroidFolder(androidResourceFolder: androidResourceFolder, outputPath: namedArguments["output"], includePlurals: includePlurals)
+            self = .convertAndroidFolder(androidResourceFolder: androidResourceFolder,
+                                         outputPath: namedArguments["output"],
+                                         includePlurals: includePlurals)
         default:
             throw Error.unknownAction(actionName: name)
         }
