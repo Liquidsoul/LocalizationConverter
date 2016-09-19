@@ -1,15 +1,12 @@
 
-ARCHIVE_NAME=release.xcarchive
-ARCHIVE_FULLNAME=$(ARCHIVE_NAME).xcarchive
-PROJECT=LocalizationConverter.xcodeproj
-SCHEME=LocalizationConverter
+RELEASE_BIN_PATH=.build/release/LocalizationConverter
 
 .PHONY: release clean
 
-release: clean $(ARCHIVE_FULLNAME)
+release: clean $(RELEASE_BIN_PATH)
 
 clean:
-	rm -rf $(ARCHIVE_FULLNAME)
+	swift build --clean
 
-$(ARCHIVE_FULLNAME):
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) archive -archivePath $(ARCHIVE_NAME)
+$(RELEASE_BIN_PATH):
+	swift build --configuration release
