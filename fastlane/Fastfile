@@ -6,7 +6,7 @@ platform :mac do
 
   desc "Runs all the tests"
   lane :test do
-    scan
+  	sh "cd .. && swift test"
   end
 
 end
