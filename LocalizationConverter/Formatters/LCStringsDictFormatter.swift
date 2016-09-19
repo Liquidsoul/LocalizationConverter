@@ -9,10 +9,10 @@
 import Foundation
 
 struct StringsDictFormatter {
-    func format(localization: LocalizationMap) throws -> NSData {
+    func format(_ localization: LocalizationMap) throws -> Data {
         let stringsDict = try self.stringsDict(from: localization)
 
-        return try NSPropertyListSerialization.dataWithPropertyList(stringsDict, format: .XMLFormat_v1_0, options: 0)
+        return try PropertyListSerialization.data(fromPropertyList: stringsDict, format: .xml, options: 0)
     }
 
     func stringsDict(from localization: LocalizationMap) throws -> NSDictionary {
@@ -33,7 +33,7 @@ struct StringsDictFormatter {
         return stringsDict
     }
 
-    private func plurals(from localizations: [String:LocalizationItem]) -> [String:[PluralType: String]] {
+    fileprivate func plurals(from localizations: [String:LocalizationItem]) -> [String:[PluralType: String]] {
         if localizations.count == 0 {
             return [:]
         }
@@ -50,14 +50,14 @@ struct StringsDictFormatter {
         return pluralLocalizations
     }
 
-    private func stringsDictItem(with values: [PluralType: String]) -> [String:AnyObject] {
-        let initialValues = [
+    fileprivate func stringsDictItem(with values: [PluralType: String]) -> [String:Any] {
+        let initialValues: [String:Any] = [
             "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
             "NSStringFormatValueTypeKey": "d"
         ]
         return [
             "NSStringLocalizedFormatKey":"%#@elements@",
-            "elements": values.reduce(initialValues, combine: { (elements, pair) -> [String:AnyObject] in
+            "elements": values.reduce(initialValues as [String:Any], { (elements, pair) -> [String:Any] in
                 var outputValues = elements
                 outputValues[pair.0.rawValue] = pair.1
                 return outputValues
@@ -65,7 +65,7 @@ struct StringsDictFormatter {
         ]
     }
 
-    enum Error: ErrorType {
+    enum Error: Swift.Error {
         case noPlurals
         case missingOtherKey
     }

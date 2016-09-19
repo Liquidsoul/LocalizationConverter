@@ -10,6 +10,6 @@ import Foundation
 
 extension String {
     func appending(pathComponent component: String) -> String {
-        return (self as NSString).stringByAppendingPathComponent(component)
+        return (self as NSString).appendingPathComponent(component)
     }
 }

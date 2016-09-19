@@ -28,10 +28,10 @@ func == (lhs: CLIArgument, rhs: CLIArgument) -> Bool {
 
 extension CLIArgument {
     init(argument: String) throws {
-        let trimCharacterSet = NSCharacterSet(charactersInString: " \"-")
+        let trimCharacterSet = CharacterSet(charactersIn: " \"-")
         let components = argument.characters
             .split { $0 == "=" }
-            .map { String.init($0).stringByTrimmingCharactersInSet(trimCharacterSet) }
+            .map { String.init($0).trimmingCharacters(in: trimCharacterSet) }
         switch components.count {
         case 1:
             self = .anonymousValue(value: components[0])
@@ -42,14 +42,14 @@ extension CLIArgument {
         }
     }
 
-    enum Error: ErrorType {
+    enum Error: Swift.Error {
         case unparseableArgument(argument: String)
     }
 }
 
 extension CLIArgument {
-    static func decompose(arguments arguments: [CLIArgument]) -> ([String], [String:String]) {
-        return arguments.reduce(([], [:]), combine: { (decomposition, arg) -> ([String], [String:String]) in
+    static func decompose(arguments: [CLIArgument]) -> ([String], [String:String]) {
+        return arguments.reduce(([], [:]), { (decomposition, arg) -> ([String], [String:String]) in
             var decomposition = decomposition
             switch arg {
             case let .namedValue(name: name, value: value):

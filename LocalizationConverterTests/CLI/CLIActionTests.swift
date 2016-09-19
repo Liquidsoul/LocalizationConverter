@@ -11,7 +11,7 @@ import XCTest
 class CLIActionTests: XCTestCase {
 
     func test_unknownAction() {
-        let expectThrownError = self.expectationWithDescription("Thrown error")
+        let expectThrownError = self.expectation(description: "Thrown error")
 
         do {
             _ = try CLIAction(actionName: "toto", anonymousArguments: [], namedArguments: [:])
@@ -21,7 +21,7 @@ class CLIActionTests: XCTestCase {
             XCTFail("Unexpected error")
         }
 
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_helpAction() {

@@ -20,7 +20,7 @@ class CLIArgumentsParser {
         return try CLIAction(actionName: actionName, anonymousArguments: anonymousArguments, namedArguments: namedArguments)
     }
 
-    enum Error: ErrorType {
+    enum Error: Swift.Error {
         case noAction
     }
 }

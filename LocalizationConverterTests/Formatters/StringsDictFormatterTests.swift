@@ -16,16 +16,16 @@ class StringsDictFormatterTests: XCTestCase {
             type: .android,
             localizationsDictionary: [:])
 
-        let throwExpectaction = self.expectationWithDescription("Throw expectation")
+        let throwExpectaction = self.expectation(description: "Throw expectation")
         do {
-            try localizableFormatter.format(localization)
+            _ = try localizableFormatter.format(localization)
         } catch StringsDictFormatter.Error.noPlurals {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")
         }
 
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_format_noPluralsLocalizedValue() {
@@ -34,16 +34,16 @@ class StringsDictFormatterTests: XCTestCase {
             type: .android,
             localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")])
 
-        let throwExpectaction = self.expectationWithDescription("Throw expectation")
+        let throwExpectaction = self.expectation(description: "Throw expectation")
         do {
-            try localizableFormatter.format(localization)
+            _ = try localizableFormatter.format(localization)
         } catch StringsDictFormatter.Error.noPlurals {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")
         }
 
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_stringsDict_onePluralLocalizedValue() {
@@ -73,7 +73,7 @@ class StringsDictFormatterTests: XCTestCase {
             let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
             // THEN:
-            XCTAssertEqual(expectedStringsDict, stringsDict)
+            XCTAssertEqual(expectedStringsDict as NSDictionary, stringsDict)
         } catch {
             XCTFail("No error should have been thrown \(error)")
         }
@@ -130,7 +130,7 @@ class StringsDictFormatterTests: XCTestCase {
         do {
             let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
-            XCTAssertEqual(expectedStringsDict, stringsDict)
+            XCTAssertEqual(expectedStringsDict as NSDictionary, stringsDict)
         } catch {
             XCTFail("No error should have been thrown \(error)")
         }
@@ -142,16 +142,16 @@ class StringsDictFormatterTests: XCTestCase {
             "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value"]),
             ])
 
-        let throwExpectaction = self.expectationWithDescription("Throw expectation")
+        let throwExpectaction = self.expectation(description: "Throw expectation")
         do {
-            try localizableFormatter.format(localization)
+            _ = try localizableFormatter.format(localization)
         } catch StringsDictFormatter.Error.missingOtherKey {
             throwExpectaction.fulfill()
         } catch {
             XCTFail("Wrong error \(error)")
         }
 
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_stringsDict_onePluralLocalizedValue_WithFormatParameter() {
@@ -177,7 +177,7 @@ class StringsDictFormatterTests: XCTestCase {
         do {
             let stringsDict = try localizableFormatter.stringsDict(from: localization)
 
-            XCTAssertEqual(expectedStringsDict, stringsDict)
+            XCTAssertEqual(expectedStringsDict as NSDictionary, stringsDict)
         } catch {
             XCTFail("No error should have been thrown \(error)")
         }

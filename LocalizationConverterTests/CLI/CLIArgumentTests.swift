@@ -11,7 +11,7 @@ import XCTest
 class CLIArgumentTests: XCTestCase {
 
     func test_unparseableArgument() throws {
-        let expectation = self.expectationWithDescription("Thrown error")
+        let expectation = self.expectation(description: "Thrown error")
         do {
             _ = try CLIArgument(argument: "")
         } catch CLIArgument.Error.unparseableArgument(argument: let arg) {
@@ -19,7 +19,7 @@ class CLIArgumentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_namedValue() {

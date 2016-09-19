@@ -64,7 +64,7 @@ extension CLIAction {
         }
     }
 
-    enum Error: ErrorType {
+    enum Error: Swift.Error {
         case unknownAction(actionName: String)
         case missingArgument(actionName: String, missingArgument: String)
     }

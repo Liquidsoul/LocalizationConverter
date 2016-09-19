@@ -99,34 +99,34 @@ class AcceptanceTests: XCTestCase {
 
 extension AcceptanceTests {
 
-    func bundleFilePath(partialPath: String) -> String {
-        let testBundle = NSBundle(forClass: self.dynamicType)
+    func bundleFilePath(_ partialPath: String) -> String {
+        let testBundle = Bundle(for: type(of: self))
         let testStubsFolderName = "testFiles"
-        let path = testBundle.pathForResource(testStubsFolderName, ofType: nil, inDirectory: nil)
+        let path = testBundle.path(forResource: testStubsFolderName, ofType: nil, inDirectory: nil)
         guard let folderPath = path else {
             fatalError("Could not locate bundle folder '\(testStubsFolderName)'")
         }
         let filePath = folderPath.appending(pathComponent: partialPath)
-        let fileManager = NSFileManager()
-        XCTAssertTrue(fileManager.fileExistsAtPath(filePath))
+        let fileManager = FileManager()
+        XCTAssertTrue(fileManager.fileExists(atPath: filePath))
         return filePath
     }
 
-    func compareFiles(referenceFilePath: String, testedFilePath: String) -> Bool {
-        return NSFileManager().contentsEqualAtPath(referenceFilePath, andPath: testedFilePath)
+    func compareFiles(_ referenceFilePath: String, testedFilePath: String) -> Bool {
+        return FileManager().contentsEqual(atPath: referenceFilePath, andPath: testedFilePath)
     }
 
-    func compareFolders(referenceFolderPath: String, testedFolderPath: String) -> Bool {
-        let fileManager = NSFileManager()
+    func compareFolders(_ referenceFolderPath: String, testedFolderPath: String) -> Bool {
+        let fileManager = FileManager()
 
         do {
-            let referenceSubPaths = try fileManager.subpathsOfDirectoryAtPath(referenceFolderPath).sort()
-            let testedSubPaths = try fileManager.subpathsOfDirectoryAtPath(testedFolderPath).sort()
+            let referenceSubPaths = try fileManager.subpathsOfDirectory(atPath: referenceFolderPath).sorted()
+            let testedSubPaths = try fileManager.subpathsOfDirectory(atPath: testedFolderPath).sorted()
             guard referenceSubPaths == testedSubPaths else {
                 print("Expected paths: \(referenceSubPaths), Got: \(testedSubPaths)")
                 return false
             }
-            return referenceSubPaths.reduce(true, combine: { (result, subpath) -> Bool in
+            return referenceSubPaths.reduce(true, { (result, subpath) -> Bool in
                 if !result { return result }
                 return result && compareFiles(
                     referenceFolderPath.appending(pathComponent: subpath),
@@ -145,28 +145,25 @@ extension AcceptanceTests {
 extension AcceptanceTests {
 
     func createTempDirectory() -> String {
-        let fileManager = NSFileManager()
+        let fileManager = FileManager()
         do {
             let tempDirectoryURL = try self.tempDirectoryURL(using: fileManager)
-            try fileManager.createDirectoryAtURL(tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
-            guard let path = tempDirectoryURL.path else {
-                fatalError("Could not get path from URL of temp directory \(tempDirectoryURL)")
-            }
-            return path
+            try fileManager.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            return tempDirectoryURL.path
         } catch {
             fatalError("Could not create temp directory for tests")
         }
     }
 
-    func tempDirectoryURL(using fileManager: NSFileManager) throws -> NSURL {
-        let documentsDirectory = try fileManager.URLForDirectory(
-            .CachesDirectory,
-            inDomain: .AllDomainsMask,
-            appropriateForURL: nil,
+    func tempDirectoryURL(using fileManager: FileManager) throws -> URL {
+        let documentsDirectory = try fileManager.url(
+            for: .cachesDirectory,
+            in: .allDomainsMask,
+            appropriateFor: nil,
             create: true)
-        let tempDirectoryURL = documentsDirectory.URLByAppendingPathComponent("testResults")
+        let tempDirectoryURL = documentsDirectory.appendingPathComponent("testResults")
         #if swift(>=2.3)
-        return tempDirectoryURL!
+        return tempDirectoryURL
         #else
         return tempDirectoryURL
         #endif
@@ -174,7 +171,7 @@ extension AcceptanceTests {
 
     func deleteTempDirectory() {
         do {
-            try NSFileManager().removeItemAtPath(tempDirectoryPath)
+            try FileManager().removeItem(atPath: tempDirectoryPath)
         } catch {
             fatalError("Could not remove temp directory used in tests")
         }

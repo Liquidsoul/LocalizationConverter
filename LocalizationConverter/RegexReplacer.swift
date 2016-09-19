@@ -9,7 +9,7 @@
 import Foundation
 
 struct RegexReplacer {
-    init?(pattern: String, replaceTemplate: String, options: NSRegularExpressionOptions = .CaseInsensitive) {
+    init?(pattern: String, replaceTemplate: String, options: NSRegularExpression.Options = .caseInsensitive) {
         do {
             regex = try NSRegularExpression(pattern: pattern, options: options)
         } catch {
@@ -19,13 +19,13 @@ struct RegexReplacer {
     }
 
     func replacingMatches(in string: String) -> String {
-        return regex.stringByReplacingMatchesInString(
-            string,
-            options: NSMatchingOptions(rawValue: 0),
+        return regex.stringByReplacingMatches(
+            in: string,
+            options: NSRegularExpression.MatchingOptions(rawValue: 0),
             range: NSRange(location: 0, length: string.characters.count),
             withTemplate: replaceTemplate)
     }
 
-    private let regex: NSRegularExpression
-    private let replaceTemplate: String
+    fileprivate let regex: NSRegularExpression
+    fileprivate let replaceTemplate: String
 }

@@ -10,8 +10,8 @@ import Foundation
 
 class AndroidStringsParser: StringParser {
 
-    func parse(string string: String) throws -> LocalizationMap {
-        let parser = NSXMLParser(data: string.dataUsingEncoding(NSUTF8StringEncoding)!)
+    func parse(string: String) throws -> LocalizationMap {
+        let parser = XMLParser(data: string.data(using: String.Encoding.utf8)!)
         parser.delegate = parserDelegate
 
         let success = parser.parse()
@@ -23,12 +23,12 @@ class AndroidStringsParser: StringParser {
         return LocalizationMap(type: .android, localizationsDictionary: parserDelegate.localizations)
     }
 
-    private let parserDelegate = XMLDelegate()
+    fileprivate let parserDelegate = XMLDelegate()
 }
 
 extension AndroidStringsParser {
-    func delegateError() -> ErrorType {
-        return parserDelegate.lastError ?? NSError(domain: "\(self.dynamicType)",
+    func delegateError() -> Error {
+        return parserDelegate.lastError ?? NSError(domain: "\(type(of: self))",
                                                    code: 404,
                                                    userInfo: [NSLocalizedFailureReasonErrorKey:"No error found"])
 
@@ -37,7 +37,7 @@ extension AndroidStringsParser {
 
 extension AndroidStringsParser {
 
-    private class XMLDelegate: NSObject, NSXMLParserDelegate {
+    fileprivate class XMLDelegate: NSObject, XMLParserDelegate {
 
         var localizations = [String:LocalizationItem]()
 
@@ -46,12 +46,12 @@ extension AndroidStringsParser {
         var lastError: NSError?
 
         @objc
-        func parserDidStartDocument(parser: NSXMLParser) {
+        func parserDidStartDocument(_ parser: XMLParser) {
             localizations = [String:LocalizationItem]()
         }
 
         @objc
-        func parser(parser: NSXMLParser,
+        func parser(_ parser: XMLParser,
                     didStartElement elementName: String,
                     namespaceURI: String?,
                     qualifiedName qName: String?,
@@ -73,12 +73,12 @@ extension AndroidStringsParser {
         }
 
         @objc
-        func parser(parser: NSXMLParser, foundCharacters string: String) {
+        func parser(_ parser: XMLParser, foundCharacters string: String) {
             parseStackItem?.append(characters: string)
         }
 
         @objc
-        func parser(parser: NSXMLParser,
+        func parser(_ parser: XMLParser,
                     didEndElement elementName: String,
                     namespaceURI: String?,
                     qualifiedName qName: String?) {
@@ -97,20 +97,20 @@ extension AndroidStringsParser {
         }
 
         @objc
-        private func parser(parser: NSXMLParser, validationErrorOccurred validationError: NSError) {
-            lastError = validationError
+        fileprivate func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error) {
+            lastError = validationError as NSError?
         }
 
         @objc
-        private func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
-            lastError = parseError
+        fileprivate func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+            lastError = parseError as NSError?
         }
     }
 
-    private class ParseStack {
-        private var stack: [String] = []
-        private let keyName: String
-        private let formatElements: [String] = ["b", "u", "i"]
+    fileprivate class ParseStack {
+        fileprivate var stack: [String] = []
+        fileprivate let keyName: String
+        fileprivate let formatElements: [String] = ["b", "u", "i"]
 
         init(keyName: String) {
             self.keyName = keyName
@@ -120,13 +120,13 @@ extension AndroidStringsParser {
             stack.append(string)
         }
 
-        func start(element element: String, attributes attributeDict: [String : String]) {
+        func start(element: String, attributes attributeDict: [String : String]) {
             if formatElements.contains(element) {
                 stack.append("<\(element)>")
             }
         }
 
-        func end(element element: String) {
+        func end(element: String) {
             if formatElements.contains(element) {
                 stack.append("</\(element)>")
             } else if element == "br" {
@@ -139,21 +139,21 @@ extension AndroidStringsParser {
         }
     }
 
-    private class StringParseStack: ParseStack {
+    fileprivate class StringParseStack: ParseStack {
         override func result() -> (String, LocalizationItem) {
             guard !stack.isEmpty else {
                 fatalError("Stack should not be empty when parsing 'string' element.")
             }
-            let value = stack.reduce("", combine: { $0 + $1 })
+            let value = stack.reduce("", { $0 + $1 })
             return (keyName, .string(value: value))
         }
     }
 
-    private class PluralsParseStack: ParseStack {
-        private let itemTerminator = "itemTerminator"
-        private var inItem: Bool = false
+    fileprivate class PluralsParseStack: ParseStack {
+        fileprivate let itemTerminator = "itemTerminator"
+        fileprivate var inItem: Bool = false
 
-        override func start(element element: String, attributes attributeDict: [String : String]) {
+        override func start(element: String, attributes attributeDict: [String : String]) {
             if element == "item" {
                 inItem = true
                 guard let quantityName = attributeDict["quantity"] else {
@@ -172,7 +172,7 @@ extension AndroidStringsParser {
             super.append(characters: string)
         }
 
-        override func end(element element: String) {
+        override func end(element: String) {
             if element == "item" {
                 stack.append(itemTerminator)
                 inItem = false

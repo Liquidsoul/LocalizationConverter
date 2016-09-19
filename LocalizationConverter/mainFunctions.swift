@@ -38,7 +38,7 @@ func runConverter(with arguments: [String]) -> Int32 {
     }
 }
 
-func printUsage(processName processName: String) {
+func printUsage(processName: String) {
     print("Usage: \(processName) ACTION [OPTIONS]")
     print("")
     print("Actions:")
@@ -66,7 +66,7 @@ func convert(androidFileName fileName: String, outputPath: String?, includePlura
         return false
     }
 
-    let outputFolder = outputPath ?? NSFileManager().currentDirectoryPath
+    let outputFolder = outputPath ?? FileManager().currentDirectoryPath
     let outputLocalizableStringsPath = outputFolder.appending(pathComponent: "Localizable.strings")
     let outputStringsDictPath = outputFolder.appending(pathComponent: "Localizable.stringsdict")
 
@@ -77,7 +77,7 @@ func convert(androidFileName fileName: String, outputPath: String?, includePlura
     }
     do {
         let stringsDictContent = try StringsDictFormatter().format(localization)
-        if !NSFileManager().createFileAtPath(outputStringsDictPath, contents: stringsDictContent, attributes: nil) {
+        if !FileManager().createFile(atPath: outputStringsDictPath, contents: stringsDictContent, attributes: nil) {
             print("Failed to write stringsdict file at path \(outputStringsDictPath)")
             return false
         }
@@ -92,21 +92,21 @@ func convert(androidFileName fileName: String, outputPath: String?, includePlura
 }
 
 func parseAndroidFile(withName name: String) -> LocalizationMap? {
-    guard let fileContent = readFile(withName: name, encoding: NSUTF8StringEncoding) else {
+    guard let fileContent = readFile(withName: name, encoding: String.Encoding.utf8) else {
         return nil
     }
     return try? AndroidStringsParser().parse(string: fileContent)
 }
 
-func readFile(withName fileName: String, encoding: UInt = NSUTF16StringEncoding) -> String? {
-    let fileManager = NSFileManager()
+func readFile(withName fileName: String, encoding: String.Encoding = String.Encoding.utf16) -> String? {
+    let fileManager = FileManager()
     let filePath: String
-    if fileManager.fileExistsAtPath(fileName) {
+    if fileManager.fileExists(atPath: fileName) {
         filePath = fileName
     } else {
-        filePath = NSString.pathWithComponents([fileManager.currentDirectoryPath, fileName])
+        filePath = NSString.path(withComponents: [fileManager.currentDirectoryPath, fileName])
     }
-    guard let content = fileManager.contentsAtPath(filePath) else {
+    guard let content = fileManager.contents(atPath: filePath) else {
         print("Failed to load file \(fileName) from path \(filePath)")
         return nil
     }
@@ -118,7 +118,7 @@ func readFile(withName fileName: String, encoding: UInt = NSUTF16StringEncoding)
 }
 
 func write(stringData string: String, toFilePath filePath: String) -> Bool {
-    if !NSFileManager().createFileAtPath(filePath, contents: string.dataUsingEncoding(NSUTF8StringEncoding), attributes: nil) {
+    if !FileManager().createFile(atPath: filePath, contents: string.data(using: String.Encoding.utf8), attributes: nil) {
         print("Failed to write output at path: \(filePath)")
         return false
     }
@@ -126,12 +126,12 @@ func write(stringData string: String, toFilePath filePath: String) -> Bool {
 }
 
 func convert(androidFolder resourceFolder: String, outputPath: String?, includePlurals: Bool) -> Bool {
-    let fileManager = NSFileManager()
+    let fileManager = FileManager()
 
     let outputFolder = outputPath ?? fileManager.currentDirectoryPath
 
     do {
-        let folders = try fileManager.contentsOfDirectoryAtPath(resourceFolder)
+        let folders = try fileManager.contentsOfDirectory(atPath: resourceFolder)
         let valuesFolders = folders.filter { (folderName) -> Bool in
             return folderName.hasPrefix("values")
         }
@@ -142,13 +142,13 @@ func convert(androidFolder resourceFolder: String, outputPath: String?, includeP
                 return false
             }
             let outputFolderPath = outputFolder.appending(pathComponent: outputFolderName)
-            try fileManager.createDirectoryAtPath(outputFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try fileManager.createDirectory(atPath: outputFolderPath, withIntermediateDirectories: true, attributes: nil)
             let inputFilePath = resourceFolder
                 .appending(pathComponent: valuesFolderName)
                 .appending(pathComponent: "strings.xml")
             return convert(androidFileName: inputFilePath, outputPath: outputFolderPath, includePlurals: includePlurals)
         }
-        return results.reduce(true, combine: { (accumulator, result) -> Bool in
+        return results.reduce(true, { (accumulator, result) -> Bool in
             return accumulator && result
         })
     } catch {

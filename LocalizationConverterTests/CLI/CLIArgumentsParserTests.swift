@@ -14,7 +14,7 @@ class CLIArgumentsParserTests: XCTestCase {
         // GIVEN: a parser
         let parser = CLIArgumentsParser()
         // GIVEN: an expected error
-        let expectThrownError = self.expectationWithDescription("Thrown error")
+        let expectThrownError = self.expectation(description: "Thrown error")
 
         // WHEN: we try to parse an empty array of arguments
         do {
@@ -24,7 +24,7 @@ class CLIArgumentsParserTests: XCTestCase {
         }
 
         // THEN: we got the expected error
-        self.waitForExpectationsWithTimeout(1, handler: nil)
+        self.waitForExpectations(timeout: 1, handler: nil)
     }
 
     func test_parseAction_help() {

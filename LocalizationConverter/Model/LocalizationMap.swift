@@ -17,8 +17,8 @@ enum LocalizationType {
 }
 
 struct LocalizationMap {
-    private(set) var type: LocalizationType
-    private(set) var localizations = [String:LocalizationItem]()
+    fileprivate(set) var type: LocalizationType
+    fileprivate(set) var localizations = [String:LocalizationItem]()
 
     init(type: LocalizationType) {
         self.type = type
@@ -41,7 +41,7 @@ struct LocalizationMap {
 
         set(newValue) {
             guard let newValue = newValue else {
-                localizations.removeValueForKey(key)
+                localizations.removeValue(forKey: key)
                 return
             }
             localizations[key] = newValue
@@ -83,7 +83,7 @@ extension LocalizationMap {
         }
     }
 
-    private func convert(localizations: [String:LocalizationItem],
+    fileprivate func convert(_ localizations: [String:LocalizationItem],
                          using replacer: RegexReplacer) -> [String:LocalizationItem] {
         var iOSLocalizations = [String:LocalizationItem]()
         localizations.forEach { (key, item) in
@@ -100,7 +100,7 @@ extension LocalizationMap {
         return iOSLocalizations
     }
 
-    private func convert(plurals: [PluralType:String], using replacer: RegexReplacer) -> [PluralType:String] {
+    fileprivate func convert(_ plurals: [PluralType:String], using replacer: RegexReplacer) -> [PluralType:String] {
         var convertedPlurals = [PluralType:String]()
         plurals.forEach { (type, value) in
             convertedPlurals[type] = replacer.replacingMatches(in: value)

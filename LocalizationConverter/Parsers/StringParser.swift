@@ -9,5 +9,5 @@
 import Foundation
 
 protocol StringParser {
-    func parse(string string: String) throws -> LocalizationMap
+    func parse(string: String) throws -> LocalizationMap
 }

@@ -8,4 +8,4 @@
 
 import Foundation
 
-exit(runConverter(with: Process.arguments))
+exit(runConverter(with: CommandLine.arguments))

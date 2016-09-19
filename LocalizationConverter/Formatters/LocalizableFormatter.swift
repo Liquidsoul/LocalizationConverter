@@ -13,11 +13,11 @@ struct LocalizableFormatter {
         self.includePlurals = includePlurals
     }
 
-    func format(localization: LocalizationMap) -> String {
+    func format(_ localization: LocalizationMap) -> String {
         return format(localization.convertedLocalization(to: .ios).localizations)
     }
 
-    private func format(localizations: [String:LocalizationItem]) -> String {
+    fileprivate func format(_ localizations: [String:LocalizationItem]) -> String {
         var localizableEntries = [String]()
 
         localizations.forEach { (key, localizationItem) in
@@ -33,10 +33,10 @@ struct LocalizableFormatter {
 
         if localizableEntries.count == 0 { return "" }
 
-        return localizableEntries.sort { $0.lowercaseString < $1.lowercaseString }.joinWithSeparator("\n") + "\n"
+        return localizableEntries.sorted { $0.lowercased() < $1.lowercased() }.joined(separator: "\n") + "\n"
     }
 
-    private func pluralValue(from values: [PluralType: String]) -> String? {
+    fileprivate func pluralValue(from values: [PluralType: String]) -> String? {
         let priorities: [PluralType] = [.other, .many, .few, .two, .one, .zero]
         return priorities.reduce(nil) { (value: String?, type) -> String? in
             if value != nil {
@@ -46,7 +46,7 @@ struct LocalizableFormatter {
         }
     }
 
-    private func escapeDoubleQuotes(in string: String) -> String {
-        return string.stringByReplacingOccurrencesOfString("\"", withString: "\\\"")
+    fileprivate func escapeDoubleQuotes(in string: String) -> String {
+        return string.replacingOccurrences(of: "\"", with: "\\\"")
     }
 }
