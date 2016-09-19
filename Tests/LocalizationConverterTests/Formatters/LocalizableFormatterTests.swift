@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class LocalizableFormatterTests: XCTestCase {
 
     func test_format_noLocalizationKeys() {

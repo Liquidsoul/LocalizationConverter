@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class AndroidStringsParserTests: XCTestCase {
 
     func test_parseString_emptyString() {

@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class StringsDictFormatterTests: XCTestCase {
 
     func test_format_noLocalizationKeys() {

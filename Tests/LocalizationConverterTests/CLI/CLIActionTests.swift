@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class CLIActionTests: XCTestCase {
 
     func test_unknownAction() {

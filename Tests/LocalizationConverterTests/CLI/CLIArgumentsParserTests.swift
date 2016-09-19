@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class CLIArgumentsParserTests: XCTestCase {
 
     func test_parseAction_noArguments() throws {

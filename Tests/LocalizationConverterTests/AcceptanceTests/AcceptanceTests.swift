@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import LocalizationConverter
+
 class AcceptanceTests: XCTestCase {
 
     var tempDirectoryPath: String = "Not initialized!"
@@ -124,7 +126,7 @@ extension AcceptanceTests {
     private func localFilePath(_ partialPath: String) throws -> String {
         let fileManager = FileManager()
         let currentDirectoryPath = fileManager.currentDirectoryPath as NSString
-        let testFilesDirectoryPath = currentDirectoryPath.appendingPathComponent("Tests/testFiles")
+        let testFilesDirectoryPath = currentDirectoryPath.appendingPathComponent("Tests/LocalizationConverterTests/AcceptanceTests/testFiles")
         guard fileManager.fileExists(atPath: testFilesDirectoryPath) else {
             throw Error.fileNotFound(path: testFilesDirectoryPath)
         }
