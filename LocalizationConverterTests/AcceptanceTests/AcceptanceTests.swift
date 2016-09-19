@@ -113,12 +113,7 @@ extension AcceptanceTests {
     }
 
     func compareFiles(referenceFilePath: String, testedFilePath: String) -> Bool {
-        let fileManager = NSFileManager()
-
-        let referenceData = fileManager.contentsAtPath(referenceFilePath)
-        let testedData = fileManager.contentsAtPath(testedFilePath)
-
-        return referenceData == testedData
+        return NSFileManager().contentsEqualAtPath(referenceFilePath, andPath: testedFilePath)
     }
 
     func compareFolders(referenceFolderPath: String, testedFolderPath: String) -> Bool {
