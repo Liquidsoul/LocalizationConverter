@@ -99,7 +99,11 @@ class AcceptanceTests: XCTestCase {
 
 extension AcceptanceTests {
     func filePath(_ partialPath: String) throws -> String {
-        return try bundleFilePath(partialPath)
+        do {
+            return try bundleFilePath(partialPath)
+        } catch Error.fileNotFoundInBundle {
+            return try localFilePath(partialPath)
+        }
     }
 
     private func bundleFilePath(_ partialPath: String) throws -> String {
@@ -117,8 +121,23 @@ extension AcceptanceTests {
         return filePath
     }
 
+    private func localFilePath(_ partialPath: String) throws -> String {
+        let fileManager = FileManager()
+        let currentDirectoryPath = fileManager.currentDirectoryPath as NSString
+        let testFilesDirectoryPath = currentDirectoryPath.appendingPathComponent("Tests/testFiles")
+        guard fileManager.fileExists(atPath: testFilesDirectoryPath) else {
+            throw Error.fileNotFound(path: testFilesDirectoryPath)
+        }
+        let filePath = (testFilesDirectoryPath as NSString).appendingPathComponent(partialPath)
+        guard fileManager.fileExists(atPath: filePath) else {
+            throw Error.fileNotFound(path: filePath)
+        }
+        return filePath
+    }
+
     private enum Error: Swift.Error {
         case fileNotFoundInBundle(path: String)
+        case fileNotFound(path: String)
     }
 
     func compareFiles(_ referenceFilePath: String, testedFilePath: String) -> Bool {
