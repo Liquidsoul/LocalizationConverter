@@ -24,15 +24,15 @@ class AcceptanceTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_AndroidToiOSFileSuccessfulConversion() {
+    func test_AndroidToiOSFileSuccessfulConversion() throws {
         // GIVEN: a strings.xml android file
-        let sourceAndroidFilePath = bundleFilePath("android/values/strings.xml")
+        let sourceAndroidFilePath = try filePath("android/values/strings.xml")
         // GIVEN: output Localizable iOS files
         let outputStringsFilePath = tempDirectoryPath.appending(pathComponent: "Localizable.strings")
         let outputStringsDictFilePath = tempDirectoryPath.appending(pathComponent: "Localizable.stringsdict")
         // GIVEN: expected Localizable iOS files
-        let expectedOutputStringsFilePath = bundleFilePath("ios/Base.lproj/Localizable.strings")
-        let expectedOutputStringsDictFilePath = bundleFilePath("ios/Base.lproj/Localizable.stringsdict")
+        let expectedOutputStringsFilePath = try filePath("ios/Base.lproj/Localizable.strings")
+        let expectedOutputStringsDictFilePath = try filePath("ios/Base.lproj/Localizable.stringsdict")
 
         // WHEN: we execute the converter
         let returnedValue = runConverter(with: [
@@ -49,13 +49,13 @@ class AcceptanceTests: XCTestCase {
         XCTAssertTrue(compareFiles(expectedOutputStringsDictFilePath, testedFilePath: outputStringsDictFilePath))
     }
 
-    func test_AndroidToiOS_FolderConversion() {
+    func test_AndroidToiOS_FolderConversion() throws {
         // GIVEN: a android resource folder
-        let sourceAndroidFolderPath = bundleFilePath("android/")
+        let sourceAndroidFolderPath = try filePath("android/")
         // GIVEN: output iOS folder
         let outputFolderPath = tempDirectoryPath
         // GIVEN: expected iOS folder content
-        let expectedOutputFolderContent = bundleFilePath("ios/")
+        let expectedOutputFolderContent = try filePath("ios/")
 
         // WHEN: we execute the converter
         let returnedValue = runConverter(with: [
@@ -71,13 +71,13 @@ class AcceptanceTests: XCTestCase {
         XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
     }
 
-    func test_AndroidToiOS_FolderConversion_includingPlurals() {
+    func test_AndroidToiOS_FolderConversion_includingPlurals() throws {
         // GIVEN: a android resource folder
-        let sourceAndroidFolderPath = bundleFilePath("android/")
+        let sourceAndroidFolderPath = try filePath("android/")
         // GIVEN: output iOS folder
         let outputFolderPath = tempDirectoryPath
         // GIVEN: expected iOS folder content
-        let expectedOutputFolderContent = bundleFilePath("ios-plurals/")
+        let expectedOutputFolderContent = try filePath("ios-plurals/")
 
         // WHEN: we execute the converter
         let returnedValue = runConverter(with: [
@@ -98,18 +98,27 @@ class AcceptanceTests: XCTestCase {
 // MARK: - Test helper methods
 
 extension AcceptanceTests {
+    func filePath(_ partialPath: String) throws -> String {
+        return try bundleFilePath(partialPath)
+    }
 
-    func bundleFilePath(_ partialPath: String) -> String {
+    private func bundleFilePath(_ partialPath: String) throws -> String {
         let testBundle = Bundle(for: type(of: self))
         let testStubsFolderName = "testFiles"
         let path = testBundle.path(forResource: testStubsFolderName, ofType: nil, inDirectory: nil)
         guard let folderPath = path else {
-            fatalError("Could not locate bundle folder '\(testStubsFolderName)'")
+            throw Error.fileNotFoundInBundle(path: testStubsFolderName)
         }
         let filePath = folderPath.appending(pathComponent: partialPath)
         let fileManager = FileManager()
-        XCTAssertTrue(fileManager.fileExists(atPath: filePath))
+        if !fileManager.fileExists(atPath: filePath) {
+            throw Error.fileNotFound(path: filePath)
+        }
         return filePath
+    }
+
+    private enum Error: Swift.Error {
+        case fileNotFoundInBundle(path: String)
     }
 
     func compareFiles(_ referenceFilePath: String, testedFilePath: String) -> Bool {
