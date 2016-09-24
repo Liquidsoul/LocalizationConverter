@@ -37,15 +37,14 @@ class AcceptanceTests: XCTestCase {
         let expectedOutputStringsDictFilePath = try filePath("ios/Base.lproj/Localizable.stringsdict")
 
         // WHEN: we execute the converter
-        let returnedValue = runConverter(with: [
-            "\(self)",
-            "convertAndroidFile",
-            sourceAndroidFilePath,
-            "--output=\(tempDirectoryPath)"
-            ])
+        let returnedValue = convert(
+            androidFileName: sourceAndroidFilePath,
+            outputPath: tempDirectoryPath,
+            includePlurals: false
+        )
 
         // THEN: the execution was successful
-        XCTAssertEqual(0, returnedValue)
+        XCTAssertTrue(returnedValue)
         // THEN: contents of the output files match the expected contents
         XCTAssertTrue(compareFiles(expectedOutputStringsFilePath, testedFilePath: outputStringsFilePath))
         XCTAssertTrue(compareFiles(expectedOutputStringsDictFilePath, testedFilePath: outputStringsDictFilePath))
@@ -60,15 +59,14 @@ class AcceptanceTests: XCTestCase {
         let expectedOutputFolderContent = try filePath("ios/")
 
         // WHEN: we execute the converter
-        let returnedValue = runConverter(with: [
-            "\(self)",
-            "convertAndroidFolder",
-            sourceAndroidFolderPath,
-            "--output=\(outputFolderPath)"
-            ])
+        let returnedValue = convert(
+            androidFolder: sourceAndroidFolderPath,
+            outputPath: outputFolderPath,
+            includePlurals: false
+        )
 
         // THEN: the execution was successful
-        XCTAssertEqual(0, returnedValue)
+        XCTAssertTrue(returnedValue)
         // THEN: contents of the output folder match the expected one
         XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
     }
@@ -82,16 +80,14 @@ class AcceptanceTests: XCTestCase {
         let expectedOutputFolderContent = try filePath("ios-plurals/")
 
         // WHEN: we execute the converter
-        let returnedValue = runConverter(with: [
-            "\(self)",
-            "convertAndroidFolder",
-            sourceAndroidFolderPath,
-            "--output=\(outputFolderPath)",
-            "--include-plurals"
-            ])
+        let returnedValue = convert(
+            androidFolder: sourceAndroidFolderPath,
+            outputPath: outputFolderPath,
+            includePlurals: true
+        )
 
         // THEN: the execution was successful
-        XCTAssertEqual(0, returnedValue)
+        XCTAssertTrue(returnedValue)
         // THEN: contents of the output folder match the expected one
         XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
     }
