@@ -10,30 +10,55 @@ import Foundation
 import RegexReplacer
 import FoundationExtensions
 
+protocol LocalizationStore {
+    func storeFormattedLocalizable(data: Data) throws
+    func storeFormattedStringsDict(data: Data) throws
+}
+
+struct FileLocalizationStore: LocalizationStore {
+    private let localizablePath: String
+    private let stringsDictPath: String
+
+    init(outputFolderPath: String) {
+        localizablePath = outputFolderPath.appending(pathComponent: "Localizable.strings")
+        stringsDictPath = outputFolderPath.appending(pathComponent: "Localizable.stringsdict")
+    }
+
+    func storeFormattedLocalizable(data: Data) throws {
+        try write(data: data, toFilePath: localizablePath)
+    }
+
+    func storeFormattedStringsDict(data: Data) throws {
+        try write(data: data, toFilePath: stringsDictPath)
+    }
+
+    private func write(data: Data, toFilePath filePath: String) throws {
+        guard FileManager().createFile(atPath: filePath, contents: data, attributes: nil) else {
+            throw Error.fileWriteError(path: filePath)
+        }
+    }
+
+    enum Error: Swift.Error {
+        case fileWriteError(path: String)
+    }
+}
+
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
     guard let localization = parseAndroidFile(withName: fileName) else {
         return false
     }
 
-    let outputFolder = outputPath
-    let outputLocalizableStringsPath = outputFolder.appending(pathComponent: "Localizable.strings")
-    let outputStringsDictPath = outputFolder.appending(pathComponent: "Localizable.stringsdict")
+    let store: LocalizationStore = FileLocalizationStore(outputFolderPath: outputPath)
 
-    let localizableString = LocalizableFormatter(includePlurals: includePlurals).format(localization)
-    if !write(stringData: localizableString, toFilePath: outputLocalizableStringsPath) {
-        print("Failed to write Localizable.strings file at path \(outputLocalizableStringsPath)")
-        return false
-    }
     do {
+        let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
+        try store.storeFormattedLocalizable(data: localizableString)
         let stringsDictContent = try StringsDictFormatter().format(localization)
-        if !FileManager().createFile(atPath: outputStringsDictPath, contents: stringsDictContent, attributes: nil) {
-            print("Failed to write stringsdict file at path \(outputStringsDictPath)")
-            return false
-        }
+        try store.storeFormattedStringsDict(data: stringsDictContent)
     } catch StringsDictFormatter.Error.noPlurals {
         print("No plural found, skipping stringsdict file.")
     } catch {
-        print("Error when formatting stringsdict data \(error)")
+        print("Error: \(error)")
         return false
     }
 

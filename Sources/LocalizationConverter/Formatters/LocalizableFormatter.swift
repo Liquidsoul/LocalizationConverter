@@ -6,6 +6,8 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
+import Foundation
+
 struct LocalizableFormatter {
     let includePlurals: Bool
 
@@ -13,8 +15,12 @@ struct LocalizableFormatter {
         self.includePlurals = includePlurals
     }
 
-    func format(_ localization: LocalizationMap) -> String {
-        return format(localization.convertedLocalization(to: .ios).localizations)
+    func format(_ localization: LocalizationMap) throws -> Data {
+        let formattedString = format(localization.convertedLocalization(to: .ios).localizations)
+        guard let data = formattedString.data(using: String.Encoding.utf8) else {
+            throw NSError(domain: "\(self)", code: 500)
+        }
+        return data
     }
 
     fileprivate func format(_ localizations: [String:LocalizationItem]) -> String {

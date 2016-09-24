@@ -12,28 +12,28 @@ import XCTest
 
 class LocalizableFormatterTests: XCTestCase {
 
-    func test_format_noLocalizationKeys() {
+    func test_format_noLocalizationKeys() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(type: .android)
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
-        XCTAssertEqual("", resultLocalizableString)
+        XCTAssertEqual("".data(using: .utf8), resultLocalizableString)
     }
 
-    func test_format_oneStringLocalizedValue() {
+    func test_format_oneStringLocalizedValue() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(
             type: .android,
             localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")]
         )
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
-        XCTAssertEqual("\"key\" = \"localized_value\";\n", resultLocalizableString)
+        XCTAssertEqual("\"key\" = \"localized_value\";\n".data(using: .utf8), resultLocalizableString)
     }
 
-    func test_format_multipleStringsLocalizedValue() {
+    func test_format_multipleStringsLocalizedValue() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key1": LocalizationItem.string(value: "localized_value1"),
@@ -41,16 +41,16 @@ class LocalizableFormatterTests: XCTestCase {
             "key2": LocalizationItem.string(value: "localized_value2"),
         ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
         XCTAssertEqual(
-            "\"key0\" = \"localized_value0\";\n" +
+            ("\"key0\" = \"localized_value0\";\n" +
             "\"key1\" = \"localized_value1\";\n" +
-            "\"key2\" = \"localized_value2\";\n",
+            "\"key2\" = \"localized_value2\";\n").data(using: .utf8),
             resultLocalizableString)
     }
 
-    func test_format_doesNotIncludePluralLocalizedValuesIfOptionIsDisabled() {
+    func test_format_doesNotIncludePluralLocalizedValuesIfOptionIsDisabled() throws {
         let localizableFormatter = LocalizableFormatter(includePlurals: false)
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
@@ -61,16 +61,16 @@ class LocalizableFormatterTests: XCTestCase {
             "key1": LocalizationItem.string(value: "localized_value1"),
             ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
         XCTAssertEqual(
-            "\"key0\" = \"localized_value0\";\n" +
+            ("\"key0\" = \"localized_value0\";\n" +
             "\"key1\" = \"localized_value1\";\n" +
-            "\"key2\" = \"localized_value2\";\n",
+            "\"key2\" = \"localized_value2\";\n").data(using: .utf8),
             resultLocalizableString)
     }
 
-    func test_format_includePluralLocalizedValuesIfOptionIsEnabled() {
+    func test_format_includePluralLocalizedValuesIfOptionIsEnabled() throws {
         let localizableFormatter = LocalizableFormatter(includePlurals: true)
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
@@ -81,46 +81,46 @@ class LocalizableFormatterTests: XCTestCase {
             "key1": LocalizationItem.string(value: "localized_value1"),
             ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
         XCTAssertEqual(
-            "\"key0\" = \"localized_value0\";\n" +
+            ("\"key0\" = \"localized_value0\";\n" +
             "\"key1\" = \"localized_value1\";\n" +
             "\"key2\" = \"localized_value2\";\n" +
-            "\"pluralKey\" = \"other_value\";\n",
+            "\"pluralKey\" = \"other_value\";\n").data(using: .utf8),
             resultLocalizableString)
     }
 
-    func test_format_convertStringParameters() {
+    func test_format_convertStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "stringParams": LocalizationItem.string(value: "Hello %s %s!"),
             ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
-        XCTAssertEqual("\"stringParams\" = \"Hello %@ %@!\";\n", resultLocalizableString)
+        XCTAssertEqual("\"stringParams\" = \"Hello %@ %@!\";\n".data(using: .utf8), resultLocalizableString)
     }
 
-    func test_format_convertPositionalStringParameters() {
+    func test_format_convertPositionalStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "positionalParams": LocalizationItem.string(value: "Hello %1$s %2$s!"),
             ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
-        XCTAssertEqual("\"positionalParams\" = \"Hello %1$@ %2$@!\";\n", resultLocalizableString)
+        XCTAssertEqual("\"positionalParams\" = \"Hello %1$@ %2$@!\";\n".data(using: .utf8), resultLocalizableString)
     }
 
-    func test_format_escapeDoubleQuotes() {
+    func test_format_escapeDoubleQuotes() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(type: .android, localizationsDictionary: [
             "quotedString": LocalizationItem.string(value: "Hello \"Guest\"!"),
             ])
 
-        let resultLocalizableString = localizableFormatter.format(localization)
+        let resultLocalizableString = try localizableFormatter.format(localization)
 
-        XCTAssertEqual("\"quotedString\" = \"Hello \\\"Guest\\\"!\";\n", resultLocalizableString)
+        XCTAssertEqual("\"quotedString\" = \"Hello \\\"Guest\\\"!\";\n".data(using: .utf8), resultLocalizableString)
     }
 }
