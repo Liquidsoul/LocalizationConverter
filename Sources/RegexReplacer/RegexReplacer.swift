@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct RegexReplacer {
-    init?(pattern: String, replaceTemplate: String, options: NSRegularExpression.Options = .caseInsensitive) {
+public struct RegexReplacer {
+    public init?(pattern: String, replaceTemplate: String, options: NSRegularExpression.Options = .caseInsensitive) {
         do {
             regex = try NSRegularExpression(pattern: pattern, options: options)
         } catch {
@@ -18,7 +18,7 @@ struct RegexReplacer {
         self.replaceTemplate = replaceTemplate
     }
 
-    func replacingMatches(in string: String) -> String {
+    public func replacingMatches(in string: String) -> String {
         return regex.stringByReplacingMatches(
             in: string,
             options: NSRegularExpression.MatchingOptions(rawValue: 0),

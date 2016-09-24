@@ -6,6 +6,8 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
+import RegexReplacer
+
 /**
  This describes the type of the Localization.
  This is necessary because of the differences of content of string values like string parameters.

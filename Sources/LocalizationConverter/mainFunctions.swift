@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import RegexReplacer
+import FoundationExtensions
 
 func runConverter(with arguments: [String]) -> Int32 {
     let parser = CLIArgumentsParser()

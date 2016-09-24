@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension String {
-    func appending(pathComponent component: String) -> String {
+public extension String {
+    public func appending(pathComponent component: String) -> String {
         return (self as NSString).appendingPathComponent(component)
     }
 }
