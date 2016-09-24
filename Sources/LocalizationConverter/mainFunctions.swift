@@ -10,12 +10,12 @@ import Foundation
 import RegexReplacer
 import FoundationExtensions
 
-public func convert(androidFileName fileName: String, outputPath: String?, includePlurals: Bool) -> Bool {
+public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
     guard let localization = parseAndroidFile(withName: fileName) else {
         return false
     }
 
-    let outputFolder = outputPath ?? FileManager().currentDirectoryPath
+    let outputFolder = outputPath
     let outputLocalizableStringsPath = outputFolder.appending(pathComponent: "Localizable.strings")
     let outputStringsDictPath = outputFolder.appending(pathComponent: "Localizable.stringsdict")
 
@@ -74,10 +74,10 @@ func write(stringData string: String, toFilePath filePath: String) -> Bool {
     return true
 }
 
-public func convert(androidFolder resourceFolder: String, outputPath: String?, includePlurals: Bool) -> Bool {
+public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
     let fileManager = FileManager()
 
-    let outputFolder = outputPath ?? fileManager.currentDirectoryPath
+    let outputFolder = outputPath
 
     do {
         let folders = try fileManager.contentsOfDirectory(atPath: resourceFolder)
