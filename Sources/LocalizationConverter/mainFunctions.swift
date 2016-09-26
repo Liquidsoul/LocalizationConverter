@@ -122,41 +122,32 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
     return true
 }
 
+struct LocalizationLanguageConverter {
+    let localizationProvider: LocalizationStringProvider
+    let languagesStore: LanguagesLocalizationStore
+    let includePlurals: Bool
+
+    func execute() throws {
+        try localizationProvider.languages.forEach { (language) in
+            let contentProvider = localizationProvider.contentProvider(for: language)
+            let store = languagesStore.store(for: language)
+            let converter = SingleItemConverter(provider: contentProvider, store: store, includePlurals: includePlurals)
+            try converter.execute()
+        }
+    }
+
+}
+
 public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
-    let fileManager = FileManager()
-
-    let outputFolder = outputPath
-
     do {
-        let folders = try fileManager.contentsOfDirectory(atPath: resourceFolder)
-        let valuesFolders = folders.filter { (folderName) -> Bool in
-            return folderName.hasPrefix("values")
-        }
+        let localizationProvider: LocalizationStringProvider = try AndroidLocalizationFolderStringProvider(folderPath: resourceFolder)
+        let languagesStore: LanguagesLocalizationStore = iOSLanguagesLocalizationFolderStore(folderPath: outputPath)
+        let converter = LocalizationLanguageConverter(localizationProvider: localizationProvider, languagesStore: languagesStore, includePlurals: includePlurals)
+        try converter.execute()
 
-        let results = try valuesFolders.map { (valuesFolderName) -> Bool in
-            guard let outputFolderName = iOSFolderName(from: valuesFolderName) else {
-                print("Could not convert values folder name '\(valuesFolderName)' to its iOS counterpart")
-                return false
-            }
-            let outputFolderPath = outputFolder.appending(pathComponent: outputFolderName)
-            try fileManager.createDirectory(atPath: outputFolderPath, withIntermediateDirectories: true, attributes: nil)
-            let inputFilePath = resourceFolder
-                .appending(pathComponent: valuesFolderName)
-                .appending(pathComponent: "strings.xml")
-            return convert(androidFileName: inputFilePath, outputPath: outputFolderPath, includePlurals: includePlurals)
-        }
-        return results.reduce(true, { (accumulator, result) -> Bool in
-            return accumulator && result
-        })
+        return true
     } catch {
         print("Error: \(error)")
         return false
     }
-}
-
-func iOSFolderName(from valuesName: String) -> String? {
-    if valuesName == "values" { return "Base.lproj" }
-
-    let replacer = RegexReplacer(pattern: "values-(.*)", replaceTemplate: "$1.lproj")
-    return replacer?.replacingMatches(in: valuesName)
 }
