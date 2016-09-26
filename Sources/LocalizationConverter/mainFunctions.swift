@@ -121,22 +121,6 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
     return true
 }
 
-struct LocalizationLanguageConverter {
-    let localizationProvider: LocalizationStringProvider
-    let languagesStore: LanguagesLocalizationStore
-    let includePlurals: Bool
-
-    func execute() throws {
-        try localizationProvider.languages.forEach { (language) in
-            let contentProvider = localizationProvider.contentProvider(for: language)
-            let store = languagesStore.store(for: language)
-            let converter = SingleItemConverter(provider: contentProvider, store: store, includePlurals: includePlurals)
-            try converter.execute()
-        }
-    }
-
-}
-
 public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
     do {
         let localizationProvider: LocalizationStringProvider = try AndroidLocalizationFolderStringProvider(folderPath: resourceFolder)
