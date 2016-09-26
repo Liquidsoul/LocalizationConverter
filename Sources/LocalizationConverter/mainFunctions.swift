@@ -16,20 +16,30 @@ protocol LocalizationStore {
 }
 
 struct FileLocalizationStore: LocalizationStore {
+    private let outputFolderPath: String
     private let localizablePath: String
     private let stringsDictPath: String
 
     init(outputFolderPath: String) {
+        self.outputFolderPath = outputFolderPath
         localizablePath = outputFolderPath.appending(pathComponent: "Localizable.strings")
         stringsDictPath = outputFolderPath.appending(pathComponent: "Localizable.stringsdict")
     }
 
     func storeFormattedLocalizable(data: Data) throws {
+        try createFolderHierarchyIfNecessary()
         try write(data: data, toFilePath: localizablePath)
     }
 
     func storeFormattedStringsDict(data: Data) throws {
+        try createFolderHierarchyIfNecessary()
         try write(data: data, toFilePath: stringsDictPath)
+    }
+
+    private func createFolderHierarchyIfNecessary() throws {
+        let fileManager = FileManager()
+        if fileManager.fileExists(atPath: outputFolderPath) { return }
+        try fileManager.createDirectory(atPath: outputFolderPath, withIntermediateDirectories: true)
     }
 
     private func write(data: Data, toFilePath filePath: String) throws {
