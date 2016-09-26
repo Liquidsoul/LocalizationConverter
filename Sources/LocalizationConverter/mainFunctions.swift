@@ -77,19 +77,33 @@ struct StringFileContentProvider: StringContentProvider {
     }
 }
 
+struct SingleItemConverter {
+    let provider: StringContentProvider
+    let store: LocalizationStore
+    let includePlurals: Bool
+
+    func execute() throws {
+        do {
+            let androidLocalizationString = try provider.content()
+            let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
+            let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
+            try store.storeFormattedLocalizable(data: localizableString)
+            let stringsDictContent = try StringsDictFormatter().format(localization)
+            try store.storeFormattedStringsDict(data: stringsDictContent)
+        } catch StringsDictFormatter.Error.noPlurals {
+            print("No plural found, skipping stringsdict file.")
+        }
+    }
+}
+
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
     let stringsFileProvider: StringContentProvider = StringFileContentProvider(filePath: fileName, encoding: .utf8)
     let store: LocalizationStore = FileLocalizationStore(outputFolderPath: outputPath)
 
+    let converter = SingleItemConverter(provider: stringsFileProvider, store: store, includePlurals: includePlurals)
+
     do {
-        let androidLocalizationString = try stringsFileProvider.content()
-        let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
-        let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
-        try store.storeFormattedLocalizable(data: localizableString)
-        let stringsDictContent = try StringsDictFormatter().format(localization)
-        try store.storeFormattedStringsDict(data: stringsDictContent)
-    } catch StringsDictFormatter.Error.noPlurals {
-        print("No plural found, skipping stringsdict file.")
+        try converter.execute()
     } catch {
         print("Error: \(error)")
         return false
