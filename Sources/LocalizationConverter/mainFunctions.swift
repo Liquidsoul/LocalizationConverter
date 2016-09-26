@@ -98,33 +98,6 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
     return true
 }
 
-func readFile(withName fileName: String, encoding: String.Encoding = String.Encoding.utf16) -> String? {
-    let fileManager = FileManager()
-    let filePath: String
-    if fileManager.fileExists(atPath: fileName) {
-        filePath = fileName
-    } else {
-        filePath = NSString.path(withComponents: [fileManager.currentDirectoryPath, fileName])
-    }
-    guard let content = fileManager.contents(atPath: filePath) else {
-        print("Failed to load file \(fileName) from path \(filePath)")
-        return nil
-    }
-    guard let contentAsString = String(data: content, encoding: encoding) else {
-        print("Failed to read contents of file at path \(filePath)")
-        return nil
-    }
-    return contentAsString
-}
-
-func write(stringData string: String, toFilePath filePath: String) -> Bool {
-    if !FileManager().createFile(atPath: filePath, contents: string.data(using: String.Encoding.utf8), attributes: nil) {
-        print("Failed to write output at path: \(filePath)")
-        return false
-    }
-    return true
-}
-
 public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
     let fileManager = FileManager()
 
