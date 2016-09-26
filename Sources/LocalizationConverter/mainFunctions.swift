@@ -43,14 +43,47 @@ struct FileLocalizationStore: LocalizationStore {
     }
 }
 
-public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
-    guard let localization = parseAndroidFile(withName: fileName) else {
-        return false
+protocol StringContentProvider {
+    func content() throws -> String
+}
+
+struct StringFileContentProvider: StringContentProvider {
+    let filePath: String
+    let encoding: String.Encoding
+
+    init(filePath: String, encoding: String.Encoding = .utf16) {
+        self.filePath = filePath
+        self.encoding = encoding
     }
 
+    func content() throws -> String {
+        return try readFile(atPath: filePath, encoding: encoding)
+    }
+
+    private func readFile(atPath path: String, encoding: String.Encoding) throws -> String {
+        let fileManager = FileManager()
+        guard let content = fileManager.contents(atPath: path) else {
+            throw Error.fileNotFound(path: path)
+        }
+        guard let contentAsString = String(data: content, encoding: encoding) else {
+            throw Error.invalidFileContent(path: path, data: content)
+        }
+        return contentAsString
+    }
+
+    enum Error: Swift.Error {
+        case fileNotFound(path: String)
+        case invalidFileContent(path: String, data: Data)
+    }
+}
+
+public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
+    let stringsFileProvider: StringContentProvider = StringFileContentProvider(filePath: fileName, encoding: .utf8)
     let store: LocalizationStore = FileLocalizationStore(outputFolderPath: outputPath)
 
     do {
+        let androidLocalizationString = try stringsFileProvider.content()
+        let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
         let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
         try store.storeFormattedLocalizable(data: localizableString)
         let stringsDictContent = try StringsDictFormatter().format(localization)
@@ -63,13 +96,6 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
     }
 
     return true
-}
-
-func parseAndroidFile(withName name: String) -> LocalizationMap? {
-    guard let fileContent = readFile(withName: name, encoding: String.Encoding.utf8) else {
-        return nil
-    }
-    return try? AndroidStringsParser().parse(string: fileContent)
 }
 
 func readFile(withName fileName: String, encoding: String.Encoding = String.Encoding.utf16) -> String? {
