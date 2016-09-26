@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RegexReplacer
 import FoundationExtensions
 
 protocol LocalizationStore {
