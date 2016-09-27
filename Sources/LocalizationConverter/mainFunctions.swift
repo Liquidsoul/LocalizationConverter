@@ -10,17 +10,18 @@ import Foundation
 import FoundationExtensions
 
 protocol LocalizationStore {
-    func storeFormattedLocalizable(data: Data) throws
-    func storeFormattedStringsDict(data: Data) throws
+    func store(localization: LocalizationMap) throws
 }
 
-struct FileLocalizationStore: LocalizationStore {
+struct iOSLocalizationFileStore {
     private let outputFolderPath: String
     private let localizablePath: String
     private let stringsDictPath: String
+    fileprivate let includePlurals: Bool
 
-    init(outputFolderPath: String) {
+    init(outputFolderPath: String, includePlurals: Bool) {
         self.outputFolderPath = outputFolderPath
+        self.includePlurals = includePlurals
         localizablePath = outputFolderPath.appending(pathComponent: "Localizable.strings")
         stringsDictPath = outputFolderPath.appending(pathComponent: "Localizable.stringsdict")
     }
@@ -52,29 +53,35 @@ struct FileLocalizationStore: LocalizationStore {
     }
 }
 
-struct SingleItemConverter {
-    let provider: LocalizationProvider
-    let store: LocalizationStore
-    let includePlurals: Bool
+extension iOSLocalizationFileStore: LocalizationStore {
+    func store(localization: LocalizationMap) throws {
+        let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
+        try storeFormattedLocalizable(data: localizableString)
 
-    func execute() throws {
         do {
-            let localization = try provider.localization()
-            let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
-            try store.storeFormattedLocalizable(data: localizableString)
             let stringsDictContent = try StringsDictFormatter().format(localization)
-            try store.storeFormattedStringsDict(data: stringsDictContent)
+            try storeFormattedStringsDict(data: stringsDictContent)
         } catch StringsDictFormatter.Error.noPlurals {
             print("No plural found, skipping stringsdict file.")
         }
     }
 }
 
+struct SingleItemConverter {
+    let provider: LocalizationProvider
+    let store: LocalizationStore
+
+    func execute() throws {
+        let localization = try provider.localization()
+        try store.store(localization: localization)
+    }
+}
+
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
     let provider = AndroidLocalizationFileProvider(filePath: fileName)
-    let store: LocalizationStore = FileLocalizationStore(outputFolderPath: outputPath)
+    let store = iOSLocalizationFileStore(outputFolderPath: outputPath, includePlurals: includePlurals)
 
-    let converter = SingleItemConverter(provider: provider, store: store, includePlurals: includePlurals)
+    let converter = SingleItemConverter(provider: provider, store: store)
 
     do {
         try converter.execute()
@@ -89,8 +96,8 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
 public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
     do {
         let l10nLanguageProvider = try AndroidLocalizationFolderStringProvider(folderPath: resourceFolder)
-        let l10nLanguageStore = iOSLocalizationLanguageFolderStore(folderPath: outputPath)
-        let converter = LocalizationLanguageConverter(provider: l10nLanguageProvider, store: l10nLanguageStore, includePlurals: includePlurals)
+        let l10nLanguageStore = iOSLocalizationLanguageFolderStore(folderPath: outputPath, includePlurals: includePlurals)
+        let converter = LocalizationLanguageConverter(provider: l10nLanguageProvider, store: l10nLanguageStore)
         try converter.execute()
 
         return true

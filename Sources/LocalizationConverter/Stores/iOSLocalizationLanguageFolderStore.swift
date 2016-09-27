@@ -8,10 +8,11 @@
 
 struct iOSLocalizationLanguageFolderStore: LocalizationLanguageStore {
     let folderPath: String
+    let includePlurals: Bool
 
     func store(for language: Language) -> LocalizationStore {
         let languageFolderPath = folderPath.appending(pathComponent: language.iOSFolderName)
-        return FileLocalizationStore(outputFolderPath: languageFolderPath)
+        return iOSLocalizationFileStore(outputFolderPath: languageFolderPath, includePlurals: includePlurals)
     }
 }
 
