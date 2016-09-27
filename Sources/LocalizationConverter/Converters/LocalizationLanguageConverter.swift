@@ -7,13 +7,13 @@
 //
 
 struct LocalizationLanguageConverter {
-    let localizationProvider: LocalizationStringProvider
+    let l10nLanguageProvider: LocalizationLanguageProvider
     let languagesStore: LanguagesLocalizationStore
     let includePlurals: Bool
 
     func execute() throws {
-        try localizationProvider.languages.forEach { (language) in
-            let contentProvider = localizationProvider.contentProvider(for: language)
+        try l10nLanguageProvider.languages.forEach { (language) in
+            let contentProvider = l10nLanguageProvider.contentProvider(for: language)
             let store = languagesStore.store(for: language)
             let converter = SingleItemConverter(provider: contentProvider, store: store, includePlurals: includePlurals)
             try converter.execute()

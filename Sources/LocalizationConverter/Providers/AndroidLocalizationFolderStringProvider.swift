@@ -49,7 +49,7 @@ struct AndroidLocalizationFolderStringProvider {
     }
 }
 
-extension AndroidLocalizationFolderStringProvider: LocalizationStringProvider {
+extension AndroidLocalizationFolderStringProvider: LocalizationLanguageProvider {
     var languages: [Language] {
         return Array(languageToFilePath.keys)
     }
