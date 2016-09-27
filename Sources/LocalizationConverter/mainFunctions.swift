@@ -52,26 +52,6 @@ struct FileLocalizationStore: LocalizationStore {
     }
 }
 
-protocol LocalizationProvider {
-    func localization() throws -> LocalizationMap
-}
-
-struct AndroidLocalizationFileProvider: LocalizationProvider {
-    private let provider: StringContentProvider
-    let filePath: String
-
-    init(filePath path: String) {
-        filePath = path
-        provider = StringFileContentProvider(filePath: path, encoding: .utf8)
-    }
-
-    func localization() throws -> LocalizationMap {
-        let androidLocalizationString = try provider.content()
-        let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
-        return localization
-    }
-}
-
 struct SingleItemConverter {
     let provider: LocalizationProvider
     let store: LocalizationStore
