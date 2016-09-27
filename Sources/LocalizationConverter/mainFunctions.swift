@@ -6,18 +6,6 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-import Foundation
-
-struct SingleItemConverter {
-    let provider: LocalizationProvider
-    let store: LocalizationStore
-
-    func execute() throws {
-        let localization = try provider.localization()
-        try store.store(localization: localization)
-    }
-}
-
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
     let provider = AndroidLocalizationFileProvider(filePath: fileName)
     let store = iOSLocalizationFileStore(outputFolderPath: outputPath, includePlurals: includePlurals)
