@@ -52,15 +52,34 @@ struct FileLocalizationStore: LocalizationStore {
     }
 }
 
+protocol LocalizationProvider {
+    func localization() throws -> LocalizationMap
+}
+
+struct AndroidLocalizationFileProvider: LocalizationProvider {
+    private let provider: StringContentProvider
+    let filePath: String
+
+    init(filePath path: String) {
+        filePath = path
+        provider = StringFileContentProvider(filePath: path, encoding: .utf8)
+    }
+
+    func localization() throws -> LocalizationMap {
+        let androidLocalizationString = try provider.content()
+        let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
+        return localization
+    }
+}
+
 struct SingleItemConverter {
-    let provider: StringContentProvider
+    let provider: LocalizationProvider
     let store: LocalizationStore
     let includePlurals: Bool
 
     func execute() throws {
         do {
-            let androidLocalizationString = try provider.content()
-            let localization = try AndroidStringsParser().parse(string: androidLocalizationString)
+            let localization = try provider.localization()
             let localizableString = try LocalizableFormatter(includePlurals: includePlurals).format(localization)
             try store.storeFormattedLocalizable(data: localizableString)
             let stringsDictContent = try StringsDictFormatter().format(localization)
@@ -72,10 +91,10 @@ struct SingleItemConverter {
 }
 
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
-    let stringsFileProvider: StringContentProvider = StringFileContentProvider(filePath: fileName, encoding: .utf8)
+    let provider = AndroidLocalizationFileProvider(filePath: fileName)
     let store: LocalizationStore = FileLocalizationStore(outputFolderPath: outputPath)
 
-    let converter = SingleItemConverter(provider: stringsFileProvider, store: store, includePlurals: includePlurals)
+    let converter = SingleItemConverter(provider: provider, store: store, includePlurals: includePlurals)
 
     do {
         try converter.execute()

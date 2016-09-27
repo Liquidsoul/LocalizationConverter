@@ -8,5 +8,5 @@
 
 protocol LocalizationStringProvider {
     var languages: [Language] { get }
-    func contentProvider(for language: Language) -> StringContentProvider
+    func contentProvider(for language: Language) -> LocalizationProvider
 }

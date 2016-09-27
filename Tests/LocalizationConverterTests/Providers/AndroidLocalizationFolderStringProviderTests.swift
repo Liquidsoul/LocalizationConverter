@@ -26,16 +26,16 @@ class AndroidLocalizationFolderStringProviderTests: XCTestCase {
         XCTAssertTrue(languages.contains(.named("fr")))
 
         // THEN: we get the expected string providers
-        guard let baseFileProvider = localizationProvider.contentProvider(for: .base) as? StringFileContentProvider else {
+        guard let baseLocalizationProvider = localizationProvider.contentProvider(for: .base) as? AndroidLocalizationFileProvider else {
             XCTFail()
             return
         }
-        XCTAssertEqual("any/values/strings.xml", baseFileProvider.filePath)
-        guard let frFileProvider = localizationProvider.contentProvider(for: .named("fr")) as? StringFileContentProvider else {
+        XCTAssertEqual("any/values/strings.xml", baseLocalizationProvider.filePath)
+        guard let frLocalizationProvider = localizationProvider.contentProvider(for: .named("fr")) as? AndroidLocalizationFileProvider else {
             XCTFail()
             return
         }
-        XCTAssertEqual("any/values-fr/strings.xml", frFileProvider.filePath)
+        XCTAssertEqual("any/values-fr/strings.xml", frLocalizationProvider.filePath)
     }
 
     fileprivate struct FileProviderStub: FileProvider {

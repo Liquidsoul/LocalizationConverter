@@ -54,9 +54,9 @@ extension AndroidLocalizationFolderStringProvider: LocalizationStringProvider {
         return Array(languageToFilePath.keys)
     }
 
-    func contentProvider(for language: Language) -> StringContentProvider {
+    func contentProvider(for language: Language) -> LocalizationProvider {
         let filePath = languageToFilePath[language]
         assert(filePath != nil)
-        return StringFileContentProvider(filePath: filePath!, encoding: .utf8)
+        return AndroidLocalizationFileProvider(filePath: filePath!)
     }
 }
