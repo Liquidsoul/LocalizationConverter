@@ -14,7 +14,7 @@ class SingleItemConverterTests: XCTestCase {
 
     func test_execute() throws {
         // GIVEN: some mock provider and store objects
-        let provider = LocalizationProviderMock()
+        let provider = LocalizationProviderMock(type: .android, dictionary: [:])
         let store = LocalizationStoreMock()
         // GIVEN: a converter using these objects
         let converter = SingleItemConverter(provider: provider, store: store)
@@ -33,10 +33,17 @@ class SingleItemConverterTests: XCTestCase {
 
     private class LocalizationProviderMock: LocalizationProvider {
         var wasCalled = false
+        let type: LocalizationType
+        let dictionary: [String:String]
+
+        init(type: LocalizationType, dictionary: [String:String]) {
+            self.type = type
+            self.dictionary = dictionary
+        }
 
         func localization() throws -> LocalizationMap {
             wasCalled = true
-            return LocalizationMap(type: .android)
+            return LocalizationMap(type: type, dictionary: dictionary)
         }
     }
 
