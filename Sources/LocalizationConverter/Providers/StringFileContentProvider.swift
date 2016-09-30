@@ -12,13 +12,21 @@ protocol StringContentProvider {
 
 import Foundation
 
+protocol FileContentProvider {
+    func contents(atPath path: String) -> Data?
+}
+
+extension FileManager: FileContentProvider {}
+
 struct StringFileContentProvider: StringContentProvider {
     let filePath: String
     let encoding: String.Encoding
+    let provider: FileContentProvider
 
-    init(filePath: String, encoding: String.Encoding = .utf16) {
+    init(filePath: String, encoding: String.Encoding = .utf16, provider: FileContentProvider = FileManager()) {
         self.filePath = filePath
         self.encoding = encoding
+        self.provider = provider
     }
 
     func content() throws -> String {
@@ -26,8 +34,7 @@ struct StringFileContentProvider: StringContentProvider {
     }
 
     private func readFile(atPath path: String, encoding: String.Encoding) throws -> String {
-        let fileManager = FileManager()
-        guard let content = fileManager.contents(atPath: path) else {
+        guard let content = provider.contents(atPath: path) else {
             throw Error.fileNotFound(path: path)
         }
         guard let contentAsString = String(data: content, encoding: encoding) else {
