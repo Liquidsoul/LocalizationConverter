@@ -9,17 +9,27 @@
 import Foundation
 import FoundationExtensions
 
+protocol FileSystemWriter {
+    func fileExists(atPath path: String) -> Bool
+    func createFile(atPath path: String, contents data: Data?, attributes attr: [String : Any]?) -> Bool
+    func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : Any]?) throws
+}
+
+extension FileManager: FileSystemWriter {}
+
 struct iOSLocalizationFileStore {
+    private let fileSystemWriter: FileSystemWriter
     private let outputFolderPath: String
     private let localizablePath: String
     private let stringsDictPath: String
     fileprivate let includePlurals: Bool
 
-    init(outputFolderPath: String, includePlurals: Bool) {
+    init(outputFolderPath: String, includePlurals: Bool, fileSystemWriter: FileSystemWriter = FileManager()) {
         self.outputFolderPath = outputFolderPath
         self.includePlurals = includePlurals
         localizablePath = outputFolderPath.appending(pathComponent: "Localizable.strings")
         stringsDictPath = outputFolderPath.appending(pathComponent: "Localizable.stringsdict")
+        self.fileSystemWriter = fileSystemWriter
     }
 
     func storeFormattedLocalizable(data: Data) throws {
@@ -33,13 +43,12 @@ struct iOSLocalizationFileStore {
     }
 
     private func createFolderHierarchyIfNecessary() throws {
-        let fileManager = FileManager()
-        if fileManager.fileExists(atPath: outputFolderPath) { return }
-        try fileManager.createDirectory(atPath: outputFolderPath, withIntermediateDirectories: true)
+        if fileSystemWriter.fileExists(atPath: outputFolderPath) { return }
+        try fileSystemWriter.createDirectory(atPath: outputFolderPath, withIntermediateDirectories: true, attributes: nil)
     }
 
     private func write(data: Data, toFilePath filePath: String) throws {
-        guard FileManager().createFile(atPath: filePath, contents: data, attributes: nil) else {
+        guard fileSystemWriter.createFile(atPath: filePath, contents: data, attributes: nil) else {
             throw Error.fileWriteError(path: filePath)
         }
     }
