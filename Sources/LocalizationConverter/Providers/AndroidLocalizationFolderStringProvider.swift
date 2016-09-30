@@ -8,23 +8,23 @@
 
 import Foundation
 
-protocol FileProvider {
+protocol DirectoryContentProvider {
     func contentsOfDirectory(atPath: String) throws -> [String]
 }
 
-extension FileManager: FileProvider {}
+extension FileManager: DirectoryContentProvider {}
 
 struct AndroidLocalizationFolderStringProvider {
     fileprivate let languageToFilePath: [Language:String]
 
-    init(folderPath: String, fileProvider: FileProvider = FileManager()) throws {
+    init(folderPath: String, provider: DirectoryContentProvider = FileManager()) throws {
         let staticType = type(of: self)
-        let folders = try staticType.listFolders(atPath: folderPath, fileProvider: fileProvider)
+        let folders = try staticType.listFolders(atPath: folderPath, provider: provider)
         self.languageToFilePath = staticType.listLanguages(from: folders, at: folderPath)
     }
 
-    private static func listFolders(atPath path: String, fileProvider: FileProvider) throws -> [String] {
-        return try fileProvider.contentsOfDirectory(atPath: path)
+    private static func listFolders(atPath path: String, provider: DirectoryContentProvider) throws -> [String] {
+        return try provider.contentsOfDirectory(atPath: path)
     }
 
     private static func listLanguages(from folders: [String], at folderPath: String) -> [Language:String] {

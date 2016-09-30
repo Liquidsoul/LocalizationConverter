@@ -13,10 +13,10 @@ import XCTest
 class AndroidLocalizationFolderStringProviderTests: XCTestCase {
 
     func test_That_Provider_ListFolders() throws {
-        // GIVEN: a fake FileProvider
-        let fileProvider = FileProviderStub(list: ["values", "values-fr"])
+        // GIVEN: a fake provider
+        let directoryContentProvider = DirectoryContentProviderStub(list: ["values", "values-fr"])
         // GIVEN: a localization provider
-        let localizationProvider = try AndroidLocalizationFolderStringProvider(folderPath: "any", fileProvider: fileProvider)
+        let localizationProvider = try AndroidLocalizationFolderStringProvider(folderPath: "any", provider: directoryContentProvider)
 
         // WHEN: we query the languages
         let languages = localizationProvider.languages
@@ -38,7 +38,7 @@ class AndroidLocalizationFolderStringProviderTests: XCTestCase {
         XCTAssertEqual("any/values-fr/strings.xml", frLocalizationProvider.filePath)
     }
 
-    fileprivate struct FileProviderStub: FileProvider {
+    fileprivate struct DirectoryContentProviderStub: DirectoryContentProvider {
         let list: [String]
 
         func contentsOfDirectory(atPath: String) throws -> [String] {
