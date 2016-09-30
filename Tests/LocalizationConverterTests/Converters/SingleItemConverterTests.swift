@@ -14,7 +14,7 @@ class SingleItemConverterTests: XCTestCase {
 
     func test_execute() throws {
         // GIVEN: some mock provider and store objects
-        let provider = LocalizationProviderMock(type: .android, dictionary: [:])
+        let provider = LocalizationProviderMock(type: .android, dictionary: ["l10nKey":"LocalizedString"])
         let store = LocalizationStoreMock()
         // GIVEN: a converter using these objects
         let converter = SingleItemConverter(provider: provider, store: store)
@@ -28,7 +28,12 @@ class SingleItemConverterTests: XCTestCase {
         // THEN: the localization is of the expected type
         XCTAssertEqual(LocalizationType.android, store.localization?.type)
         // THEN: the localization has the expected content
-        XCTAssertEqual(0, store.localization?.count)
+        XCTAssertEqual(1, store.localization?.count)
+        let item = store.localization?["l10nKey"]
+        XCTAssertNotNil(item)
+        if let item = item {
+            XCTAssertEqual("LocalizedString", item.debugDescription)
+        }
     }
 
     private class LocalizationProviderMock: LocalizationProvider {
