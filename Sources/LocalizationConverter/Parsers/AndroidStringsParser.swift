@@ -26,7 +26,7 @@ class AndroidStringsParser: StringParser {
     fileprivate let parserDelegate = XMLDelegate()
 }
 
-extension AndroidStringsParser {
+fileprivate extension AndroidStringsParser {
     func delegateError() -> Error {
         return parserDelegate.lastError ?? NSError(domain: "\(type(of: self))",
                                                    code: 404,
@@ -35,7 +35,7 @@ extension AndroidStringsParser {
     }
 }
 
-extension AndroidStringsParser {
+fileprivate extension AndroidStringsParser {
 
     fileprivate class XMLDelegate: NSObject, XMLParserDelegate {
 
@@ -205,4 +205,4 @@ extension AndroidStringsParser {
             return (keyName, .plurals(values: pluralLocalizations))
         }
     }
-    }
+}
