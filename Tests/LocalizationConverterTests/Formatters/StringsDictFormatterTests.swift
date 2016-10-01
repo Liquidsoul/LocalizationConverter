@@ -15,7 +15,7 @@ class StringsDictFormatterTests: XCTestCase {
     func test_format_noLocalizationKeys() {
         let localizableFormatter = StringsDictFormatter()
         let localization = LocalizationMap(
-            type: .android,
+            format: .android,
             localizationsDictionary: [:])
 
         let throwExpectaction = self.expectation(description: "Throw expectation")
@@ -33,7 +33,7 @@ class StringsDictFormatterTests: XCTestCase {
     func test_format_noPluralsLocalizedValue() {
         let localizableFormatter = StringsDictFormatter()
         let localization = LocalizationMap(
-            type: .android,
+            format: .android,
             localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")])
 
         let throwExpectaction = self.expectation(description: "Throw expectation")
@@ -50,7 +50,7 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_stringsDict_onePluralLocalizedValue() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
             "pluralKey": LocalizationItem.plurals(values: [
@@ -83,7 +83,7 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_stringsDict_multiplePluralLocalizedValue() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "pluralKey0": LocalizationItem.plurals(values: [
                 .zero: "zero_value0",
@@ -140,7 +140,7 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_stringsDict_missingOtherValue() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value"]),
             ])
 
@@ -158,7 +158,7 @@ class StringsDictFormatterTests: XCTestCase {
 
     func test_stringsDict_onePluralLocalizedValue_WithFormatParameter() {
         let localizableFormatter = StringsDictFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "pluralKey": LocalizationItem.plurals(values: [
                 .zero: "zero_value",
                 .other: "%1$s values"

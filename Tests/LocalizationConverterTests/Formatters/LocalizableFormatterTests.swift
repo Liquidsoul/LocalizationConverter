@@ -14,7 +14,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_noLocalizationKeys() throws {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android)
+        let localization = LocalizationMap(format: .android)
 
         let resultLocalizableString = try localizableFormatter.format(localization)
 
@@ -24,7 +24,7 @@ class LocalizableFormatterTests: XCTestCase {
     func test_format_oneStringLocalizedValue() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(
-            type: .android,
+            format: .android,
             localizationsDictionary: ["key": LocalizationItem.string(value: "localized_value")]
         )
 
@@ -35,7 +35,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_multipleStringsLocalizedValue() throws {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key1": LocalizationItem.string(value: "localized_value1"),
             "key0": LocalizationItem.string(value: "localized_value0"),
             "key2": LocalizationItem.string(value: "localized_value2"),
@@ -52,7 +52,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_doesNotIncludePluralLocalizedValuesIfOptionIsDisabled() throws {
         let localizableFormatter = LocalizableFormatter(includePlurals: false)
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
             "pluralKey": LocalizationItem.plurals(values: [
@@ -72,7 +72,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_includePluralLocalizedValuesIfOptionIsEnabled() throws {
         let localizableFormatter = LocalizableFormatter(includePlurals: true)
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key2": LocalizationItem.string(value: "localized_value2"),
             "key0": LocalizationItem.string(value: "localized_value0"),
             "pluralKey": LocalizationItem.plurals(values: [
@@ -93,7 +93,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_convertStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "stringParams": LocalizationItem.string(value: "Hello %s %s!"),
             ])
 
@@ -104,7 +104,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_convertPositionalStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "positionalParams": LocalizationItem.string(value: "Hello %1$s %2$s!"),
             ])
 
@@ -115,7 +115,7 @@ class LocalizableFormatterTests: XCTestCase {
 
     func test_format_escapeDoubleQuotes() throws {
         let localizableFormatter = LocalizableFormatter()
-        let localization = LocalizationMap(type: .android, localizationsDictionary: [
+        let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "quotedString": LocalizationItem.string(value: "Hello \"Guest\"!"),
             ])
 

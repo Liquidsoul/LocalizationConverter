@@ -12,7 +12,7 @@ class LocalizableParser: LocalizationParser {
     func parse(string: String) -> LocalizationMap {
         return string.characters
             .split { $0 == "\n" }
-            .reduce(LocalizationMap(type: .ios), { (localization_dict, keyValueCharView) -> LocalizationMap in
+            .reduce(LocalizationMap(format: .ios), { (localization_dict, keyValueCharView) -> LocalizationMap in
                 var output_dict = localization_dict
                 let trimCharacterSet = CharacterSet(charactersIn: " \n\";")
                 let array = keyValueCharView

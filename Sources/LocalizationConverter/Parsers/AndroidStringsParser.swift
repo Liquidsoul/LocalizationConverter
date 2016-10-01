@@ -20,7 +20,7 @@ class AndroidStringsParser: LocalizationParser {
             throw delegateError()
         }
 
-        return LocalizationMap(type: .android, localizationsDictionary: parserDelegate.localizations)
+        return LocalizationMap(format: .android, localizationsDictionary: parserDelegate.localizations)
     }
 
     fileprivate let parserDelegate = XMLDelegate()

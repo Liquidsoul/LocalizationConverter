@@ -44,7 +44,7 @@ class LocalizationLanguageConverterTests: XCTestCase {
 
         private class LocalizationProviderMock: LocalizationProvider {
             func localization() throws -> LocalizationMap {
-                return LocalizationMap(type: .android)
+                return LocalizationMap(format: .android)
             }
         }
     }

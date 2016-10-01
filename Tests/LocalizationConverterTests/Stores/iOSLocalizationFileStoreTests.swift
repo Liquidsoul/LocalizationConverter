@@ -16,7 +16,7 @@ class iOSLocalizationFileStoreTests: XCTestCase {
         // GIVEN: a fake writer
         let fsWriter = FileSystemWriterMock()
         // GIVEN: a localization
-        let localization = LocalizationMap(type: .android, dictionary: ["key": "LocalizedValue"])
+        let localization = LocalizationMap(format: .android, dictionary: ["key": "LocalizedValue"])
         // GIVEN: a store
         let store = iOSLocalizationFileStore(outputFolderPath: "outFolder", includePlurals: false, fileSystemWriter: fsWriter)
 
@@ -32,7 +32,7 @@ class iOSLocalizationFileStoreTests: XCTestCase {
         let fsWriter = FileSystemWriterMock(existingPaths: ["outFolder"])
         // GIVEN: a localization
         let pluralValue: LocalizationItem = .plurals(values: [.other: "PluralLocalizedValue"])
-        let localization = LocalizationMap(type: .android, localizationsDictionary: ["pluralKey": pluralValue])
+        let localization = LocalizationMap(format: .android, localizationsDictionary: ["pluralKey": pluralValue])
         // GIVEN: a store
         let store = iOSLocalizationFileStore(outputFolderPath: "outFolder", includePlurals: true, fileSystemWriter: fsWriter)
 
@@ -49,7 +49,7 @@ class iOSLocalizationFileStoreTests: XCTestCase {
         // GIVEN: a fake writer
         let fsWriter = FailingFileSystemWriter()
         // GIVEN: a localization
-        let localization = LocalizationMap(type: .android, dictionary: ["key": "LocalizedValue"])
+        let localization = LocalizationMap(format: .android, dictionary: ["key": "LocalizedValue"])
         // GIVEN: a store
         let store = iOSLocalizationFileStore(outputFolderPath: "outFolder", includePlurals: false, fileSystemWriter: fsWriter)
         let callExpectation = expectation(description: "Thrown error")

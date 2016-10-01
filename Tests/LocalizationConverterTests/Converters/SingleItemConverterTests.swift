@@ -14,7 +14,7 @@ class SingleItemConverterTests: XCTestCase {
 
     func test_execute() throws {
         // GIVEN: some mock provider and store objects
-        let provider = LocalizationProviderMock(type: .android, dictionary: ["l10nKey":"LocalizedString"])
+        let provider = LocalizationProviderMock(format: .android, dictionary: ["l10nKey":"LocalizedString"])
         let store = LocalizationStoreMock()
         // GIVEN: a converter using these objects
         let converter = SingleItemConverter(provider: provider, store: store)
@@ -25,8 +25,8 @@ class SingleItemConverterTests: XCTestCase {
         // THEN: provider and store objects were called
         XCTAssertTrue(provider.wasCalled)
         XCTAssertTrue(store.wasCalled)
-        // THEN: the localization is of the expected type
-        XCTAssertEqual(LocalizationType.android, store.localization?.type)
+        // THEN: the localization is of the expected format
+        XCTAssertEqual(LocalizationMap.Format.android, store.localization?.format)
         // THEN: the localization has the expected content
         XCTAssertEqual(1, store.localization?.count)
         let item = store.localization?["l10nKey"]
@@ -38,17 +38,17 @@ class SingleItemConverterTests: XCTestCase {
 
     private class LocalizationProviderMock: LocalizationProvider {
         var wasCalled = false
-        let type: LocalizationType
+        let format: LocalizationMap.Format
         let dictionary: [String:String]
 
-        init(type: LocalizationType, dictionary: [String:String]) {
-            self.type = type
+        init(format: LocalizationMap.Format, dictionary: [String:String]) {
+            self.format = format
             self.dictionary = dictionary
         }
 
         func localization() throws -> LocalizationMap {
             wasCalled = true
-            return LocalizationMap(type: type, dictionary: dictionary)
+            return LocalizationMap(format: format, dictionary: dictionary)
         }
     }
 

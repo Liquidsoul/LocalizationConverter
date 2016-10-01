@@ -25,7 +25,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: "<resources/>")
 
-        XCTAssertEqual(LocalizationMap(type: .android), parsedResult)
+        XCTAssertEqual(LocalizationMap(format: .android), parsedResult)
     }
 
     func test_parseString_stringItem() {
@@ -38,7 +38,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "localization_key": "localized_value"
             ]), parsedResult)
     }
@@ -53,7 +53,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "all.loading": "Loading…"
             ]), parsedResult)
     }
@@ -71,7 +71,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, localizationsDictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, localizationsDictionary: [
             "localization_key": .plurals(values: [.zero: "zero_value", .other: "other_value"])
             ]), parsedResult)
     }
@@ -89,7 +89,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, localizationsDictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, localizationsDictionary: [
             "all.loading": .plurals(values: [
                 .zero: "Loading none…",
                 .other: "Loading %d…"
@@ -108,7 +108,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "localization_key0": "localized_value0",
             "localization_key1": "localized_value1"
             ]), parsedResult)
@@ -124,7 +124,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "localization_key": "localized \"value\""
             ]), parsedResult)
     }
@@ -142,7 +142,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "bold_key": "localized <b>bold</b>",
             "italic_key": "localized <i>italic</i>",
             "underlined_key": "localized <u>underlined</u>",
@@ -160,7 +160,7 @@ class AndroidStringsParserTests: XCTestCase {
 
         let parsedResult = try? parser.parse(string: xmlString)
 
-        XCTAssertEqual(LocalizationMap(type: .android, dictionary: [
+        XCTAssertEqual(LocalizationMap(format: .android, dictionary: [
             "mutli_line": "first line<br />second line"
             ]), parsedResult)
     }

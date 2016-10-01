@@ -17,7 +17,7 @@ class LocalizableParserTests: XCTestCase {
 
         let parsedResult = parser.parse(string: "")
 
-        XCTAssertEqual(LocalizationMap(type: .ios), parsedResult)
+        XCTAssertEqual(LocalizationMap(format: .ios), parsedResult)
     }
 
     func test_parseString_oneItem() {
@@ -27,7 +27,7 @@ class LocalizableParserTests: XCTestCase {
         let parsedResult = parser.parse(string: testString)
 
         XCTAssertEqual(
-            LocalizationMap(type: .ios, dictionary: [
+            LocalizationMap(format: .ios, dictionary: [
                 "localization_key": "localized_value"
             ]),
             parsedResult)
@@ -40,7 +40,7 @@ class LocalizableParserTests: XCTestCase {
         let parsedResult = parser.parse(string: testString)
 
         XCTAssertEqual(
-            LocalizationMap(type: .ios, dictionary: [
+            LocalizationMap(format: .ios, dictionary: [
                 "localization_key": "localized_value"
             ]),
             parsedResult)
@@ -55,7 +55,7 @@ class LocalizableParserTests: XCTestCase {
         let parsedResult = parser.parse(string: testString)
 
         XCTAssertEqual(
-            LocalizationMap(type: .ios, dictionary: [
+            LocalizationMap(format: .ios, dictionary: [
                 "localization_key0": "localized_value0",
                 "localization_key1": "localized_value1"]),
             parsedResult)
@@ -71,7 +71,7 @@ class LocalizableParserTests: XCTestCase {
         let parsedResult = parser.parse(string: testString)
 
         XCTAssertEqual(
-            LocalizationMap(type: .ios, dictionary: [
+            LocalizationMap(format: .ios, dictionary: [
                 "localization_key0": "localized_value0",
                 "localization_key1": "localized_value1"]),
             parsedResult)
@@ -87,7 +87,7 @@ class LocalizableParserTests: XCTestCase {
         let parsedResult = parser.parse(string: testString)
 
         XCTAssertEqual(
-            LocalizationMap(type: .ios, dictionary: [
+            LocalizationMap(format: .ios, dictionary: [
                 "localization_key0": "localized_value0",
                 "localization_key1": "localized_value1"]),
             parsedResult)

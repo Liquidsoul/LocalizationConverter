@@ -8,31 +8,31 @@
 
 import RegexReplacer
 
-/**
- This describes the type of the Localization.
- This is necessary because of the differences of content of string values like string parameters.
- `%s` is for Java string on Android while the equivalent is `%@` on iOS.
- */
-enum LocalizationType {
-    case android
-    case ios
-}
-
 struct LocalizationMap {
-    fileprivate(set) var type: LocalizationType
-    fileprivate(set) var localizations = [String:LocalizationItem]()
-
-    init(type: LocalizationType) {
-        self.type = type
+    /**
+     This describes the format used in the Localization strings.
+     This is necessary because of the differences of content of string values like string parameters.
+     `%s` is for Java string on Android while the equivalent is `%@` on iOS.
+     */
+    enum Format {
+        case android
+        case ios
     }
 
-    init(type: LocalizationType, dictionary: [String:String]) {
-        self.init(type: type)
+    fileprivate(set) var format: Format
+    fileprivate(set) var localizations = [String:LocalizationItem]()
+
+    init(format: Format) {
+        self.format = format
+    }
+
+    init(format: Format, dictionary: [String:String]) {
+        self.init(format: format)
         dictionary.forEach { localizations[$0] = .string(value: $1) }
     }
 
-    init(type: LocalizationType, localizationsDictionary: [String:LocalizationItem]) {
-        self.init(type: type)
+    init(format: Format, localizationsDictionary: [String:LocalizationItem]) {
+        self.init(format: format)
         localizations = localizationsDictionary
     }
 
@@ -62,25 +62,25 @@ struct LocalizationMap {
 extension LocalizationMap: Equatable {}
 
 func == (left: LocalizationMap, right: LocalizationMap) -> Bool {
-    return left.type == right.type
+    return left.format == right.format
         && left.localizations == right.localizations
 }
 
 extension LocalizationMap {
-    func convertedLocalization(to type: LocalizationType) -> LocalizationMap {
-        if type == self.type {
+    func convertedLocalization(to format: Format) -> LocalizationMap {
+        if format == self.format {
             return self
         }
-        switch type {
+        switch format {
         case .android:
-            fatalError("Unsupported convertion \(self.type) -> \(type) (yet)")
+            fatalError("Unsupported convertion \(self.format) -> \(format) (yet)")
         case .ios:
             guard let stringParameterReplacer = RegexReplacer(pattern: "%([0-9]+\\$)?s", replaceTemplate: "%$1@") else {
                 fatalError("Could not initialize replacer!")
             }
 
             return LocalizationMap(
-                type: .ios,
+                format: .ios,
                 localizationsDictionary: convert(localizations, using: stringParameterReplacer))
         }
     }
