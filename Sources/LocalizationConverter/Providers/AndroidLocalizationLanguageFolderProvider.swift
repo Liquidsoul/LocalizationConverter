@@ -1,5 +1,5 @@
 //
-//  AndroidLocalizationFolderStringProvider.swift
+//  AndroidLocalizationLanguageFolderProvider.swift
 //
 //  Created by Sébastien Duperron on 26/09/2016.
 //  Copyright © 2016 Sébastien Duperron
@@ -14,7 +14,7 @@ protocol DirectoryContentProvider {
 
 extension FileManager: DirectoryContentProvider {}
 
-struct AndroidLocalizationFolderStringProvider {
+struct AndroidLocalizationLanguageFolderProvider {
     fileprivate let languageToFilePath: [Language:String]
 
     init(folderPath: String, provider: DirectoryContentProvider = FileManager()) throws {
@@ -49,7 +49,7 @@ struct AndroidLocalizationFolderStringProvider {
     }
 }
 
-extension AndroidLocalizationFolderStringProvider: LocalizationLanguageProvider {
+extension AndroidLocalizationLanguageFolderProvider: LocalizationLanguageProvider {
     var languages: [Language] {
         return Array(languageToFilePath.keys)
     }

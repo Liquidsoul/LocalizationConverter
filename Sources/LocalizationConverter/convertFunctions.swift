@@ -24,7 +24,7 @@ public func convert(androidFileName fileName: String, outputPath: String, includ
 
 public func convert(androidFolder resourceFolder: String, outputPath: String, includePlurals: Bool) -> Bool {
     do {
-        let l10nLanguageProvider = try AndroidLocalizationFolderStringProvider(folderPath: resourceFolder)
+        let l10nLanguageProvider = try AndroidLocalizationLanguageFolderProvider(folderPath: resourceFolder)
         let l10nLanguageStore = iOSLocalizationLanguageFolderStore(folderPath: outputPath, includePlurals: includePlurals)
         let converter = LocalizationLanguageConverter(provider: l10nLanguageProvider, store: l10nLanguageStore)
         try converter.execute()

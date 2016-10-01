@@ -1,5 +1,5 @@
 //
-//  AndroidLocalizationFolderStringProviderTests.swift
+//  AndroidLocalizationLanguageFolderProviderTests.swift
 //
 //  Created by Sébastien Duperron on 26/09/2016.
 //  Copyright © 2016 Sébastien Duperron
@@ -10,13 +10,13 @@ import XCTest
 
 @testable import LocalizationConverter
 
-class AndroidLocalizationFolderStringProviderTests: XCTestCase {
+class AndroidLocalizationLanguageFolderProviderTests: XCTestCase {
 
     func test_That_Provider_ListFolders() throws {
         // GIVEN: a fake provider
         let directoryContentProvider = DirectoryContentProviderStub(list: ["values", "values-fr"])
         // GIVEN: a localization provider
-        let localizationProvider = try AndroidLocalizationFolderStringProvider(folderPath: "any", provider: directoryContentProvider)
+        let localizationProvider = try AndroidLocalizationLanguageFolderProvider(folderPath: "any", provider: directoryContentProvider)
 
         // WHEN: we query the languages
         let languages = localizationProvider.languages
