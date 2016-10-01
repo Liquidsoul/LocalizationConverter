@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LocalizableParser: StringParser {
+class LocalizableParser: LocalizationParser {
     func parse(string: String) -> LocalizationMap {
         return string.characters
             .split { $0 == "\n" }

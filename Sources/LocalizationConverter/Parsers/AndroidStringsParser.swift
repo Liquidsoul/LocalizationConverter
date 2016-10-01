@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AndroidStringsParser: StringParser {
+class AndroidStringsParser: LocalizationParser {
 
     func parse(string: String) throws -> LocalizationMap {
         let parser = XMLParser(data: string.data(using: String.Encoding.utf8)!)

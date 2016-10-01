@@ -1,5 +1,5 @@
 //
-//  StringParser.swift
+//  LocalizationParser.swift
 //
 //  Created by Sébastien Duperron on 14/05/2016.
 //  Copyright © 2016 Sébastien Duperron
@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol StringParser {
+protocol LocalizationParser {
     func parse(string: String) throws -> LocalizationMap
 }
