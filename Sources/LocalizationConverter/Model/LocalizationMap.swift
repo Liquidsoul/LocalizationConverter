@@ -59,11 +59,11 @@ struct LocalizationMap {
     }
 }
 
-extension LocalizationMap: Equatable {}
-
-func == (left: LocalizationMap, right: LocalizationMap) -> Bool {
-    return left.format == right.format
-        && left.localizations == right.localizations
+extension LocalizationMap: Equatable {
+    static func ==(left: LocalizationMap, right: LocalizationMap) -> Bool {
+        return left.format == right.format
+            && left.localizations == right.localizations
+    }
 }
 
 extension LocalizationMap {
