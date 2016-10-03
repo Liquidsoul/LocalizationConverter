@@ -39,7 +39,11 @@ extension LocalizationItem: CustomDebugStringConvertible {
         case .string(let value):
             return value
         case .plurals(let values):
-            return "\(values)"
+            return values.keys
+                .map({ $0.rawValue })
+                .sorted()
+                .map({ "\($0):\(values[PluralType(rawValue: $0)!]!)" })
+                .joined(separator: "|")
         }
     }
 }
