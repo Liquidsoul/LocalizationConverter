@@ -6,8 +6,6 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-import RegexReplacer
-
 struct LocalizationMap {
     /**
      This describes the format used in the Localization strings.
@@ -66,22 +64,26 @@ extension LocalizationMap: Equatable {
     }
 }
 
+import RegexReplacer
+
 extension LocalizationMap {
     func convertedLocalization(to format: Format) -> LocalizationMap {
-        if format == self.format {
-            return self
-        }
-        switch format {
-        case .android:
-            fatalError("Unsupported convertion \(self.format) -> \(format) (yet)")
-        case .ios:
-            guard let stringParameterReplacer = RegexReplacer(pattern: "%([0-9]+\\$)?s", replaceTemplate: "%$1@") else {
-                fatalError("Could not initialize replacer!")
-            }
+        let sourceFormat = self.format
+        let destinationFormat = format
 
-            return LocalizationMap(
-                format: .ios,
-                localizationsDictionary: convert(localizations, using: stringParameterReplacer))
+        switch (sourceFormat, destinationFormat) {
+            case let (source, destination) where source == destination:
+                return self
+            case (.android, .ios):
+                guard let stringParameterReplacer = RegexReplacer(pattern: "%([0-9]+\\$)?s", replaceTemplate: "%$1@") else {
+                    fatalError("Could not initialize replacer!")
+                }
+
+                return LocalizationMap(
+                    format: destinationFormat,
+                    localizationsDictionary: convert(localizations, using: stringParameterReplacer))
+            default:
+               fatalError("Unsupported convertion \(sourceFormat) -> \(destinationFormat)")
         }
     }
 
