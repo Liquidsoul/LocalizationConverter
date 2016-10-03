@@ -188,11 +188,7 @@ extension AcceptanceTests {
             appropriateFor: nil,
             create: true)
         let tempDirectoryURL = documentsDirectory.appendingPathComponent("testResults")
-        #if swift(>=2.3)
         return tempDirectoryURL
-        #else
-        return tempDirectoryURL
-        #endif
     }
 
     func deleteTempDirectory() {
