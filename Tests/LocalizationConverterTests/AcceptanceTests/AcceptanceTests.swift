@@ -155,8 +155,8 @@ extension AcceptanceTests {
         let fileManager = FileManager()
 
         do {
-            let referenceSubPaths = try fileManager.subpathsOfDirectory(atPath: referenceFolderPath).sorted()
-            let testedSubPaths = try fileManager.subpathsOfDirectory(atPath: testedFolderPath).sorted()
+            let referenceSubPaths = try fileManager.subpathsOfDirectory(atPath: referenceFolderPath).filter({ $0 != ".DS_Store" }).sorted()
+            let testedSubPaths = try fileManager.subpathsOfDirectory(atPath: testedFolderPath).filter({ $0 != ".DS_Store" }).sorted()
             guard referenceSubPaths == testedSubPaths else {
                 print("Expected paths: \(referenceSubPaths), Got: \(testedSubPaths)")
                 return false
