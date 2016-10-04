@@ -121,16 +121,25 @@ extension AcceptanceTests {
 
     private func localFilePath(_ partialPath: String) throws -> String {
         let fileManager = FileManager()
-        let currentDirectoryPath = fileManager.currentDirectoryPath as NSString
-        let testFilesDirectoryPath = currentDirectoryPath.appendingPathComponent("Tests/LocalizationConverterTests/AcceptanceTests/testFiles")
-        guard fileManager.fileExists(atPath: testFilesDirectoryPath) else {
-            throw Error.fileNotFound(path: testFilesDirectoryPath)
-        }
+        let currentDirectoryPath = fileManager.currentDirectoryPath
+        let testFilesDirectoryPath = try find(relativeDirectoryPath: "Tests/LocalizationConverterTests/AcceptanceTests/testFiles", movingUpTheDirectoryHierarchy: currentDirectoryPath, using: fileManager)
         let filePath = (testFilesDirectoryPath as NSString).appendingPathComponent(partialPath)
         guard fileManager.fileExists(atPath: filePath) else {
             throw Error.fileNotFound(path: filePath)
         }
         return filePath
+    }
+
+    private func find(relativeDirectoryPath relativePath: String, movingUpTheDirectoryHierarchy referencePath: String, using fileManager: FileManager) throws -> String {
+        let path = (referencePath as NSString).appendingPathComponent(relativePath)
+        if fileManager.fileExists(atPath: path) {
+            return path
+        }
+        let parentPath = (referencePath as NSString).deletingLastPathComponent
+        if parentPath == referencePath {
+            throw Error.fileNotFound(path: relativePath)
+        }
+        return try find(relativeDirectoryPath: relativePath, movingUpTheDirectoryHierarchy: parentPath, using: fileManager)
     }
 
     private enum Error: Swift.Error {
