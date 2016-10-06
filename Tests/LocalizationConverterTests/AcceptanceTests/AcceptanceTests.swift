@@ -91,6 +91,29 @@ class AcceptanceTests: XCTestCase {
         // THEN: contents of the output folder match the expected one
         XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
     }
+
+    func test_iOSToAndroid_FolderConversion() throws {
+        // GIVEN: a android resource folder
+        let sourceFolderPath = try filePath("ios/")
+        // GIVEN: output iOS folder
+        let outputFolderPath = tempDirectoryPath
+        // GIVEN: expected iOS folder content
+        let expectedOutputFolderContent = try filePath("android/")
+
+        // WHEN: we execute the converter
+        let returnedValue = convert(
+            folder: sourceFolderPath,
+            outputPath: outputFolderPath,
+            from: .ios,
+            to: .android,
+            includePlurals: false
+        )
+
+        // THEN: the execution was successful
+        XCTAssertTrue(returnedValue)
+        // THEN: contents of the output folder match the expected one
+        XCTAssertTrue(compareFolders(expectedOutputFolderContent, testedFolderPath: outputFolderPath))
+    }
 }
 
 // MARK: - Test helper methods
