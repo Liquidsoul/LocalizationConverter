@@ -6,6 +6,8 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
+let version = "0.0.6"
+
 import Commander
 import LocalizationConverter
 
@@ -40,4 +42,4 @@ let main = Group {
   $0.addCommand("convertAndroidFolder", "Convert an Android strings resource folder into an iOS Localization folder.", convertAndroidFolderCommand)
 }
 
-main.run()
+main.run("l10nconverter v\(version)")
