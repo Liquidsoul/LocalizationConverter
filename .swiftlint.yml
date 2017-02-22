@@ -1,1 +1,6 @@
+included:
+  - Sources
+  - Tests
+disabled_rules:
+  - nesting
 line_length: 128
