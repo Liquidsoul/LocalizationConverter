@@ -6,6 +6,9 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
+// Disable rule to allow iOS prefixed declarations
+// swiftlint:disable type_name
+
 struct iOSLocalizationLanguageFolderStore: LocalizationLanguageStore {
     let folderPath: String
     let includePlurals: Bool
