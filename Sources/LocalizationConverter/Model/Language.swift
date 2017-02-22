@@ -19,7 +19,7 @@ extension Language: Hashable {
         }
     }
 
-    static func ==(lhs: Language, rhs: Language) -> Bool {
+    static func == (lhs: Language, rhs: Language) -> Bool {
         switch (lhs, rhs) {
             case (.base, .base): return true
             case let (.named(lhsName), .named(rhsName)): return lhsName == rhsName
