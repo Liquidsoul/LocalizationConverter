@@ -20,7 +20,7 @@ class AndroidLocalizationLanguageFolderProviderTests: XCTestCase {
 
         // WHEN: we query the languages
         let languages = localizationProvider.languages
-        
+
         // THEN: we get the expected languages
         XCTAssertTrue(languages.contains(.base))
         XCTAssertTrue(languages.contains(.named("fr")))
