@@ -1,12 +1,12 @@
 //
-//  AndroidLocalizationFileProvider.swift
+//  AndroidL10nFileProvider.swift
 //
 //  Created by Sébastien Duperron on 27/09/2016.
 //  Copyright © 2016 Sébastien Duperron
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-struct AndroidLocalizationFileProvider: LocalizationProvider {
+struct AndroidL10nFileProvider: LocalizationProvider {
     private let provider: StringContentProvider
     let filePath: String
 

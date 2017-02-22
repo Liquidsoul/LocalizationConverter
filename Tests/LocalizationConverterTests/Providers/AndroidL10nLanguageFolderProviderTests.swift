@@ -16,22 +16,22 @@ class AndroidL10nLanguageFolderProviderTests: XCTestCase {
         // GIVEN: a fake provider
         let directoryContentProvider = DirectoryContentProviderStub(list: ["values", "values-fr"])
         // GIVEN: a localization provider
-        let localizationProvider = try AndroidL10nLanguageFolderProvider(folderPath: "any", provider: directoryContentProvider)
+        let l10nProvider = try AndroidL10nLanguageFolderProvider(folderPath: "any", provider: directoryContentProvider)
 
         // WHEN: we query the languages
-        let languages = localizationProvider.languages
+        let languages = l10nProvider.languages
 
         // THEN: we get the expected languages
         XCTAssertTrue(languages.contains(.base))
         XCTAssertTrue(languages.contains(.named("fr")))
 
         // THEN: we get the expected string providers
-        guard let baseLocalizationProvider = localizationProvider.contentProvider(for: .base) as? AndroidLocalizationFileProvider else {
+        guard let baseLocalizationProvider = l10nProvider.contentProvider(for: .base) as? AndroidL10nFileProvider else {
             XCTFail()
             return
         }
         XCTAssertEqual("any/values/strings.xml", baseLocalizationProvider.filePath)
-        guard let frLocalizationProvider = localizationProvider.contentProvider(for: .named("fr")) as? AndroidLocalizationFileProvider else {
+        guard let frLocalizationProvider = l10nProvider.contentProvider(for: .named("fr")) as? AndroidL10nFileProvider else {
             XCTFail()
             return
         }

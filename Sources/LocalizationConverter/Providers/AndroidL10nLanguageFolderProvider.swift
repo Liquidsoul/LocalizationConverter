@@ -57,6 +57,6 @@ extension AndroidL10nLanguageFolderProvider: LocalizationLanguageProvider {
     func contentProvider(for language: Language) -> LocalizationProvider {
         let filePath = languageToFilePath[language]
         assert(filePath != nil)
-        return AndroidLocalizationFileProvider(filePath: filePath!)
+        return AndroidL10nFileProvider(filePath: filePath!)
     }
 }

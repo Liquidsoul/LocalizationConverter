@@ -7,7 +7,7 @@
 //
 
 public func convert(androidFileName fileName: String, outputPath: String, includePlurals: Bool) -> Bool {
-    let provider = AndroidLocalizationFileProvider(filePath: fileName)
+    let provider = AndroidL10nFileProvider(filePath: fileName)
     let store = iOSLocalizationFileStore(outputFolderPath: outputPath, includePlurals: includePlurals)
 
     let converter = SingleItemConverter(provider: provider, store: store)
