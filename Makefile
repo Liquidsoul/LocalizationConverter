@@ -1,7 +1,10 @@
 
 RELEASE_BIN_PATH=.build/release/LocalizationConverter
 
-.PHONY: release clean
+.PHONY: build release clean
+
+build:
+	swift build
 
 release: clean $(RELEASE_BIN_PATH)
 
