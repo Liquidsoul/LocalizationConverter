@@ -122,7 +122,10 @@ extension AcceptanceTests {
     private func localFilePath(_ partialPath: String) throws -> String {
         let fileManager = FileManager()
         let currentDirectoryPath = fileManager.currentDirectoryPath
-        let testFilesDirectoryPath = try find(relativeDirectoryPath: "Tests/LocalizationConverterTests/AcceptanceTests/testFiles", movingUpTheDirectoryHierarchy: currentDirectoryPath, using: fileManager)
+        let path = "Tests/LocalizationConverterTests/AcceptanceTests/testFiles"
+        let testFilesDirectoryPath = try find(relativeDirectoryPath: path,
+                                              movingUpTheDirectoryHierarchy: currentDirectoryPath,
+                                              using: fileManager)
         let filePath = (testFilesDirectoryPath as NSString).appendingPathComponent(partialPath)
         guard fileManager.fileExists(atPath: filePath) else {
             throw Error.fileNotFound(path: filePath)
@@ -130,7 +133,9 @@ extension AcceptanceTests {
         return filePath
     }
 
-    private func find(relativeDirectoryPath relativePath: String, movingUpTheDirectoryHierarchy referencePath: String, using fileManager: FileManager) throws -> String {
+    private func find(relativeDirectoryPath relativePath: String,
+                      movingUpTheDirectoryHierarchy referencePath: String,
+                      using fileManager: FileManager) throws -> String {
         let path = (referencePath as NSString).appendingPathComponent(relativePath)
         if fileManager.fileExists(atPath: path) {
             return path
@@ -155,8 +160,14 @@ extension AcceptanceTests {
         let fileManager = FileManager()
 
         do {
-            let referenceSubPaths = try fileManager.subpathsOfDirectory(atPath: referenceFolderPath).filter({ $0 != ".DS_Store" }).sorted()
-            let testedSubPaths = try fileManager.subpathsOfDirectory(atPath: testedFolderPath).filter({ $0 != ".DS_Store" }).sorted()
+            let referenceSubPaths = try fileManager
+              .subpathsOfDirectory(atPath: referenceFolderPath)
+              .filter({ $0 != ".DS_Store" })
+              .sorted()
+            let testedSubPaths = try fileManager
+              .subpathsOfDirectory(atPath: testedFolderPath)
+              .filter({ $0 != ".DS_Store" })
+              .sorted()
             guard referenceSubPaths == testedSubPaths else {
                 print("Expected paths: \(referenceSubPaths), Got: \(testedSubPaths)")
                 return false

@@ -15,7 +15,9 @@ import FoundationExtensions
 protocol FileSystemWriter {
     func fileExists(atPath path: String) -> Bool
     func createFile(atPath path: String, contents data: Data?, attributes attr: [String : Any]?) -> Bool
-    func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : Any]?) throws
+    func createDirectory(atPath path: String,
+                         withIntermediateDirectories createIntermediates: Bool,
+                         attributes: [String : Any]?) throws
 }
 
 extension FileManager: FileSystemWriter {}

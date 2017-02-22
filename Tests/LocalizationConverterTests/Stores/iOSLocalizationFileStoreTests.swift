@@ -27,7 +27,8 @@ class iOSLocalizationFileStoreTests: XCTestCase {
         try store.store(localization: localization)
 
         // THEN: the file system received the expected modifications
-        XCTAssertEqual(["createDirectory(atPath: outFolder)", "createFile(atPath: outFolder/Localizable.strings)"], fsWriter.commands)
+        XCTAssertEqual(["createDirectory(atPath: outFolder)", "createFile(atPath: outFolder/Localizable.strings)"],
+                       fsWriter.commands)
     }
 
     func test_That_store_StoreSimpleAndPluralsLocalizationItems() throws {
@@ -85,7 +86,9 @@ class iOSLocalizationFileStoreTests: XCTestCase {
             return true
         }
 
-        func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : Any]?) throws {
+        func createDirectory(atPath path: String,
+                             withIntermediateDirectories createIntermediates: Bool,
+                             attributes: [String : Any]?) throws {
             commands.append("createDirectory(atPath: \(path))")
         }
     }
@@ -99,7 +102,9 @@ class iOSLocalizationFileStoreTests: XCTestCase {
             return false
         }
 
-        func createDirectory(atPath path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : Any]?) throws {
+        func createDirectory(atPath path: String,
+                             withIntermediateDirectories createIntermediates: Bool,
+                             attributes: [String : Any]?) throws {
         }
     }
 }

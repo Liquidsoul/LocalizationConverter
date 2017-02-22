@@ -18,7 +18,9 @@ class StringFileContentProviderTests: XCTestCase {
         let encoding: String.Encoding = .utf16
         let data = stringData.data(using: encoding)!
         let fileProvider = FileContentProviderStub(data: data)
-        let stringFileContentProvider = StringFileContentProvider(filePath: "myPath", encoding: encoding, provider: fileProvider)
+        let stringFileContentProvider = StringFileContentProvider(filePath: "myPath",
+                                                                  encoding: encoding,
+                                                                  provider: fileProvider)
 
         // WHEN: we retrieve the content
         let content = try stringFileContentProvider.content()
