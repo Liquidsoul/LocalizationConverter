@@ -1,9 +1,9 @@
 
 RELEASE_BIN_PATH=.build/release/LocalizationConverter
 
-.PHONY: build release clean install
+.PHONY: test release clean install
 
-build: install
+test: install
 	bundle exec fastlane test
 
 clean: install
