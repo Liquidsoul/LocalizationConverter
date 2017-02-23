@@ -1,6 +1,6 @@
 language: objective-c
 osx_image: xcode8
 script:
-  bundle exec fastlane test
+  make test
 after_success:
   - bash <(curl -s https://codecov.io/bash)
