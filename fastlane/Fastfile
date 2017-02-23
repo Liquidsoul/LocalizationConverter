@@ -6,7 +6,19 @@ platform :mac do
 
   desc "Runs all the tests"
   lane :test do
-  	sh "cd .. && swift test"
+    swiftlint
+  	sh "swift test"
+  end
+
+  desc "Clean the build artifacts"
+  lane :clean do
+    sh 'swift build --clean'
+  end
+
+  desc "Run :clean and build the executable in release configuration"
+  lane :release do
+    clean
+    sh 'swift build --configuration release'
   end
 
 end
