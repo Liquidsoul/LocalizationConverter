@@ -49,3 +49,12 @@ You can look at the [Apple documentation](https://developer.apple.com/library/io
 * Does not support [`String Array`](https://developer.android.com/guide/topics/resources/string-resource.html#StringArray) keys
 * Support only one variable for plurals entries. An iOS `stringsdict` file [can support multiple variables](https://developer.apple.com/library/ios/documentation/MacOSX/Conceptual/BPInternational/StringsdictFileFormat/StringsdictFileFormat.html#//apple_ref/doc/uid/10000171i-CH16-SW3)
 * Require to use integer format specifier (`%d`) to format plurals
+
+## Development information
+
+This project use [fastlane](http://fastlane.tools) as a central point
+to run the different workflows.  
+A [Makefile](https://github.com/Liquidsoul/LocalizationConverter/blob/master/Makefile) is provided to set up and run the different lanes.  
+However, the project uses the
+[Swift Package Manager](https://github.com/apple/swift-package-manager) so
+one can use it directly to build and run tests on the project.
