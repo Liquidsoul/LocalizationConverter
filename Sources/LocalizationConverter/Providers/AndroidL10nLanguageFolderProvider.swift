@@ -28,7 +28,7 @@ struct AndroidL10nLanguageFolderProvider {
     }
 
     private static func listLanguages(from folders: [String], at folderPath: String) -> [Language:String] {
-        let languageToFilePath = folders.reduce([Language:String]()) { (values, folderName) in
+        let languageToFilePath = folders.reduce([Language: String]()) { (values, folderName) in
             guard let language = language(fromFolderName: folderName) else { return values }
             let filePath = folderPath
                 .appending(pathComponent: folderName)

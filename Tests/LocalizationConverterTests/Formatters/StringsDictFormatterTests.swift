@@ -57,16 +57,16 @@ class StringsDictFormatterTests: XCTestCase {
                 .zero: "zero_value",
                 .other: "other_value"
                 ]),
-            "key1": LocalizationItem.string(value: "localized_value1"),
+            "key1": LocalizationItem.string(value: "localized_value1")
             ])
         let expectedStringsDict = ["pluralKey":
             [
-                "NSStringLocalizedFormatKey":"%#@elements@",
+                "NSStringLocalizedFormatKey": "%#@elements@",
                 "elements": [
                     "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
                     "NSStringFormatValueTypeKey": "d",
                     "zero": "zero_value",
-                    "other": "other_value",
+                    "other": "other_value"
                 ]
             ]
         ]
@@ -97,36 +97,36 @@ class StringsDictFormatterTests: XCTestCase {
             "pluralKey1": LocalizationItem.plurals(values: [
                 .few: "few_value1",
                 .other: "other_value1"
-                ]),
+                ])
             ])
         let expectedStringsDict = [
             "pluralKey0": [
-                "NSStringLocalizedFormatKey":"%#@elements@",
+                "NSStringLocalizedFormatKey": "%#@elements@",
                 "elements": [
                     "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
                     "NSStringFormatValueTypeKey": "d",
                     "zero": "zero_value0",
-                    "other": "other_value0",
+                    "other": "other_value0"
                 ]
             ],
             "pluralKey1": [
-                "NSStringLocalizedFormatKey":"%#@elements@",
+                "NSStringLocalizedFormatKey": "%#@elements@",
                 "elements": [
                     "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
                     "NSStringFormatValueTypeKey": "d",
                     "few": "few_value1",
-                    "other": "other_value1",
+                    "other": "other_value1"
                 ]
             ],
             "pluralKey2": [
-                "NSStringLocalizedFormatKey":"%#@elements@",
+                "NSStringLocalizedFormatKey": "%#@elements@",
                 "elements": [
                     "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
                     "NSStringFormatValueTypeKey": "d",
                     "one": "one_value2",
-                    "other": "other_value2",
+                    "other": "other_value2"
                 ]
-            ],
+            ]
         ]
 
         do {
@@ -141,7 +141,7 @@ class StringsDictFormatterTests: XCTestCase {
     func test_stringsDict_missingOtherValue() {
         let localizableFormatter = StringsDictFormatter()
         let localization = LocalizationMap(format: .android, localizationsDictionary: [
-            "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value"]),
+            "pluralKey": LocalizationItem.plurals(values: [.zero: "zero_value"])
             ])
 
         let throwExpectaction = self.expectation(description: "Throw expectation")
@@ -162,16 +162,16 @@ class StringsDictFormatterTests: XCTestCase {
             "pluralKey": LocalizationItem.plurals(values: [
                 .zero: "zero_value",
                 .other: "%1$s values"
-                ]),
+                ])
             ])
         let expectedStringsDict = ["pluralKey":
             [
-                "NSStringLocalizedFormatKey":"%#@elements@",
+                "NSStringLocalizedFormatKey": "%#@elements@",
                 "elements": [
                     "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
                     "NSStringFormatValueTypeKey": "d",
                     "zero": "zero_value",
-                    "other": "%1$@ values",
+                    "other": "%1$@ values"
                 ]
             ]
         ]

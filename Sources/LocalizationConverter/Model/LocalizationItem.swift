@@ -7,12 +7,12 @@
 //
 
 enum PluralType: String {
-    case zero = "zero"
-    case one = "one"
-    case two = "two"
-    case few = "few"
-    case many = "many"
-    case other = "other"
+    case zero
+    case one
+    case two
+    case few
+    case many
+    case other
 }
 
 enum LocalizationItem {

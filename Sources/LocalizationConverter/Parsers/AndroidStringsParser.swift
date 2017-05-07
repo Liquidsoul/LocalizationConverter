@@ -23,14 +23,14 @@ class AndroidStringsParser: LocalizationParser {
         return LocalizationMap(format: .android, localizationsDictionary: parserDelegate.localizations)
     }
 
-    fileprivate let parserDelegate = XMLDelegate()
+    fileprivate let parserDelegate = XMLDelegate() // swiftlint:disable:this weak_delegate
 }
 
 fileprivate extension AndroidStringsParser {
     func delegateError() -> Error {
         return parserDelegate.lastError ?? NSError(domain: "\(type(of: self))",
                                                    code: 404,
-                                                   userInfo: [NSLocalizedFailureReasonErrorKey:"No error found"])
+                                                   userInfo: [NSLocalizedFailureReasonErrorKey: "No error found"])
 
     }
 }
@@ -39,7 +39,7 @@ fileprivate extension AndroidStringsParser {
 
     fileprivate class XMLDelegate: NSObject, XMLParserDelegate {
 
-        var localizations = [String:LocalizationItem]()
+        var localizations = [String: LocalizationItem]()
 
         var parseStackItem: ParseStack?
 
@@ -47,7 +47,7 @@ fileprivate extension AndroidStringsParser {
 
         @objc
         func parserDidStartDocument(_ parser: XMLParser) {
-            localizations = [String:LocalizationItem]()
+            localizations = [String: LocalizationItem]()
         }
 
         @objc
@@ -182,7 +182,7 @@ fileprivate extension AndroidStringsParser {
         }
 
         override func result() -> (String, LocalizationItem) {
-            var pluralLocalizations = [PluralType:String]()
+            var pluralLocalizations = [PluralType: String]()
             while !stack.isEmpty {
                 let pluralTypeString = stack.removeFirst()
                 guard let pluralType = PluralType(rawValue: pluralTypeString) else {

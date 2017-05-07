@@ -18,7 +18,7 @@ struct LocalizationMap {
     }
 
     fileprivate(set) var format: Format
-    fileprivate(set) var localizations = [String:LocalizationItem]()
+    fileprivate(set) var localizations = [String: LocalizationItem]()
 
     init(format: Format) {
         self.format = format
@@ -87,9 +87,9 @@ extension LocalizationMap {
         }
     }
 
-    fileprivate func convert(_ localizations: [String:LocalizationItem],
-                         using replacer: RegexReplacer) -> [String:LocalizationItem] {
-        var iOSLocalizations = [String:LocalizationItem]()
+    fileprivate func convert(_ localizations: [String: LocalizationItem],
+                             using replacer: RegexReplacer) -> [String: LocalizationItem] {
+        var iOSLocalizations = [String: LocalizationItem]()
         localizations.forEach { (key, item) in
             let convertedItem: LocalizationItem
             switch item {
@@ -105,7 +105,7 @@ extension LocalizationMap {
     }
 
     fileprivate func convert(_ plurals: [PluralType:String], using replacer: RegexReplacer) -> [PluralType:String] {
-        var convertedPlurals = [PluralType:String]()
+        var convertedPlurals = [PluralType: String]()
         plurals.forEach { (type, value) in
             convertedPlurals[type] = replacer.replacingMatches(in: value)
         }

@@ -24,7 +24,7 @@ struct StringsDictFormatter {
 
         let stringsDict = NSMutableDictionary()
         try pluralLocalizations.forEach { (key, values) in
-            guard let _ = values[.other] else {
+            guard values[.other] != nil else {
                 throw Error.missingOtherKey
             }
             stringsDict[key] = stringsDictItem(with: values)
@@ -38,7 +38,7 @@ struct StringsDictFormatter {
             return [:]
         }
 
-        var pluralLocalizations = [String:[PluralType: String]]()
+        var pluralLocalizations = [String: [PluralType: String]]()
         localizations.forEach { (key, value) in
             switch value {
             case .string:
@@ -56,7 +56,7 @@ struct StringsDictFormatter {
             "NSStringFormatValueTypeKey": "d"
         ]
         return [
-            "NSStringLocalizedFormatKey":"%#@elements@",
+            "NSStringLocalizedFormatKey": "%#@elements@",
             "elements": values.reduce(initialValues as [String:Any], { (elements, pair) -> [String:Any] in
                 var outputValues = elements
                 outputValues[pair.0.rawValue] = pair.1

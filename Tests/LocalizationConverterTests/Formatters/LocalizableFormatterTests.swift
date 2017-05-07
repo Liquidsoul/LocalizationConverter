@@ -38,7 +38,7 @@ class LocalizableFormatterTests: XCTestCase {
         let localization = LocalizationMap(format: .android, localizationsDictionary: [
             "key1": LocalizationItem.string(value: "localized_value1"),
             "key0": LocalizationItem.string(value: "localized_value0"),
-            "key2": LocalizationItem.string(value: "localized_value2"),
+            "key2": LocalizationItem.string(value: "localized_value2")
         ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
@@ -58,7 +58,7 @@ class LocalizableFormatterTests: XCTestCase {
             "pluralKey": LocalizationItem.plurals(values: [
                 .zero: "zero_value",
                 .other: "other_value"]),
-            "key1": LocalizationItem.string(value: "localized_value1"),
+            "key1": LocalizationItem.string(value: "localized_value1")
             ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
@@ -78,7 +78,7 @@ class LocalizableFormatterTests: XCTestCase {
             "pluralKey": LocalizationItem.plurals(values: [
                 .zero: "zero_value",
                 .other: "other_value"]),
-            "key1": LocalizationItem.string(value: "localized_value1"),
+            "key1": LocalizationItem.string(value: "localized_value1")
             ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
@@ -94,7 +94,7 @@ class LocalizableFormatterTests: XCTestCase {
     func test_format_convertStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(format: .android, localizationsDictionary: [
-            "stringParams": LocalizationItem.string(value: "Hello %s %s!"),
+            "stringParams": LocalizationItem.string(value: "Hello %s %s!")
             ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
@@ -105,7 +105,7 @@ class LocalizableFormatterTests: XCTestCase {
     func test_format_convertPositionalStringParameters() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(format: .android, localizationsDictionary: [
-            "positionalParams": LocalizationItem.string(value: "Hello %1$s %2$s!"),
+            "positionalParams": LocalizationItem.string(value: "Hello %1$s %2$s!")
             ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
@@ -116,7 +116,7 @@ class LocalizableFormatterTests: XCTestCase {
     func test_format_escapeDoubleQuotes() throws {
         let localizableFormatter = LocalizableFormatter()
         let localization = LocalizationMap(format: .android, localizationsDictionary: [
-            "quotedString": LocalizationItem.string(value: "Hello \"Guest\"!"),
+            "quotedString": LocalizationItem.string(value: "Hello \"Guest\"!")
             ])
 
         let resultLocalizableString = try localizableFormatter.format(localization)
