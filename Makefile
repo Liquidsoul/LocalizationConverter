@@ -1,18 +1,23 @@
+.DEFAULT_GOAL := test
 
-RELEASE_BIN_PATH=.build/release/LocalizationConverter
+PROJECTNAME=LocalizationConverter
+RELEASE_BIN_PATH=.build/release/$(PROJECTNAME)
 
-.PHONY: test release clean install
-
-test: install
-	bundle exec fastlane test
-
-clean: install
-	bundle exec fastlane clean
+.PHONY: install test clean ci release
 
 install:
-	bundle install --quiet
+	brew bundle
+
+test:
+	swift test
+	swiftlint
+
+clean:
+	swift package clean
+
+ci: install test
 
 release: clean $(RELEASE_BIN_PATH)
 
 $(RELEASE_BIN_PATH): install
-	bundle exec fastlane release
+	swift build --configuration release -Xswiftc -static-stdlib
