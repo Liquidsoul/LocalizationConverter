@@ -6,18 +6,23 @@ OUTPUT_PATH=release/
 
 .PHONY: install test clean ci release
 
+# Install the required dependencies.
 install:
 	brew bundle
 
+# Build and run the tests and run the linting tool.
 test:
 	swift test
 	swiftlint
 
+# Clean the build artifacts.
 clean:
 	swift package clean
 
+# Target for the ci runner.
 ci: install test
 
+# Generate a release build.
 release: clean $(OUTPUT_PATH)/$(BIN_FILENAME)
 
 $(OUTPUT_PATH)/$(BIN_FILENAME): $(RELEASE_BIN_PATH)

@@ -52,9 +52,22 @@ You can look at the [Apple documentation](https://developer.apple.com/library/io
 
 ## Development information
 
-This project use [fastlane](http://fastlane.tools) as a central point
-to run the different workflows.  
-A [Makefile](https://github.com/Liquidsoul/LocalizationConverter/blob/master/Makefile) is provided to set up and run the different lanes.  
-However, the project uses the
-[Swift Package Manager](https://github.com/apple/swift-package-manager) so
-one can use it directly to build and run tests on the project.
+The [Makefile](https://github.com/Liquidsoul/LocalizationConverter/blob/master/Makefile) is the central point to run the different commands for this project.  
+To setup the dependencies and run the tests:
+
+```bash
+make install
+make test
+```
+
+Note that this assumes that [`brew`](http://brew.sh) is installed.
+
+The project uses the [Swift Package Manager](https://github.com/apple/swift-package-manager) so you can use it directly to build and run tests on the project.
+
+To generate a release build:
+
+```bash
+make release
+```
+
+This will output a binary in the `release/` folder of the project.
