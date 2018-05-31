@@ -34,7 +34,7 @@ $(OUTPUT_PATH)/$(BIN_FILENAME): $(RELEASE_BIN_PATH)
 
 $(RELEASE_BIN_PATH):
 	@swift --version
-	swift build --configuration release -Xswiftc -static-stdlib
+	swift build --disable-sandbox --configuration release -Xswiftc -static-stdlib
 
 .PHONY: help
 # taken from this gist https://gist.github.com/rcmachado/af3db315e31383502660
