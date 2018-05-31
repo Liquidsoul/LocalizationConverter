@@ -33,6 +33,7 @@ $(OUTPUT_PATH)/$(BIN_FILENAME): $(RELEASE_BIN_PATH)
 	cp $< $@
 
 $(RELEASE_BIN_PATH):
+	@swift --version
 	swift build --configuration release -Xswiftc -static-stdlib
 
 .PHONY: help
