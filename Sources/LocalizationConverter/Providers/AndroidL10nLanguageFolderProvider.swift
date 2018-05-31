@@ -15,7 +15,7 @@ protocol DirectoryContentProvider {
 extension FileManager: DirectoryContentProvider {}
 
 struct AndroidL10nLanguageFolderProvider {
-    fileprivate let languageToFilePath: [Language:String]
+    fileprivate let languageToFilePath: [Language: String]
 
     init(folderPath: String, provider: DirectoryContentProvider = FileManager()) throws {
         let staticType = type(of: self)
@@ -27,7 +27,7 @@ struct AndroidL10nLanguageFolderProvider {
         return try provider.contentsOfDirectory(atPath: path)
     }
 
-    private static func listLanguages(from folders: [String], at folderPath: String) -> [Language:String] {
+    private static func listLanguages(from folders: [String], at folderPath: String) -> [Language: String] {
         let languageToFilePath = folders.reduce([Language: String]()) { (values, folderName) in
             guard let language = language(fromFolderName: folderName) else { return values }
             let filePath = folderPath

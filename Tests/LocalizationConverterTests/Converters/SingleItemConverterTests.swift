@@ -39,9 +39,9 @@ class SingleItemConverterTests: XCTestCase {
     private class LocalizationProviderMock: LocalizationProvider {
         var wasCalled = false
         let format: LocalizationMap.Format
-        let dictionary: [String:String]
+        let dictionary: [String: String]
 
-        init(format: LocalizationMap.Format, dictionary: [String:String]) {
+        init(format: LocalizationMap.Format, dictionary: [String: String]) {
             self.format = format
             self.dictionary = dictionary
         }

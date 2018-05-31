@@ -24,12 +24,12 @@ struct LocalizationMap {
         self.format = format
     }
 
-    init(format: Format, dictionary: [String:String]) {
+    init(format: Format, dictionary: [String: String]) {
         self.init(format: format)
         dictionary.forEach { localizations[$0] = .string(value: $1) }
     }
 
-    init(format: Format, localizationsDictionary: [String:LocalizationItem]) {
+    init(format: Format, localizationsDictionary: [String: LocalizationItem]) {
         self.init(format: format)
         localizations = localizationsDictionary
     }
@@ -72,18 +72,18 @@ extension LocalizationMap {
         let destinationFormat = format
 
         switch (sourceFormat, destinationFormat) {
-            case let (source, destination) where source == destination:
-                return self
-            case (.android, .ios):
-                guard let stringParameterReplacer = RegexReplacer(pattern: "%([0-9]+\\$)?s", replaceTemplate: "%$1@") else {
-                    fatalError("Could not initialize replacer!")
-                }
+        case let (source, destination) where source == destination:
+            return self
+        case (.android, .ios):
+            guard let stringParameterReplacer = RegexReplacer(pattern: "%([0-9]+\\$)?s", replaceTemplate: "%$1@") else {
+                fatalError("Could not initialize replacer!")
+            }
 
-                return LocalizationMap(
-                    format: destinationFormat,
-                    localizationsDictionary: convert(localizations, using: stringParameterReplacer))
-            default:
-               fatalError("Unsupported convertion \(sourceFormat) -> \(destinationFormat)")
+            return LocalizationMap(
+              format: destinationFormat,
+              localizationsDictionary: convert(localizations, using: stringParameterReplacer))
+        default:
+            fatalError("Unsupported convertion \(sourceFormat) -> \(destinationFormat)")
         }
     }
 
@@ -104,7 +104,7 @@ extension LocalizationMap {
         return iOSLocalizations
     }
 
-    fileprivate func convert(_ plurals: [PluralType:String], using replacer: RegexReplacer) -> [PluralType:String] {
+    fileprivate func convert(_ plurals: [PluralType: String], using replacer: RegexReplacer) -> [PluralType: String] {
         var convertedPlurals = [PluralType: String]()
         plurals.forEach { (type, value) in
             convertedPlurals[type] = replacer.replacingMatches(in: value)

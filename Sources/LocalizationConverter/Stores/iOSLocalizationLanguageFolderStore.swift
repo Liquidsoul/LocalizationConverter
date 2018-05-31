@@ -22,8 +22,8 @@ struct iOSLocalizationLanguageFolderStore: LocalizationLanguageStore {
 extension Language {
     var iOSFolderName: String {
         switch self {
-            case .base: return "Base.lproj"
-            case .named(let name): return "\(name).lproj"
+        case .base: return "Base.lproj"
+        case .named(let name): return "\(name).lproj"
         }
     }
 }

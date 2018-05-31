@@ -27,12 +27,12 @@ class AndroidL10nLanguageFolderProviderTests: XCTestCase {
 
         // THEN: we get the expected string providers
         guard let baseLocalizationProvider = l10nProvider.contentProvider(for: .base) as? AndroidL10nFileProvider else {
-            XCTFail()
+            XCTFail("Could not find the base localization provider")
             return
         }
         XCTAssertEqual("any/values/strings.xml", baseLocalizationProvider.filePath)
         guard let frLocalizationProvider = l10nProvider.contentProvider(for: .named("fr")) as? AndroidL10nFileProvider else {
-            XCTFail()
+            XCTFail("Could not find the fr localization provider")
             return
         }
         XCTAssertEqual("any/values-fr/strings.xml", frLocalizationProvider.filePath)

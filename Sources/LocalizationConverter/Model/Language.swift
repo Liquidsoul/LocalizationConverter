@@ -14,16 +14,16 @@ enum Language {
 extension Language: Hashable {
     var hashValue: Int {
         switch self {
-            case .base: return "base".hash
-            case .named(let name): return "named.\(name)".hash
+        case .base: return "base".hash
+        case .named(let name): return "named.\(name)".hash
         }
     }
 
     static func == (lhs: Language, rhs: Language) -> Bool {
         switch (lhs, rhs) {
-            case (.base, .base): return true
-            case let (.named(lhsName), .named(rhsName)): return lhsName == rhsName
-            default: return false
+        case (.base, .base): return true
+        case let (.named(lhsName), .named(rhsName)): return lhsName == rhsName
+        default: return false
         }
     }
 }

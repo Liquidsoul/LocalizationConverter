@@ -55,7 +55,7 @@ fileprivate extension AndroidStringsParser {
                     didStartElement elementName: String,
                     namespaceURI: String?,
                     qualifiedName qName: String?,
-                    attributes attributeDict: [String : String]) {
+                    attributes attributeDict: [String: String]) {
             parseStackItem?.start(element: elementName, attributes: attributeDict)
 
             switch elementName {
@@ -83,13 +83,12 @@ fileprivate extension AndroidStringsParser {
                     namespaceURI: String?,
                     qualifiedName qName: String?) {
             switch elementName {
-            case "string": fallthrough
-            case "plurals":
+            case "string",
+                 "plurals":
                 if let (key, value) = parseStackItem?.result() {
                     localizations[key] = value
                 }
                 parseStackItem = nil
-                break
             default:
                 break
             }
@@ -120,7 +119,7 @@ fileprivate extension AndroidStringsParser {
             stack.append(string)
         }
 
-        func start(element: String, attributes attributeDict: [String : String]) {
+        func start(element: String, attributes attributeDict: [String: String]) {
             if formatElements.contains(element) {
                 stack.append("<\(element)>")
             }
@@ -153,7 +152,7 @@ fileprivate extension AndroidStringsParser {
         fileprivate let itemTerminator = "itemTerminator"
         fileprivate var inItem: Bool = false
 
-        override func start(element: String, attributes attributeDict: [String : String]) {
+        override func start(element: String, attributes attributeDict: [String: String]) {
             if element == "item" {
                 inItem = true
                 guard let quantityName = attributeDict["quantity"] else {

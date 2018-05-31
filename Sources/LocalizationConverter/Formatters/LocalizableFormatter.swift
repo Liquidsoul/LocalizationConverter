@@ -23,7 +23,7 @@ struct LocalizableFormatter {
         return data
     }
 
-    fileprivate func format(_ localizations: [String:LocalizationItem]) -> String {
+    fileprivate func format(_ localizations: [String: LocalizationItem]) -> String {
         var localizableEntries = [String]()
 
         localizations.forEach { (key, localizationItem) in

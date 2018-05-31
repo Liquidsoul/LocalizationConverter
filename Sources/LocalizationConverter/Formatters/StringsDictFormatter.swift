@@ -33,7 +33,7 @@ struct StringsDictFormatter {
         return stringsDict
     }
 
-    fileprivate func plurals(from localizations: [String:LocalizationItem]) -> [String:[PluralType: String]] {
+    fileprivate func plurals(from localizations: [String: LocalizationItem]) -> [String: [PluralType: String]] {
         if localizations.count == 0 {
             return [:]
         }
@@ -50,14 +50,14 @@ struct StringsDictFormatter {
         return pluralLocalizations
     }
 
-    fileprivate func stringsDictItem(with values: [PluralType: String]) -> [String:Any] {
-        let initialValues: [String:Any] = [
+    fileprivate func stringsDictItem(with values: [PluralType: String]) -> [String: Any] {
+        let initialValues: [String: Any] = [
             "NSStringFormatSpecTypeKey": "NSStringPluralRuleType",
             "NSStringFormatValueTypeKey": "d"
         ]
         return [
             "NSStringLocalizedFormatKey": "%#@elements@",
-            "elements": values.reduce(initialValues as [String:Any], { (elements, pair) -> [String:Any] in
+            "elements": values.reduce(initialValues as [String: Any], { (elements, pair) -> [String: Any] in
                 var outputValues = elements
                 outputValues[pair.0.rawValue] = pair.1
                 return outputValues
