@@ -10,18 +10,17 @@ import Foundation
 
 class LocalizableParser: LocalizationParser {
     func parse(string: String) -> LocalizationMap {
-        return string.characters
-            .split { $0 == "\n" }
-            .reduce(LocalizationMap(format: .ios), { (localizationDict, keyValueCharView) -> LocalizationMap in
-                var outputDict = localizationDict
+        return string
+            .split(separator: "\n")
+            .reduce(LocalizationMap(format: .ios), { (localizationMap, line) -> LocalizationMap in
+                var outputMap = localizationMap
                 let trimCharacterSet = CharacterSet(charactersIn: " \n\";")
-                let array = keyValueCharView
-                    .split { $0 == "="}
-                    .map { String.init($0).trimmingCharacters(in: trimCharacterSet) }
+                let array = line.split(separator: "=")
+                    .map { $0.trimmingCharacters(in: trimCharacterSet)}
                 if array.count == 2 {
-                    outputDict[array[0]] = .string(value: array[1])
+                    outputMap[array[0]] = .string(value: array[1])
                 }
-                return outputDict
-            })
+                return outputMap
+        })
     }
 }

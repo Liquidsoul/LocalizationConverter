@@ -11,20 +11,20 @@ let version = "0.1.0"
 import Commander
 import LocalizationConverter
 
-let outputOption = Option<String>(
-  "output", ".", flag: "o",
-  description: "The path to the folder where to output the results " +
-    "(Omit to generate in current working directory)"
-)
+let outputOption = Option<String>("output",
+                                  default: ".",
+                                  flag: "o",
+                                  description: "The path to the folder where to output the results " +
+                                               "(Omit to generate in current working directory)")
 
-let includePluralsFlag = Flag(
-  "include-plurals", description: "include plurals keys in the Localizable.strings file."
+let includePluralsFlag = Flag("include-plurals",
+                              description: "include plurals keys in the Localizable.strings file."
 )
 
 let convertAndroidFileCommand = command(
-  outputOption,
-  includePluralsFlag,
-  Argument<String>("STRINGS_FILE", description: "path to a strings.xml file to parse")
+    outputOption,
+    includePluralsFlag,
+    Argument<String>("STRINGS_FILE", description: "path to a strings.xml file to parse")
 ) { (output, includePlurals, inputFile) in
   print(output)
   _ = LocalizationConverter.convert(androidFileName: inputFile,
@@ -33,9 +33,9 @@ let convertAndroidFileCommand = command(
 }
 
 let convertAndroidFolderCommand = command(
-  outputOption,
-  includePluralsFlag,
-  Argument<String>("RES_FOLDER", description: "Android strings res/ folder")
+    outputOption,
+    includePluralsFlag,
+    Argument<String>("RES_FOLDER", description: "Android strings res/ folder")
 ) { (output, includePlurals, inputFolder) in
   _ = LocalizationConverter.convert(androidFolder: inputFolder,
                                     outputPath: output,
@@ -43,13 +43,13 @@ let convertAndroidFolderCommand = command(
 }
 
 let main = Group {
-  $0.addCommand("convertAndroidFile",
-                "Read a given Android strings.xml file and generate the corresponding " +
+    $0.addCommand("convertAndroidFile",
+                  "Read a given Android strings.xml file and generate the corresponding " +
                   "Localizable.strings and Localizable.stringsdict files for iOS.",
-                convertAndroidFileCommand)
-  $0.addCommand("convertAndroidFolder",
-                "Convert an Android strings resource folder into an iOS Localization folder.",
-                convertAndroidFolderCommand)
+                  convertAndroidFileCommand)
+    $0.addCommand("convertAndroidFolder",
+                  "Convert an Android strings resource folder into an iOS Localization folder.",
+                  convertAndroidFolderCommand)
 }
 
 main.run("l10nconverter v\(version)")
