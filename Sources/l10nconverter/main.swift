@@ -6,7 +6,7 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-let version = "0.0.6"
+let version = "0.1.0"
 
 import Commander
 import LocalizationConverter
