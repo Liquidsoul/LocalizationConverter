@@ -1,28 +1,31 @@
-.DEFAULT_GOAL := test
+.DEFAULT_GOAL := help
 
 BIN_FILENAME=l10nconverter
 RELEASE_BIN_PATH=.build/release/$(BIN_FILENAME)
 OUTPUT_PATH=release/
 
-.PHONY: install test clean ci release
-
-# Install the required dependencies.
+.PHONY: install
+## Install the required dependencies.
 install:
 	brew bundle
 
-# Build and run the tests and run the linting tool.
+.PHONY: test
+## Build and run the tests and run the linting tool.
 test:
 	swift test
 	swiftlint
 
-# Clean the build artifacts.
+.PHONY: clean
+## Clean the build artifacts.
 clean:
 	swift package clean
 
-# Target for the ci runner.
+.PHONY: ci
+## Target for the ci runner.
 ci: install test
 
-# Generate a release build.
+.PHONY: release
+## Generate a release build.
 release: clean $(OUTPUT_PATH)/$(BIN_FILENAME)
 
 $(OUTPUT_PATH)/$(BIN_FILENAME): $(RELEASE_BIN_PATH)
@@ -31,3 +34,22 @@ $(OUTPUT_PATH)/$(BIN_FILENAME): $(RELEASE_BIN_PATH)
 
 $(RELEASE_BIN_PATH):
 	swift build --configuration release -Xswiftc -static-stdlib
+
+.PHONY: help
+# taken from this gist https://gist.github.com/rcmachado/af3db315e31383502660
+## Show this help message.
+help:
+	$(info Usage: make [target...])
+	$(info Available targets)
+	@awk '/^[a-zA-Z\-\_0-9]+:/ {                    \
+		nb = sub( /^## /, "", helpMsg );              \
+		if(nb == 0) {                                 \
+			helpMsg = $$0;                              \
+			nb = sub( /^[^:]*:.* ## /, "", helpMsg );   \
+		}                                             \
+		if (nb)                                       \
+			print  $$1 "\t" helpMsg;                    \
+	}                                               \
+	{ helpMsg = $$0 }'                              \
+	$(MAKEFILE_LIST) | column -ts $$'\t' |          \
+	grep --color '^[^ ]*'
