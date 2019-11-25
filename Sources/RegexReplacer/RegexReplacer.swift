@@ -22,7 +22,7 @@ public struct RegexReplacer {
         return regex.stringByReplacingMatches(
             in: string,
             options: NSRegularExpression.MatchingOptions(rawValue: 0),
-            range: NSRange(location: 0, length: string.characters.count),
+            range: NSRange(location: 0, length: string.count),
             withTemplate: replaceTemplate)
     }
 
