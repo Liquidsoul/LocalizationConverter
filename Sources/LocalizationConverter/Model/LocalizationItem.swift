@@ -17,7 +17,7 @@ enum PluralType: String {
 
 enum LocalizationItem {
     case string(value: String)
-    case plurals(values: [PluralType:String])
+    case plurals(values: [PluralType: String])
 }
 
 extension LocalizationItem: Equatable {}
