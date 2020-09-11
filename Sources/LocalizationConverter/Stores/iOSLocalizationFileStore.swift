@@ -14,13 +14,13 @@ import FoundationExtensions
 
 protocol FileSystemWriter {
     func fileExists(atPath path: String) -> Bool
-    func createFile(atPath path: String, contents data: Data?, attributes attr: [String: Any]?) -> Bool
+    func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool
     func createDirectory(atPath path: String,
                          withIntermediateDirectories createIntermediates: Bool,
-                         attributes: [String: Any]?) throws
+                         attributes: [FileAttributeKey: Any]?) throws
 }
 
-extension FileManager: FileSystemWriter {}
+extension FileManager: FileSystemWriter { }
 
 struct iOSLocalizationFileStore {
     private let fileSystemWriter: FileSystemWriter

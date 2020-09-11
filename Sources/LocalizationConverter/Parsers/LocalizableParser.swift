@@ -10,7 +10,7 @@ import Foundation
 
 class LocalizableParser: LocalizationParser {
     func parse(string: String) -> LocalizationMap {
-        return string.characters
+        return string
             .split { $0 == "\n" }
             .reduce(LocalizationMap(format: .ios), { (localizationDict, keyValueCharView) -> LocalizationMap in
                 var outputDict = localizationDict

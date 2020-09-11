@@ -81,14 +81,14 @@ class iOSLocalizationFileStoreTests: XCTestCase {
             return existingPaths.contains(path)
         }
 
-        func createFile(atPath path: String, contents data: Data?, attributes attr: [String: Any]?) -> Bool {
+        func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool {
             commands.append("createFile(atPath: \(path))")
             return true
         }
 
         func createDirectory(atPath path: String,
                              withIntermediateDirectories createIntermediates: Bool,
-                             attributes: [String: Any]?) throws {
+                             attributes: [FileAttributeKey: Any]?) throws {
             commands.append("createDirectory(atPath: \(path))")
         }
     }
@@ -98,13 +98,13 @@ class iOSLocalizationFileStoreTests: XCTestCase {
             return true
         }
 
-        func createFile(atPath path: String, contents data: Data?, attributes attr: [String: Any]?) -> Bool {
+        func createFile(atPath path: String, contents data: Data?, attributes attr: [FileAttributeKey: Any]?) -> Bool {
             return false
         }
 
         func createDirectory(atPath path: String,
                              withIntermediateDirectories createIntermediates: Bool,
-                             attributes: [String: Any]?) throws {
+                             attributes: [FileAttributeKey: Any]?) throws {
         }
     }
 }
