@@ -37,7 +37,7 @@ fileprivate extension AndroidStringsParser {
 
 fileprivate extension AndroidStringsParser {
 
-    fileprivate class XMLDelegate: NSObject, XMLParserDelegate {
+    class XMLDelegate: NSObject, XMLParserDelegate {
 
         var localizations = [String: LocalizationItem]()
 
@@ -106,7 +106,7 @@ fileprivate extension AndroidStringsParser {
         }
     }
 
-    fileprivate class ParseStack {
+    class ParseStack {
         fileprivate var stack: [String] = []
         fileprivate let keyName: String
         fileprivate let formatElements: [String] = ["b", "u", "i"]
@@ -138,7 +138,7 @@ fileprivate extension AndroidStringsParser {
         }
     }
 
-    fileprivate class StringParseStack: ParseStack {
+    class StringParseStack: ParseStack {
         override func result() -> (String, LocalizationItem) {
             guard !stack.isEmpty else {
                 fatalError("Stack should not be empty when parsing 'string' element.")
@@ -148,7 +148,7 @@ fileprivate extension AndroidStringsParser {
         }
     }
 
-    fileprivate class PluralsParseStack: ParseStack {
+    class PluralsParseStack: ParseStack {
         fileprivate let itemTerminator = "itemTerminator"
         fileprivate var inItem: Bool = false
 

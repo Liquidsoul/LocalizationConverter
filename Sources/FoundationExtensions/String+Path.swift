@@ -9,7 +9,7 @@
 import Foundation
 
 public extension String {
-    public func appending(pathComponent component: String) -> String {
+    func appending(pathComponent component: String) -> String {
         return (self as NSString).appendingPathComponent(component)
     }
 }
