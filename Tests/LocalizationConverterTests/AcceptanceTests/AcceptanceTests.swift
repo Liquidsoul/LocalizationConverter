@@ -172,12 +172,10 @@ extension AcceptanceTests {
                 print("Expected paths: \(referenceSubPaths), Got: \(testedSubPaths)")
                 return false
             }
-            return referenceSubPaths.reduce(true, { (result, subpath) -> Bool in
-                if !result { return result }
-                return result && compareFiles(
-                    referenceFolderPath.appending(pathComponent: subpath),
-                    testedFilePath: testedFolderPath.appending(pathComponent: subpath))
-            })
+            return referenceSubPaths.allSatisfy { (subpath) -> Bool in
+                return compareFiles(referenceFolderPath.appending(pathComponent: subpath),
+                                    testedFilePath: testedFolderPath.appending(pathComponent: subpath))
+            }
         } catch {
             print("Failed to list subpaths with error: \(error)")
         }
