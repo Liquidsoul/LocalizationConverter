@@ -12,10 +12,12 @@ enum Language {
 }
 
 extension Language: Hashable {
-    var hashValue: Int {
+    func hash(into hasher: inout Hasher) {
         switch self {
-        case .base: return "base".hash
-        case .named(let name): return "named.\(name)".hash
+        case .base:
+            hasher.combine("base")
+        case .named(let name): return
+            hasher.combine("named.\(name)")
         }
     }
 
