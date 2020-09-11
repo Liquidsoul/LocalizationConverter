@@ -21,6 +21,7 @@ xcuserdata/
 *.moved-aside
 *.xcuserstate
 .DS_Store
+Brewfile.lock.json
 
 ## Obj-C/Swift specific
 *.hmap
